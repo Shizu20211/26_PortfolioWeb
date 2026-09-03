@@ -2,6 +2,8 @@
 
 Vue 3 + Vite 橫向作品集第一階段。以 Horizontal Exhibition / Digital Editorial 為基調，讓瀏覽者在五個章節中快速理解視覺設計、前端互動與工藝背景。
 
+> 不確定要去哪裡修改？請先看 [作品集修改指南](docs/EDITING_GUIDE.md)，可依照「改文案、專案、圖片、色彩、手機版或互動」快速找到對應檔案。
+
 ## 執行方式
 
 ```sh
