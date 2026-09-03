@@ -1,8 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&display=swap');
 :root {
-  --color-paper: #fff7ea; --color-surface: #fffaf1; --color-ink: #29303f; --color-ink-teal: #3e6e64; --color-muted: #68716f; --color-line: rgb(62 110 100 / 22%);
-  --color-home: #f8e9d7; --color-featured: #edf2dc; --color-projects: #e6efed; --color-artworks: #f7e2dc; --color-about: #fff7ea;
-  --color-petal-yellow: #f3de8e; --color-water: #78aaa5; --color-coral: #d98288; --color-sand: #c4a47d;
-  --font-display: "Noto Serif TC", "Noto Serif JP", serif; --font-body: "Noto Sans TC", "Noto Sans JP", "PingFang TC", sans-serif; --font-hand: "Klee One", cursive; --font-label: "Space Mono", monospace;
-  --radius-md: 1.5rem; --radius-pill: 999px; --shadow-paper: 4px 6px 0 rgb(62 110 100 / 15%); --page-pad: clamp(1.25rem, 4.2vw, 5rem);
+  --color-paper: #fff7ea;
+  --color-surface: #fffaf1;
+  --color-ink: #29303f;
+  --color-ink-teal: #3e6e64;
+  --color-muted: #68716f;
+  --color-line: rgb(62 110 100 / 22%);
+  --color-home: #f8e9d7;
+  --color-featured: #edf2dc;
+  --color-projects: #e6efed;
+  --color-artworks: #f7e2dc;
+  --color-about: #fff7ea;
+  --color-petal-yellow: #f3de8e;
+  --color-water: #78aaa5;
+  --color-coral: #d98288;
+  --color-sand: #c4a47d;
+  --font-display: 'Noto Serif TC', 'Noto Serif JP', serif;
+  --font-body: 'Noto Sans TC', 'Noto Sans JP', 'PingFang TC', sans-serif;
+  --font-hand: 'Klee One', cursive;
+  --font-label: 'Space Mono', monospace;
+  --radius-md: 1.5rem;
+  --radius-pill: 999px;
+  --shadow-paper: 4px 6px 0 rgb(62 110 100 / 15%);
+  --page-pad: clamp(1.25rem, 4.2vw, 5rem);
 }

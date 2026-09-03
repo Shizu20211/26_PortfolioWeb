@@ -1,18 +1,43 @@
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { messages } from '@/data/messages'
 
 const stored = typeof window !== 'undefined' ? localStorage.getItem('portfolio-language') : null
 const language = ref(['zh-Hant', 'en', 'ja'].includes(stored) ? stored : 'zh-Hant')
+const isLanguageChanging = ref(false)
+let transitionTimer
 
-export function useLanguage() {
-  const t = (path) => path.split('.').reduce((value, key) => value?.[key], messages[language.value]) ?? path
-  const pick = (value) => value?.[language.value] ?? value?.['zh-Hant'] ?? ''
-  const languageLabel = computed(() => ({ 'zh-Hant': '中文', en: 'English', ja: '日本語' })[language.value])
-
-  watch(language, (value) => {
+watch(
+  language,
+  (value) => {
     document.documentElement.lang = value
     localStorage.setItem('portfolio-language', value)
-  }, { immediate: true })
+  },
+  { immediate: true },
+)
 
-  return { language, languageLabel, t, pick }
+function setLanguage(nextLanguage) {
+  if (nextLanguage === language.value) return
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    language.value = nextLanguage
+    return
+  }
+
+  window.clearTimeout(transitionTimer)
+  isLanguageChanging.value = true
+
+  transitionTimer = window.setTimeout(() => {
+    language.value = nextLanguage
+    requestAnimationFrame(() => {
+      isLanguageChanging.value = false
+    })
+  }, 120)
+}
+
+export function useLanguage() {
+  const t = (path) =>
+    path.split('.').reduce((value, key) => value?.[key], messages[language.value]) ?? path
+  const pick = (value) => value?.[language.value] ?? value?.['zh-Hant'] ?? ''
+
+  return { language, isLanguageChanging, setLanguage, t, pick }
 }

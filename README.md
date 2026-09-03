@@ -23,39 +23,100 @@ npm run preview
 - 手機橫向支援左右滑動；手機直向提示旋轉，但仍能縱向閱讀。
 - 所有專案詳情目前為誠實的製作中頁面，不代表完整 Case Study 已完成。
 
-## 程式結構
+## 檔案與控制區域
 
-- `src/sections`：五個總覽章節。
-- `src/components`：導覽、進度、卡片、FloatingCloud 與分層 Hero。
-- `src/composables`：橫向導覽、Active Section、語言、Pointer 視差與 Reduced Motion。
-- `src/data`：章節、專案、作品與三語內容；後續 Case Study 沿用相同 slug。
-- `src/views`：橫向總覽、作品分類與專案製作中頁面。
-- `src/assets/styles`：Design Tokens 與基礎樣式。
+### 專案入口與設定
+
+| 檔案                | 控制區域／用途                                                   |
+| ------------------- | ---------------------------------------------------------------- |
+| `index.html`        | 網站語系、SEO 描述、瀏覽器標題、字型預連線及 Vue 掛載入口。      |
+| `package.json`      | Vue、Vite、Router、Prettier 版本與開發、建置、預覽、格式化指令。 |
+| `package-lock.json` | 鎖定實際安裝的套件版本，不手動修改。                             |
+| `vite.config.js`    | Vite 的 Vue Plugin 與 `@` 對應 `src` 的路徑別名。                |
+| `jsconfig.json`     | 編輯器 JavaScript 與路徑提示設定。                               |
+| `.prettierrc.json`  | 工程團隊共用的程式碼排版規則。                                   |
+
+### Vue 入口與頁面
+
+| 檔案                                   | 控制區域／用途                                              |
+| -------------------------------------- | ----------------------------------------------------------- |
+| `src/main.js`                          | 建立 Vue App、載入全域 CSS 與 Vue Router。                  |
+| `src/App.vue`                          | 最外層 Router View；路由頁面由此顯示。                      |
+| `src/router/index.js`                  | 首頁、六個專案詳情、Artworks 及無效網址轉址。               |
+| `src/views/PortfolioOverviewView.vue`  | 組合五個橫向章節，連接 Active Section、背景色、導覽及頁碼。 |
+| `src/views/ProjectPlaceholderView.vue` | 六個專案共用的 Case Study 製作中頁面。                      |
+| `src/views/ArtworksView.vue`           | Artworks 分類預留頁。                                       |
+
+### 首頁章節
+
+| 檔案                               | 控制區域／用途                                   |
+| ---------------------------------- | ------------------------------------------------ |
+| `src/sections/HomeSection.vue`     | 姓名定位、主標、自介、能力標籤、作品與履歷入口。 |
+| `src/sections/FeaturedSection.vue` | 台北自來水園區精選專案及非官方委託說明。         |
+| `src/sections/ProjectsSection.vue` | 其他網站／互動專案卡片集合。                     |
+| `src/sections/ArtworksSection.vue` | 八類藝術與工藝作品預覽。                         |
+| `src/sections/AboutSection.vue`    | 長版自介、技能、AI 協作原則及聯絡資料插槽。      |
+
+### 共用元件
+
+| 檔案                                    | 控制區域／用途                                 |
+| --------------------------------------- | ---------------------------------------------- |
+| `src/components/AppHeader.vue`          | 固定頁首、英文姓名及語言切換器。               |
+| `src/components/LanguageSwitcher.vue`   | `中 / EN / 日` 簡約切換介面與語言切換事件。    |
+| `src/components/SectionNavigation.vue`  | 桌面底部五章導覽及 `aria-current`。            |
+| `src/components/SectionProgress.vue`    | 目前章節頁碼，例如 `01 / 05`。                 |
+| `src/components/LayeredHeroArtwork.vue` | Intro 主圖、Pointer 視差、雲朵與短註記。       |
+| `src/components/FloatingCloud.vue`      | 可設定位置、尺寸、顏色、速度與透明度的裝飾雲。 |
+| `src/components/ProjectSummaryCard.vue` | 專案圖片插槽、摘要、Role、Tools 與詳情入口。   |
+| `src/components/ArtworkPreviewCard.vue` | Artwork 圖片插槽、類型與 Contribution。        |
+| `src/components/ScrollHint.vue`         | 首頁橫向捲動提示。                             |
+
+### 狀態與內容資料
+
+| 檔案                                         | 控制區域／用途                                               |
+| -------------------------------------------- | ------------------------------------------------------------ |
+| `src/composables/useLanguage.js`             | 三語狀態、localStorage、`html lang` 及輕微淡出淡入。         |
+| `src/composables/useActiveSection.js`        | 唯一 Active Section 狀態、IntersectionObserver 與 URL Hash。 |
+| `src/composables/useHorizontalNavigation.js` | 滾輪逐章、Trackpad、Pointer Drag 與左右鍵。                  |
+| `src/composables/usePointerParallax.js`      | Hero Pointer 座標、RAF 節流與離開時歸零。                    |
+| `src/composables/useReducedMotion.js`        | 監聽系統 Reduced Motion 設定。                               |
+| `src/data/messages.js`                       | 所有介面與長、短自介的中／英／日文案。                       |
+| `src/data/sections.js`                       | 五章 ID、編號及背景色。                                      |
+| `src/data/projects.js`                       | 專案 slug、三語標題、摘要、標籤、Role 與 Tools。             |
+| `src/data/artworks.js`                       | Artwork 類別、三語標題與公開狀態。                           |
+
+### 樣式與素材
+
+| 檔案／資料夾                                           | 控制區域／用途                                    |
+| ------------------------------------------------------ | ------------------------------------------------- |
+| `src/assets/main.css`                                  | 五章版面、元件外觀、動態、桌面及手機響應式設計。  |
+| `src/assets/styles/tokens.css`                         | 色彩、字型、圓角、陰影及頁面間距變數。            |
+| `src/assets/styles/base.css`                           | Reset、Focus Visible 與 Reduced Motion 基礎規則。 |
+| `src/assets/images/intro/intro-flower-window-wide.png` | 目前 Intro 主視覺。                               |
+| `src/assets/images/{featured,projects,artworks}`       | 後續正式作品圖片存放位置。                        |
+| `src/assets/illustrations/{hero,clouds,decorations}`   | 後續分層插畫、雲朵與裝飾素材位置。                |
 
 ## 待補素材規格
 
 所有缺圖區都保留實際版面位置，畫面會顯示用途、尺寸與待補狀態。加入正式素材時請沿用以下用途式檔名。
 
-| 檔案 | 建議尺寸／比例 | 格式與透明需求 | 用途／狀態 |
-|---|---:|---|---|
-| `hero-background-sky.svg` | 2400 × 1400，12:7 | SVG | 遠景天空，待補 |
-| `hero-background-mountains.svg` | 2400 × 1400，12:7 | SVG、透明背景 | 後景山景，待補 |
-| `hero-midground-field.svg` | 2400 × 1400，12:7 | SVG、透明背景 | 中景草原，待補 |
-| `hero-foreground-flowers.svg` | 2400 × 1400，12:7 | SVG、透明背景 | 前景花卉，待補 |
-| `hero-composite-artwork.webp` | 2400 × 1400，12:7 | WebP | 分層圖載入失敗時的備援，待補 |
-| `cloud-soft-small.svg` | 約 600 × 240 | SVG、透明背景 | 小型雲朵；目前以 CSS 形狀暫代 |
-| `cloud-soft-wide.svg` | 約 1000 × 320 | SVG、透明背景 | 寬型雲朵；目前以 CSS 形狀暫代 |
-| `paper-grain-overlay.png` | 1024 × 1024 | PNG、透明且可平鋪 | 紙張顆粒，待補 |
-| `featured-water-park-overview.webp` | 1600 × 1000，8:5 | WebP；介面文字需極銳利時用 PNG | Featured 主圖，待補 |
-| `project-{slug}-cover.webp` | 1440 × 900，8:5 | WebP／PNG | 各專案卡片，待補 |
-| `artwork-{name}-preview.webp` | 長邊至少 1600px | WebP／PNG，保留原作比例 | 各作品預覽，待補 |
-| `resume-ching-yung-huang.pdf` | A4 | PDF | 履歷，待補 |
-| `icon-email.svg`、`icon-github.svg`、`icon-104.svg`、`icon-resume.svg` | 24 × 24 基準 | SVG、透明背景 | 聯絡 Icon，待補 |
+| 檔案                                                                   |    建議尺寸／比例 | 格式與透明需求                 | 用途／狀態                    |
+| ---------------------------------------------------------------------- | ----------------: | ------------------------------ | ----------------------------- |
+| `hero-background-sky.svg`                                              | 2400 × 1400，12:7 | SVG                            | 遠景天空，待補                |
+| `hero-background-mountains.svg`                                        | 2400 × 1400，12:7 | SVG、透明背景                  | 後景山景，待補                |
+| `hero-midground-field.svg`                                             | 2400 × 1400，12:7 | SVG、透明背景                  | 中景草原，待補                |
+| `hero-foreground-flowers.svg`                                          | 2400 × 1400，12:7 | SVG、透明背景                  | 前景花卉，待補                |
+| `hero-composite-artwork.webp`                                          | 2400 × 1400，12:7 | WebP                           | 分層圖載入失敗時的備援，待補  |
+| `cloud-soft-small.svg`                                                 |      約 600 × 240 | SVG、透明背景                  | 小型雲朵；目前以 CSS 形狀暫代 |
+| `cloud-soft-wide.svg`                                                  |     約 1000 × 320 | SVG、透明背景                  | 寬型雲朵；目前以 CSS 形狀暫代 |
+| `paper-grain-overlay.png`                                              |       1024 × 1024 | PNG、透明且可平鋪              | 紙張顆粒，待補                |
+| `featured-water-park-overview.webp`                                    |  1600 × 1000，8:5 | WebP；介面文字需極銳利時用 PNG | Featured 主圖，待補           |
+| `project-{slug}-cover.webp`                                            |   1440 × 900，8:5 | WebP／PNG                      | 各專案卡片，待補              |
+| `artwork-{name}-preview.webp`                                          |   長邊至少 1600px | WebP／PNG，保留原作比例        | 各作品預覽，待補              |
+| `resume-ching-yung-huang.pdf`                                          |                A4 | PDF                            | 履歷，待補                    |
+| `icon-email.svg`、`icon-github.svg`、`icon-104.svg`、`icon-resume.svg` |      24 × 24 基準 | SVG、透明背景                  | 聯絡 Icon，待補               |
 
-目前 Intro 使用由 `26_profile` 提供的兩張花景 PNG：
-
-- `intro-flower-window.png`：2656 × 1768。
-- `intro-flower-window-wide.png`：3100 × 2067，作為後續裁切備選。
+目前 Intro 使用 `26_profile` 提供的 `intro-flower-window-wide.png`（3100 × 2067）。較小且未被程式引用的重複版本已移除。
 
 ## 待補內容
 
