@@ -102,6 +102,7 @@ npm run preview
 正式圖片統一透過 `src/components/ResponsivePortfolioImage.vue` 輸出。元件支援
 AVIF／WebP `<source>`、fallback、`srcset`、`sizes`、固定尺寸與三語 Alt；首頁首屏圖片使用
 `loading="eager"` 與高載入優先級，其餘作品圖片預設延遲載入。尚未提供的格式不建立假來源。
+第二階段目前為保留通過；正式素材加入後須依 `docs/PHASE2_REVIEW.md` 回頭複審。
 
 ## 待補素材規格
 
