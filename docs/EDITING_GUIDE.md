@@ -17,7 +17,8 @@
 | Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `introFlowerWindow` 匯入路徑                        |
 | Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
 | 共用響應式圖片規則               | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
-| 雲朵位置與速度                   | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的 props                          |
+| 雲朵圖片、款式與動畫             | `src/components/FloatingCloud.vue`            | `cloudA`、`cloudB`、`variant` 與動畫 props          |
+| Home 雲朵位置與速度              | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的位置、尺寸與速度 props          |
 | Home 裝飾花朵                    | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
 | Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |

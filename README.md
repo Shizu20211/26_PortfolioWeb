@@ -108,21 +108,21 @@ AVIF／WebP `<source>`、fallback、`srcset`、`sizes`、固定尺寸與三語 A
 
 所有缺圖區都保留實際版面位置，畫面會顯示用途、尺寸與待補狀態。加入正式素材時請沿用以下用途式檔名。
 
-| 檔案                                                                   |    建議尺寸／比例 | 格式與透明需求                 | 用途／狀態                    |
-| ---------------------------------------------------------------------- | ----------------: | ------------------------------ | ----------------------------- |
-| `hero-background-sky.svg`                                              | 2400 × 1400，12:7 | SVG                            | 遠景天空，待補                |
-| `hero-background-mountains.svg`                                        | 2400 × 1400，12:7 | SVG、透明背景                  | 後景山景，待補                |
-| `hero-midground-field.svg`                                             | 2400 × 1400，12:7 | SVG、透明背景                  | 中景草原，待補                |
-| `hero-foreground-flowers.svg`                                          | 2400 × 1400，12:7 | SVG、透明背景                  | 前景花卉，待補                |
-| `hero-composite-artwork.webp`                                          | 2400 × 1400，12:7 | WebP                           | 分層圖載入失敗時的備援，待補  |
-| `cloud-soft-small.svg`                                                 |      約 600 × 240 | SVG、透明背景                  | 小型雲朵；目前以 CSS 形狀暫代 |
-| `cloud-soft-wide.svg`                                                  |     約 1000 × 320 | SVG、透明背景                  | 寬型雲朵；目前以 CSS 形狀暫代 |
-| `paper-grain-overlay.png`                                              |       1024 × 1024 | PNG、透明且可平鋪              | 紙張顆粒，待補                |
-| `featured-water-park-overview.webp`                                    |  1600 × 1000，8:5 | WebP；介面文字需極銳利時用 PNG | Featured 主圖，待補           |
-| `project-{slug}-cover.webp`                                            |   1440 × 900，8:5 | WebP／PNG                      | 各專案卡片，待補              |
-| `artwork-{name}-preview.webp`                                          |   長邊至少 1600px | WebP／PNG，保留原作比例        | 各作品預覽，待補              |
-| `resume-ching-yung-huang.pdf`                                          |                A4 | PDF                            | 履歷，待補                    |
-| `icon-email.svg`、`icon-github.svg`、`icon-104.svg`、`icon-resume.svg` |      24 × 24 基準 | SVG、透明背景                  | 聯絡 Icon，待補               |
+| 檔案                                                                   |    建議尺寸／比例 | 格式與透明需求                 | 用途／狀態                   |
+| ---------------------------------------------------------------------- | ----------------: | ------------------------------ | ---------------------------- |
+| `hero-background-sky.svg`                                              | 2400 × 1400，12:7 | SVG                            | 遠景天空，待補               |
+| `hero-background-mountains.svg`                                        | 2400 × 1400，12:7 | SVG、透明背景                  | 後景山景，待補               |
+| `hero-midground-field.svg`                                             | 2400 × 1400，12:7 | SVG、透明背景                  | 中景草原，待補               |
+| `hero-foreground-flowers.svg`                                          | 2400 × 1400，12:7 | SVG、透明背景                  | 前景花卉，待補               |
+| `hero-composite-artwork.webp`                                          | 2400 × 1400，12:7 | WebP                           | 分層圖載入失敗時的備援，待補 |
+| `cloudA.png`                                                           |         370 × 183 | PNG、透明背景                  | Home／Featured 漂浮雲朵      |
+| `cloudB.png`                                                           |         372 × 123 | PNG、透明背景                  | Home 漂浮雲朵                |
+| `paper-grain-overlay.png`                                              |       1024 × 1024 | PNG、透明且可平鋪              | 紙張顆粒，待補               |
+| `featured-water-park-overview.webp`                                    |  1600 × 1000，8:5 | WebP；介面文字需極銳利時用 PNG | Featured 主圖，待補          |
+| `project-{slug}-cover.webp`                                            |   1440 × 900，8:5 | WebP／PNG                      | 各專案卡片，待補             |
+| `artwork-{name}-preview.webp`                                          |   長邊至少 1600px | WebP／PNG，保留原作比例        | 各作品預覽，待補             |
+| `resume-ching-yung-huang.pdf`                                          |                A4 | PDF                            | 履歷，待補                   |
+| `icon-email.svg`、`icon-github.svg`、`icon-104.svg`、`icon-resume.svg` |      24 × 24 基準 | SVG、透明背景                  | 聯絡 Icon，待補              |
 
 目前 Intro 使用 `26_profile` 提供的 `intro-flower-window-wide.png`（3100 × 2067）。較小且未被程式引用的重複版本已移除。
 

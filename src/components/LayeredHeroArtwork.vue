@@ -28,8 +28,25 @@ const introAlt = {
         fetchpriority="high"
       />
     </div>
-    <FloatingCloud top="7%" left="-4%" size="22%" duration="9s" :opacity="0.82" />
-    <FloatingCloud top="19%" left="76%" size="18%" duration="11s" delay="-3s" :opacity="0.64" />
+    <FloatingCloud
+      top="7%"
+      left="-4%"
+      size="22%"
+      variant="a"
+      duration="9s"
+      :opacity="0.82"
+      loading="eager"
+    />
+    <FloatingCloud
+      top="19%"
+      left="76%"
+      size="18%"
+      variant="b"
+      duration="11s"
+      delay="-3s"
+      :opacity="0.64"
+      loading="eager"
+    />
     <HomeDecorativeFlowers />
   </div>
 </template>
