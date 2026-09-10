@@ -126,7 +126,7 @@ src/assets/images/artworks/
 | 畫面區域     | CSS class                                                |
 | ------------ | -------------------------------------------------------- |
 | 固定頁首     | `.site-header`、`.identity`                              |
-| 語言切換     | `.language-switcher`                                     |
+| 語言切換     | `.language-toggle`、`.language-toggle__option`           |
 | 五章橫向容器 | `.portfolio-track`、`.portfolio-section`                 |
 | Home         | `.home-section`、`.hero-copy`、`.layered-hero`           |
 | Featured     | `.featured-section`、`.project-card--featured`           |

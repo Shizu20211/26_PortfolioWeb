@@ -61,17 +61,17 @@ npm run preview
 
 ### 共用元件
 
-| 檔案                                    | 控制區域／用途                                 |
-| --------------------------------------- | ---------------------------------------------- |
-| `src/components/AppHeader.vue`          | 固定頁首、英文姓名及語言切換器。               |
-| `src/components/LanguageSwitcher.vue`   | `中 / EN / 日` 簡約切換介面與語言切換事件。    |
-| `src/components/SectionNavigation.vue`  | 桌面底部五章導覽及 `aria-current`。            |
-| `src/components/SectionProgress.vue`    | 目前章節頁碼，例如 `01 / 05`。                 |
-| `src/components/LayeredHeroArtwork.vue` | Intro 主圖、Pointer 視差、雲朵與短註記。       |
-| `src/components/FloatingCloud.vue`      | 可設定位置、尺寸、顏色、速度與透明度的裝飾雲。 |
-| `src/components/ProjectSummaryCard.vue` | 專案圖片插槽、摘要、Role、Tools 與詳情入口。   |
-| `src/components/ArtworkPreviewCard.vue` | Artwork 圖片插槽、類型與 Contribution。        |
-| `src/components/ScrollHint.vue`         | 首頁橫向捲動提示。                             |
+| 檔案                                    | 控制區域／用途                                         |
+| --------------------------------------- | ------------------------------------------------------ |
+| `src/components/AppHeader.vue`          | 固定頁首、英文姓名及語言切換器。                       |
+| `src/components/LanguageSwitcher.vue`   | 單一按鈕形式的 `中 / EN / 日` 簡約介面與循環切換事件。 |
+| `src/components/SectionNavigation.vue`  | 桌面底部五章導覽及 `aria-current`。                    |
+| `src/components/SectionProgress.vue`    | 目前章節頁碼，例如 `01 / 05`。                         |
+| `src/components/LayeredHeroArtwork.vue` | Intro 主圖、Pointer 視差、雲朵與短註記。               |
+| `src/components/FloatingCloud.vue`      | 可設定位置、尺寸、顏色、速度與透明度的裝飾雲。         |
+| `src/components/ProjectSummaryCard.vue` | 專案圖片插槽、摘要、Role、Tools 與詳情入口。           |
+| `src/components/ArtworkPreviewCard.vue` | Artwork 圖片插槽、類型與 Contribution。                |
+| `src/components/ScrollHint.vue`         | 首頁橫向捲動提示。                                     |
 
 ### 狀態與內容資料
 

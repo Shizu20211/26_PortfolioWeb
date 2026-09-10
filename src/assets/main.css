@@ -272,30 +272,33 @@ h2 em {
 }
 
 /* Complete phase-one portfolio */
-.language-switcher {
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
   gap: 0;
-  padding: 0.35rem 0;
+  padding: 0.45rem 0;
   border: 0;
-  border-radius: 0;
   background: transparent;
-  font-family: var(--font-label);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-}
-.language-switcher button {
-  min-width: auto;
-  padding: 0.25rem 0.35rem;
-  border-radius: 0;
   color: var(--color-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.language-toggle__option {
+  padding: 0 0.35rem;
   transition: color 140ms ease;
 }
-.language-switcher button.active {
-  background: transparent;
+.language-toggle__option:first-of-type {
+  padding-left: 0;
+}
+.language-toggle__option:last-of-type {
+  padding-right: 0;
+}
+.language-toggle__option.is-active {
   color: var(--color-ink);
 }
-.language-switcher__separator {
-  align-self: center;
-  color: var(--color-line);
+.language-toggle__separator {
+  color: var(--color-muted);
 }
 .portfolio-track,
 .section-navigation,
