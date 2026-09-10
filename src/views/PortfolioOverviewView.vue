@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import SectionNavigation from '@/components/SectionNavigation.vue'
 import SectionProgress from '@/components/SectionProgress.vue'
@@ -14,19 +14,23 @@ import { artworks } from '@/data/artworks'
 import { useActiveSection } from '@/composables/useActiveSection'
 import { useHorizontalNavigation } from '@/composables/useHorizontalNavigation'
 import { useLanguage } from '@/composables/useLanguage'
+import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
 const track = ref(null)
-const { activeSectionIndex } = useActiveSection(
-  sections.map(({ id }) => id),
-  track,
-)
-const { goTo } = useHorizontalNavigation(
-  sections.map(({ id }) => id),
-  track,
+const sectionIds = sections.map(({ id }) => id)
+const { measurements, getSectionIndex, getSectionOffset, refreshAfterLayout } =
+  useTrackMeasurements(sectionIds, track)
+const { activeSectionIndex } = useActiveSection(sectionIds, track, measurements, getSectionIndex)
+const { goTo } = useHorizontalNavigation({
+  sectionIds,
+  trackRef: track,
   activeSectionIndex,
-)
+  getSectionOffset,
+})
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
-const { isLanguageChanging, t } = useLanguage()
+const { language, isLanguageChanging, t } = useLanguage()
+
+watch(language, refreshAfterLayout, { flush: 'post' })
 </script>
 <template>
   <div
