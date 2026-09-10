@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=LXGW+WenKai+Mono+TC&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&family=Yomogi&display=swap');
 :root {
   --color-paper: #fff7ea;
   --color-surface: #fffaf1;
@@ -15,12 +15,21 @@
   --color-water: #78aaa5;
   --color-coral: #d98288;
   --color-sand: #c4a47d;
-  --font-display: 'Noto Serif TC', 'Noto Serif JP', serif;
+  --font-display: 'LXGW WenKai Mono TC', 'Noto Serif TC', 'Noto Serif JP', serif;
   --font-body: 'Noto Sans TC', 'Noto Sans JP', 'PingFang TC', sans-serif;
-  --font-hand: 'Klee One', cursive;
+  --font-hand: 'Klee One', 'Yomogi', cursive;
   --font-label: 'Space Mono', monospace;
+  --radius-sm: 0.75rem;
   --radius-md: 1.5rem;
+  --radius-lg: 2rem;
   --radius-pill: 999px;
+  --radius-organic: 42% 58% 65% 35% / 45% 45% 55% 55%;
   --shadow-paper: 4px 6px 0 rgb(62 110 100 / 15%);
+  --shadow-paper-hover: 5px 8px 0 rgb(62 110 100 / 22%);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 420ms;
+  --duration-slow: 800ms;
   --page-pad: clamp(1.25rem, 4.2vw, 5rem);
 }
