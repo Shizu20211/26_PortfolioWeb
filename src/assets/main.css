@@ -398,9 +398,9 @@ h2 em {
   position: relative;
   z-index: 1;
   overflow: hidden;
-  border-radius: 48% 52% 42% 58% / 32% 38% 62% 68%;
+  border-radius: 12% 14% 13% 10% / 10% 12% 18% 16%;
   box-shadow: 1rem 1rem 0 rgb(62 110 100 / 10%);
-  transform: translate(var(--pointer-x), var(--pointer-y)) rotate(1deg);
+  transform: translate(var(--pointer-x), var(--pointer-y)) rotate(0.35deg);
 }
 .hero-image-frame img {
   width: 100%;
@@ -458,12 +458,13 @@ h2 em {
   from {
     clip-path: inset(16% 18% 16% 18% round 45%);
     opacity: 0;
-    transform: translate(var(--pointer-x), calc(var(--pointer-y) + 1rem)) rotate(1deg) scale(0.96);
+    transform: translate(var(--pointer-x), calc(var(--pointer-y) + 1rem)) rotate(0.35deg)
+      scale(0.96);
   }
   to {
     clip-path: inset(0 round 0);
     opacity: 1;
-    transform: translate(var(--pointer-x), var(--pointer-y)) rotate(1deg) scale(1);
+    transform: translate(var(--pointer-x), var(--pointer-y)) rotate(0.35deg) scale(1);
   }
 }
 @keyframes home-copy-enter {
