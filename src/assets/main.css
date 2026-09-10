@@ -724,26 +724,12 @@ h2 em {
 .section-navigation a[aria-current='page'] {
   color: var(--color-ink);
   font-weight: 700;
-  transform: translateX(0.3rem);
-}
-.section-navigation a::before {
-  width: 0.35rem;
-  height: 0.35rem;
-  margin-top: 0.2rem;
-  border-radius: 50%;
-  background: currentColor;
-  content: '';
-  opacity: 0;
-  transform: scale(0);
-  transition:
-    opacity var(--duration-fast) ease,
-    transform var(--duration-fast) ease;
 }
 .section-navigation a::after {
   position: absolute;
   right: 0;
   bottom: -0.35rem;
-  left: 1rem;
+  left: 0;
   height: 1px;
   background: currentColor;
   content: '';
@@ -754,7 +740,6 @@ h2 em {
     opacity var(--duration-fast) ease,
     transform var(--duration-fast) ease;
 }
-.section-navigation a[aria-current='page']::before,
 .section-navigation a[aria-current='page']::after {
   opacity: 1;
   transform: scale(1);
