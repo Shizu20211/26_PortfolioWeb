@@ -13,6 +13,7 @@ import { projects } from '@/data/projects'
 import { artworks } from '@/data/artworks'
 import { useActiveSection } from '@/composables/useActiveSection'
 import { useHorizontalNavigation } from '@/composables/useHorizontalNavigation'
+import { useHomeIntro } from '@/composables/useHomeIntro'
 import { useLanguage } from '@/composables/useLanguage'
 import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
@@ -29,13 +30,17 @@ const { goTo } = useHorizontalNavigation({
 })
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
 const { language, isLanguageChanging, t } = useLanguage()
+const { isHomeIntroPlaying } = useHomeIntro()
 
 watch(language, refreshAfterLayout, { flush: 'post' })
 </script>
 <template>
   <div
     class="portfolio-app"
-    :class="{ 'is-language-changing': isLanguageChanging }"
+    :class="{
+      'is-language-changing': isLanguageChanging,
+      'is-home-intro-playing': isHomeIntroPlaying,
+    }"
     :style="{ '--active-section-color': activeColor }"
   >
     <a class="skip-link" href="#home-title">{{ t('skip') }}</a

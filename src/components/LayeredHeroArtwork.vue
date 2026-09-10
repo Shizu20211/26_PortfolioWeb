@@ -3,6 +3,7 @@ import introFlowerWindow from '@/assets/images/intro/intro-flower-window-wide.pn
 import { usePointerParallax } from '@/composables/usePointerParallax'
 import { useLanguage } from '@/composables/useLanguage'
 import FloatingCloud from './FloatingCloud.vue'
+import HomeDecorativeFlowers from './HomeDecorativeFlowers.vue'
 import ResponsivePortfolioImage from './ResponsivePortfolioImage.vue'
 const { target, move, reset } = usePointerParallax()
 const { pick } = useLanguage()
@@ -29,6 +30,6 @@ const introAlt = {
     </div>
     <FloatingCloud top="7%" left="-4%" size="22%" duration="9s" :opacity="0.82" />
     <FloatingCloud top="19%" left="76%" size="18%" duration="11s" delay="-3s" :opacity="0.64" />
-    <span class="floating-note">finding light<br />in the everyday</span>
+    <HomeDecorativeFlowers />
   </div>
 </template>

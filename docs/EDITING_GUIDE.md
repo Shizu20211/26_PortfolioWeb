@@ -18,6 +18,8 @@
 | Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
 | 共用響應式圖片規則               | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
 | 雲朵位置與速度                   | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的 props                          |
+| Home 裝飾花朵                    | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
+| Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
 | 桌面與手機版面                   | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |

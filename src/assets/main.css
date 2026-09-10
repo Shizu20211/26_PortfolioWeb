@@ -155,20 +155,6 @@ h2 em {
   background: var(--color-petal-yellow);
   opacity: 0.72;
 }
-.floating-note {
-  position: absolute;
-  z-index: 3;
-  right: -1rem;
-  bottom: 8%;
-  padding: 1rem 1.25rem;
-  border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-coral);
-  font-family: var(--font-hand);
-  font-size: 1.05rem;
-  text-align: center;
-  transform: rotate(-5deg);
-}
 .scroll-hint {
   position: absolute;
   right: var(--page-pad);
@@ -420,6 +406,83 @@ h2 em {
   width: 100%;
   height: min(66vh, 47vw);
   object-fit: cover;
+}
+.hero-decoration {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  width: clamp(4.5rem, 7vw, 7.25rem);
+  pointer-events: none;
+}
+.home-decorative-flowers {
+  display: contents;
+}
+.hero-decoration img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.hero-decoration--blue {
+  right: -1.5rem;
+  bottom: 5%;
+  transform: rotate(8deg);
+}
+.hero-decoration--pink {
+  top: 12%;
+  left: -2.25rem;
+  width: clamp(4rem, 6vw, 6.5rem);
+  transform: rotate(-10deg);
+}
+.portfolio-app.is-home-intro-playing .hero-image-frame {
+  animation: home-hero-reveal 900ms var(--ease-soft) both;
+}
+.portfolio-app.is-home-intro-playing .hero-copy > * {
+  animation: home-copy-enter 560ms var(--ease-soft) both;
+}
+.portfolio-app.is-home-intro-playing .hero-copy > :nth-child(1),
+.portfolio-app.is-home-intro-playing .hero-copy > :nth-child(2) {
+  animation-delay: 180ms;
+}
+.portfolio-app.is-home-intro-playing .hero-copy > :nth-child(3) {
+  animation-delay: 280ms;
+}
+.portfolio-app.is-home-intro-playing .hero-copy > :nth-child(n + 4) {
+  animation-delay: 380ms;
+}
+.portfolio-app.is-home-intro-playing .site-header,
+.portfolio-app.is-home-intro-playing .section-navigation,
+.portfolio-app.is-home-intro-playing .section-progress {
+  animation: home-interface-enter 420ms ease 650ms both;
+}
+@keyframes home-hero-reveal {
+  from {
+    clip-path: inset(16% 18% 16% 18% round 45%);
+    opacity: 0;
+    transform: translate(var(--pointer-x), calc(var(--pointer-y) + 1rem)) rotate(1deg) scale(0.96);
+  }
+  to {
+    clip-path: inset(0 round 0);
+    opacity: 1;
+    transform: translate(var(--pointer-x), var(--pointer-y)) rotate(1deg) scale(1);
+  }
+}
+@keyframes home-copy-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes home-interface-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .floating-cloud {
   position: absolute;
@@ -1025,6 +1088,13 @@ h2 em {
     transition: none;
   }
   .floating-cloud {
+    animation: none;
+  }
+  .portfolio-app.is-home-intro-playing .hero-image-frame,
+  .portfolio-app.is-home-intro-playing .hero-copy > *,
+  .portfolio-app.is-home-intro-playing .site-header,
+  .portfolio-app.is-home-intro-playing .section-navigation,
+  .portfolio-app.is-home-intro-playing .section-progress {
     animation: none;
   }
 }
