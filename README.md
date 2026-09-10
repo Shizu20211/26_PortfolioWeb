@@ -99,6 +99,10 @@ npm run preview
 | `src/assets/images/{featured,projects,artworks}`       | 後續正式作品圖片存放位置。                        |
 | `src/assets/illustrations/{hero,clouds,decorations}`   | 後續分層插畫、雲朵與裝飾素材位置。                |
 
+正式圖片統一透過 `src/components/ResponsivePortfolioImage.vue` 輸出。元件支援
+AVIF／WebP `<source>`、fallback、`srcset`、`sizes`、固定尺寸與三語 Alt；首頁首屏圖片使用
+`loading="eager"` 與高載入優先級，其餘作品圖片預設延遲載入。尚未提供的格式不建立假來源。
+
 ## 待補素材規格
 
 所有缺圖區都保留實際版面位置，畫面會顯示用途、尺寸與待補狀態。加入正式素材時請沿用以下用途式檔名。

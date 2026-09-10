@@ -14,8 +14,9 @@
 | 專案名稱、摘要、Role、Tools      | `src/data/projects.js`                        | 對應專案物件的 `title`、`summary`、`role`、`tools`  |
 | 專案網址代稱                     | `src/data/projects.js`、`src/router/index.js` | `slug` 與 `projectSlugs` 必須一致                   |
 | Artwork 名稱、分類、Contribution | `src/data/artworks.js`                        | `title`、`type`、`contribution`                     |
-| Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `<img src="...">`                                   |
-| Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `<img :alt="...">` 的三語物件                       |
+| Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `introFlowerWindow` 匯入路徑                        |
+| Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
+| 共用響應式圖片規則               | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
 | 雲朵位置與速度                   | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的 props                          |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
@@ -73,8 +74,13 @@
 
 1. 將圖片放入 `src/assets/images/intro/`。
 2. 使用用途明確的英文檔名，例如 `hero-composite-artwork.webp`。
-3. 在 `src/components/LayeredHeroArtwork.vue` 修改 `<img>` 的 `src`。
+3. 在 `src/components/LayeredHeroArtwork.vue` 修改圖片匯入路徑。
 4. 同步修改三語 `alt`，描述圖片內容，不要寫「圖片」或檔名。
+
+若另有 AVIF／WebP 或不同寬度版本，請透過 `ResponsivePortfolioImage` 的 `sources`、
+`srcset` 與 `sizes` 傳入；原始格式保留為 `src` fallback。所有圖片都要填入實際
+`width`、`height`，避免載入時版面跳動。需要做詳情轉場時，從元件公開的
+`currentSrc` 取得瀏覽器實際選用的檔案。
 
 目前使用：
 
