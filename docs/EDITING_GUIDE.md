@@ -14,12 +14,13 @@
 | 專案名稱、摘要、Role、Tools      | `src/data/projects.js`                        | 對應專案物件的 `title`、`summary`、`role`、`tools`  |
 | 專案網址代稱                     | `src/data/projects.js`、`src/router/index.js` | `slug` 與 `projectSlugs` 必須一致                   |
 | Artwork 名稱、分類、Contribution | `src/data/artworks.js`                        | `title`、`type`、`contribution`                     |
-| Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `introFlowerWindow` 匯入路徑                        |
+| Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `introMain` 匯入路徑                                |
 | Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
 | 共用響應式圖片規則               | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
 | 雲朵圖片、款式與動畫             | `src/components/FloatingCloud.vue`            | `cloudA`、`cloudB`、`variant` 與動畫 props          |
 | Home 雲朵位置與速度              | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的位置、尺寸與速度 props          |
 | Home 裝飾花朵                    | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
+| 其他章節花朵與雲朵               | `src/components/SectionDecorations.vue`       | `section` 預設配置與 `.section-decoration`          |
 | Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
 | Home 日夜彩蛋狀態                | `src/composables/useHomeTheme.js`             | 本次 App 使用期間共用的日／夜狀態                   |
 | 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
@@ -90,7 +91,7 @@
 目前使用：
 
 ```text
-src/assets/images/intro/intro-flower-window-wide.png
+src/assets/images/intro/intro-main.png
 ```
 
 ### 加入正式專案圖片

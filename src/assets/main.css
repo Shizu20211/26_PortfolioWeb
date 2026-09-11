@@ -413,6 +413,11 @@ h2 em {
   border-bottom: 1px solid currentColor;
   background: transparent;
   cursor: pointer;
+  isolation: isolate;
+}
+.portfolio-section > :not(.section-decorations, .home-night-backdrop) {
+  position: relative;
+  z-index: 1;
 }
 .text-link {
   margin-left: 1rem;
@@ -608,6 +613,70 @@ h2 em {
   display: block;
   width: 100%;
   height: auto;
+}
+.section-decorations {
+  --section-decoration-cloud-size: clamp(8rem, 13vw, 13rem);
+  --section-decoration-cloud-top: auto;
+  --section-decoration-cloud-right: auto;
+  --section-decoration-cloud-bottom: auto;
+  --section-decoration-cloud-left: auto;
+  --section-decoration-flower-right: auto;
+  --section-decoration-flower-bottom: 6rem;
+  --section-decoration-flower-left: auto;
+  --section-decoration-flower-rotation: 0deg;
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.section-decoration {
+  position: absolute;
+}
+.section-decoration--flower {
+  right: var(--section-decoration-flower-right);
+  bottom: var(--section-decoration-flower-bottom);
+  left: var(--section-decoration-flower-left);
+  display: block;
+  width: clamp(4.5rem, 7vw, 7rem);
+  transform: rotate(var(--section-decoration-flower-rotation));
+}
+.section-decoration--cloud {
+  top: var(--section-decoration-cloud-top);
+  right: var(--section-decoration-cloud-right);
+  bottom: var(--section-decoration-cloud-bottom);
+  left: var(--section-decoration-cloud-left);
+}
+.section-decoration--flower img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.section-decorations--featured .section-decoration--cloud {
+  --section-decoration-cloud-top: 4%;
+  --section-decoration-cloud-right: -4rem;
+}
+.section-decorations--featured {
+  --section-decoration-flower-left: -1.5rem;
+  --section-decoration-flower-rotation: -9deg;
+}
+.section-decorations--projects {
+  --section-decoration-cloud-top: 9%;
+  --section-decoration-cloud-right: -5rem;
+  --section-decoration-flower-left: 2%;
+  --section-decoration-flower-rotation: 8deg;
+}
+.section-decorations--artworks {
+  --section-decoration-cloud-top: 7%;
+  --section-decoration-cloud-left: -4rem;
+  --section-decoration-flower-right: 3%;
+  --section-decoration-flower-rotation: -7deg;
+}
+.section-decorations--about {
+  --section-decoration-cloud-top: 4%;
+  --section-decoration-cloud-right: -4rem;
+  --section-decoration-flower-left: 46%;
+  --section-decoration-flower-rotation: 10deg;
 }
 @keyframes cloud-float {
   to {

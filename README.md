@@ -71,6 +71,7 @@ npm run preview
 | `src/components/LayeredHeroArtwork.vue`  | Intro 主圖、Pointer 視差、雲朵與花朵裝飾。         |
 | `src/components/HomeCelestialToggle.vue` | Home 太陽／月亮按鈕與夜間星點。                    |
 | `src/components/FloatingCloud.vue`       | 使用既有圖片、可設定位置、尺寸與速度的裝飾雲。     |
+| `src/components/SectionDecorations.vue`  | Featured 至 About 的少量花朵與雲朵配置。           |
 | `src/components/ProjectSummaryCard.vue`  | 專案圖片插槽、摘要、Role、Tools 與詳情入口。       |
 | `src/components/ArtworkPreviewCard.vue`  | Artwork 圖片插槽、類型與 Contribution。            |
 | `src/components/ScrollHint.vue`          | 首頁橫向捲動提示。                                 |
@@ -92,14 +93,14 @@ npm run preview
 
 ### 樣式與素材
 
-| 檔案／資料夾                                           | 控制區域／用途                                    |
-| ------------------------------------------------------ | ------------------------------------------------- |
-| `src/assets/main.css`                                  | 五章版面、元件外觀、動態、桌面及手機響應式設計。  |
-| `src/assets/styles/tokens.css`                         | 色彩、字型、圓角、陰影及頁面間距變數。            |
-| `src/assets/styles/base.css`                           | Reset、Focus Visible 與 Reduced Motion 基礎規則。 |
-| `src/assets/images/intro/intro-flower-window-wide.png` | 目前 Intro 主視覺。                               |
-| `src/assets/images/{featured,projects,artworks}`       | 後續正式作品圖片存放位置。                        |
-| `src/assets/illustrations/{hero,clouds,decorations}`   | 後續分層插畫、雲朵與裝飾素材位置。                |
+| 檔案／資料夾                                         | 控制區域／用途                                    |
+| ---------------------------------------------------- | ------------------------------------------------- |
+| `src/assets/main.css`                                | 五章版面、元件外觀、動態、桌面及手機響應式設計。  |
+| `src/assets/styles/tokens.css`                       | 色彩、字型、圓角、陰影及頁面間距變數。            |
+| `src/assets/styles/base.css`                         | Reset、Focus Visible 與 Reduced Motion 基礎規則。 |
+| `src/assets/images/intro/intro-main.png`             | 目前 Intro 主視覺。                               |
+| `src/assets/images/{featured,projects,artworks}`     | 後續正式作品圖片存放位置。                        |
+| `src/assets/illustrations/{hero,clouds,decorations}` | 後續分層插畫、雲朵與裝飾素材位置。                |
 
 正式圖片統一透過 `src/components/ResponsivePortfolioImage.vue` 輸出。元件支援
 AVIF／WebP `<source>`、fallback、`srcset`、`sizes`、固定尺寸與三語 Alt；首頁首屏圖片使用
@@ -126,7 +127,7 @@ AVIF／WebP `<source>`、fallback、`srcset`、`sizes`、固定尺寸與三語 A
 | `resume-ching-yung-huang.pdf`                                          |                A4 | PDF                            | 履歷，待補                   |
 | `icon-email.svg`、`icon-github.svg`、`icon-104.svg`、`icon-resume.svg` |      24 × 24 基準 | SVG、透明背景                  | 聯絡 Icon，待補              |
 
-目前 Intro 使用 `26_profile` 提供的 `intro-flower-window-wide.png`（3100 × 2067）。較小且未被程式引用的重複版本已移除。
+目前 Intro 使用 `intro-main.png`（2656 × 1768，透明 PNG），直接呈現圖片本身的不規則外緣。
 
 ## 待補內容
 

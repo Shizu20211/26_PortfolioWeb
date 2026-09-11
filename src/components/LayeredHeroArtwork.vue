@@ -1,5 +1,5 @@
 <script setup>
-import introFlowerWindow from '@/assets/images/intro/intro-flower-window-wide.png'
+import introMain from '@/assets/images/intro/intro-main.png'
 import { usePointerParallax } from '@/composables/usePointerParallax'
 import { useLanguage } from '@/composables/useLanguage'
 import FloatingCloud from './FloatingCloud.vue'
@@ -20,10 +20,10 @@ const introAlt = {
     <HomeCelestialToggle />
     <div class="hero-image-frame hero-layer">
       <ResponsivePortfolioImage
-        :src="introFlowerWindow"
+        :src="introMain"
         :alt="pick(introAlt)"
-        :width="3100"
-        :height="2067"
+        :width="2656"
+        :height="1768"
         sizes="(max-width: 760px) 92vw, 58vw"
         loading="eager"
         fetchpriority="high"

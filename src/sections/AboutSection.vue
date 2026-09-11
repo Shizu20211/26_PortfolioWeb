@@ -1,5 +1,6 @@
 <script setup>
 import { useLanguage } from '@/composables/useLanguage'
+import SectionDecorations from '@/components/SectionDecorations.vue'
 const { t } = useLanguage()
 const skills = [
   'Visual — Illustrator / Photoshop / Figma',
@@ -11,6 +12,7 @@ const contacts = ['Email', 'GitHub', '104', 'Résumé PDF']
 </script>
 <template>
   <section id="about" class="portfolio-section about-section" aria-labelledby="about-title">
+    <SectionDecorations section="about" />
     <div class="about-intro">
       <p class="chapter-label">04 · {{ t('sections.about') }}</p>
       <h2 id="about-title">{{ t('aboutTitle') }}</h2>

@@ -1,5 +1,6 @@
 <script setup>
 import ArtworkPreviewCard from '@/components/ArtworkPreviewCard.vue'
+import SectionDecorations from '@/components/SectionDecorations.vue'
 import { useLanguage } from '@/composables/useLanguage'
 defineProps({ artworks: Array })
 const { t } = useLanguage()
@@ -10,6 +11,7 @@ const { t } = useLanguage()
     class="portfolio-section artworks-section"
     aria-labelledby="artworks-title"
   >
+    <SectionDecorations section="artworks" />
     <div class="section-heading compact">
       <p class="chapter-label">03 · {{ t('sections.artworks') }}</p>
       <h2 id="artworks-title">{{ t('headings.artworks') }}</h2>
