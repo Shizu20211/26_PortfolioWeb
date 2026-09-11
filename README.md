@@ -16,6 +16,7 @@ npm run preview
 ## 第一階段範圍
 
 - `00 Home`：姓名、定位、三語自介、能力標籤與 Intro 視覺。
+- Home 太陽／月亮是局部日夜彩蛋；只在使用者 Click／Tap 或鍵盤啟用後切換，不影響其他章節。
 - `01 Featured`：台北自來水園區教育性網站重構摘要；非官方委託。
 - `02 Projects`：五項網頁／互動作品入口。
 - `03 Artworks`：八類視覺、3D 與工藝作品入口。
@@ -61,17 +62,18 @@ npm run preview
 
 ### 共用元件
 
-| 檔案                                    | 控制區域／用途                                     |
-| --------------------------------------- | -------------------------------------------------- |
-| `src/components/AppHeader.vue`          | 固定頁首、英文姓名及語言切換器。                   |
-| `src/components/LanguageSwitcher.vue`   | 三顆獨立的 `中　EN　日` 純文字按鈕與明確語言切換。 |
-| `src/components/SectionNavigation.vue`  | 桌面底部五章導覽及 `aria-current`。                |
-| `src/components/SectionProgress.vue`    | 目前章節頁碼，例如 `01 / 05`。                     |
-| `src/components/LayeredHeroArtwork.vue` | Intro 主圖、Pointer 視差、雲朵與短註記。           |
-| `src/components/FloatingCloud.vue`      | 可設定位置、尺寸、顏色、速度與透明度的裝飾雲。     |
-| `src/components/ProjectSummaryCard.vue` | 專案圖片插槽、摘要、Role、Tools 與詳情入口。       |
-| `src/components/ArtworkPreviewCard.vue` | Artwork 圖片插槽、類型與 Contribution。            |
-| `src/components/ScrollHint.vue`         | 首頁橫向捲動提示。                                 |
+| 檔案                                     | 控制區域／用途                                     |
+| ---------------------------------------- | -------------------------------------------------- |
+| `src/components/AppHeader.vue`           | 固定頁首、英文姓名及語言切換器。                   |
+| `src/components/LanguageSwitcher.vue`    | 三顆獨立的 `中　EN　日` 純文字按鈕與明確語言切換。 |
+| `src/components/SectionNavigation.vue`   | 桌面底部五章導覽及 `aria-current`。                |
+| `src/components/SectionProgress.vue`     | 目前章節頁碼，例如 `01 / 05`。                     |
+| `src/components/LayeredHeroArtwork.vue`  | Intro 主圖、Pointer 視差、雲朵與花朵裝飾。         |
+| `src/components/HomeCelestialToggle.vue` | Home 太陽／月亮按鈕與夜間星點。                    |
+| `src/components/FloatingCloud.vue`       | 使用既有圖片、可設定位置、尺寸與速度的裝飾雲。     |
+| `src/components/ProjectSummaryCard.vue`  | 專案圖片插槽、摘要、Role、Tools 與詳情入口。       |
+| `src/components/ArtworkPreviewCard.vue`  | Artwork 圖片插槽、類型與 Contribution。            |
+| `src/components/ScrollHint.vue`          | 首頁橫向捲動提示。                                 |
 
 ### 狀態與內容資料
 

@@ -14,6 +14,7 @@ import { artworks } from '@/data/artworks'
 import { useActiveSection } from '@/composables/useActiveSection'
 import { useHorizontalNavigation } from '@/composables/useHorizontalNavigation'
 import { useHomeIntro } from '@/composables/useHomeIntro'
+import { useHomeTheme } from '@/composables/useHomeTheme'
 import { useLanguage } from '@/composables/useLanguage'
 import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
@@ -31,6 +32,8 @@ const { goTo } = useHorizontalNavigation({
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
 const { language, isLanguageChanging, t } = useLanguage()
 const { isHomeIntroPlaying } = useHomeIntro()
+const { isHomeNight } = useHomeTheme()
+const isHomeNightActive = computed(() => isHomeNight.value && activeSectionIndex.value === 0)
 
 watch(language, refreshAfterLayout, { flush: 'post' })
 </script>
@@ -40,6 +43,7 @@ watch(language, refreshAfterLayout, { flush: 'post' })
     :class="{
       'is-language-changing': isLanguageChanging,
       'is-home-intro-playing': isHomeIntroPlaying,
+      'is-home-night-active': isHomeNightActive,
     }"
     :style="{ '--active-section-color': activeColor }"
   >

@@ -21,6 +21,8 @@
 | Home 雲朵位置與速度              | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的位置、尺寸與速度 props          |
 | Home 裝飾花朵                    | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
 | Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
+| Home 日夜彩蛋狀態                | `src/composables/useHomeTheme.js`             | 本次 App 使用期間共用的日／夜狀態                   |
+| 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
 | 桌面與手機版面                   | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |
@@ -159,6 +161,20 @@ src/assets/images/artworks/
 | Hero Pointer 視差  | `src/composables/usePointerParallax.js`      | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。     |
 | Reduced Motion     | `src/composables/useReducedMotion.js`        | 不要移除，這是無障礙需求。                           |
 | 雲朵動畫           | `src/components/FloatingCloud.vue`           | 位置和速度由呼叫端傳入，不在元件內硬寫。             |
+
+### HomeCelestialToggle 狀態規格
+
+- Anatomy：星點裝飾層、太陽／月亮切換按鈕與圓形天體。
+- Data／Props：三語名稱來自 `messages.js`；日夜狀態來自 `useHomeTheme.js`。
+- Variants：日間太陽、夜間月亮；沒有尺寸變體。
+- Default／Active：日間為預設；夜間以 `aria-pressed="true"` 表示。
+- Hover：不切換狀態；只有使用者主動 Click／Tap 才切換。
+- Focus-visible：沿用全站 Focus Ring；Enter／Space 提供與 Click 等價操作。
+- Touch：Tap 一次切換；不因 Swipe、Pointer Move 或接觸範圍經過而切換。
+- Disabled／Loading／Error：N/A；元件不讀取遠端資料，也沒有不可操作狀態。
+- Responsive：手機橫向縮小天體並避開文字、作品主體及底部導覽。
+- Reduced Motion：保留日夜色彩與資訊，停用天體旋轉和非必要位移。
+- Cleanup：沒有 Global Listener、RAF、Interval 或 Timer。
 
 ## 每個檔案的角色
 

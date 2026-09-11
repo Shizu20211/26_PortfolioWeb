@@ -2,11 +2,19 @@
 import LayeredHeroArtwork from '@/components/LayeredHeroArtwork.vue'
 import ScrollHint from '@/components/ScrollHint.vue'
 import { useLanguage } from '@/composables/useLanguage'
+import { useHomeTheme } from '@/composables/useHomeTheme'
 const emit = defineEmits(['next'])
 const { t } = useLanguage()
+const { isHomeNight } = useHomeTheme()
 </script>
 <template>
-  <section id="home" class="portfolio-section home-section" aria-labelledby="home-title">
+  <section
+    id="home"
+    class="portfolio-section home-section"
+    :class="{ 'is-night': isHomeNight }"
+    aria-labelledby="home-title"
+  >
+    <div class="home-night-backdrop" aria-hidden="true"></div>
     <div class="hero-copy">
       <p class="chapter-label">00 · {{ t('sections.home') }}</p>
       <p class="role">Creative Front-end Designer<br />Interactive Experience Designer</p>

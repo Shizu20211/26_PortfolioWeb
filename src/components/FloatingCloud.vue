@@ -11,7 +11,7 @@ const props = defineProps({
   variant: { type: String, default: 'a', validator: (value) => ['a', 'b'].includes(value) },
   duration: { type: String, default: '8s' },
   delay: { type: String, default: '0s' },
-  opacity: { type: Number, default: 0.72 },
+  opacity: { type: Number, default: 1 },
   loading: { type: String, default: 'lazy' },
 })
 

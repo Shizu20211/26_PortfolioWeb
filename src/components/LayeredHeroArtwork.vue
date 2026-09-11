@@ -3,6 +3,7 @@ import introFlowerWindow from '@/assets/images/intro/intro-flower-window-wide.pn
 import { usePointerParallax } from '@/composables/usePointerParallax'
 import { useLanguage } from '@/composables/useLanguage'
 import FloatingCloud from './FloatingCloud.vue'
+import HomeCelestialToggle from './HomeCelestialToggle.vue'
 import HomeDecorativeFlowers from './HomeDecorativeFlowers.vue'
 import ResponsivePortfolioImage from './ResponsivePortfolioImage.vue'
 const { target, move, reset } = usePointerParallax()
@@ -16,7 +17,7 @@ const introAlt = {
 </script>
 <template>
   <div ref="target" class="layered-hero" @pointermove="move" @pointerleave="reset">
-    <div class="hero-sun hero-layer" aria-hidden="true"></div>
+    <HomeCelestialToggle />
     <div class="hero-image-frame hero-layer">
       <ResponsivePortfolioImage
         :src="introFlowerWindow"
@@ -28,23 +29,14 @@ const introAlt = {
         fetchpriority="high"
       />
     </div>
+    <FloatingCloud top="-5%" left="-11%" size="22%" variant="a" duration="9s" loading="eager" />
     <FloatingCloud
-      top="7%"
-      left="-4%"
-      size="22%"
-      variant="a"
-      duration="9s"
-      :opacity="0.82"
-      loading="eager"
-    />
-    <FloatingCloud
-      top="19%"
-      left="76%"
+      top="24%"
+      left="91%"
       size="18%"
       variant="b"
       duration="11s"
       delay="-3s"
-      :opacity="0.64"
       loading="eager"
     />
     <HomeDecorativeFlowers />

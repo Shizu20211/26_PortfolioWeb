@@ -11,7 +11,7 @@ const { t } = useLanguage()
     class="portfolio-section featured-section"
     aria-labelledby="featured-title"
   >
-    <FloatingCloud top="8%" left="62%" size="13rem" variant="a" duration="12s" :opacity="0.42" />
+    <FloatingCloud top="8%" left="62%" size="13rem" variant="a" duration="12s" />
     <div class="section-heading">
       <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
       <h2 id="featured-title">{{ t('headings.featured') }}</h2>
