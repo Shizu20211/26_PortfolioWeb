@@ -629,10 +629,25 @@ h2 em {
   --section-decoration-flower-left: auto;
   --section-decoration-flower-rotation: 0deg;
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+}
+.portfolio-section
+  > :where(
+    .section-heading,
+    .project-card,
+    .project-grid,
+    .artworks-grid,
+    .about-intro,
+    .about-meta
+  ) {
+  position: relative;
+  z-index: 1;
+}
+.portfolio-section > :where(.about-footer, .corner-link) {
+  z-index: 1;
 }
 .section-decoration {
   position: absolute;
