@@ -415,10 +415,6 @@ h2 em {
   cursor: pointer;
   isolation: isolate;
 }
-.portfolio-section > :not(.section-decorations, .home-night-backdrop) {
-  position: relative;
-  z-index: 1;
-}
 .text-link {
   margin-left: 1rem;
   padding: 0.8rem;
@@ -517,10 +513,18 @@ h2 em {
   pointer-events: none;
   transform: translate(var(--pointer-x), var(--pointer-y)) rotate(0.35deg);
 }
+.hero-image-frame picture {
+  display: flex;
+  justify-content: center;
+}
 .hero-image-frame img {
-  width: 100%;
-  height: min(66vh, 47vw);
-  object-fit: cover;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(66vh, 47vw);
+  margin-inline: auto;
+  object-fit: contain;
 }
 .hero-decoration {
   position: absolute;
@@ -625,7 +629,7 @@ h2 em {
   --section-decoration-flower-left: auto;
   --section-decoration-flower-rotation: 0deg;
   position: absolute;
-  z-index: 0;
+  z-index: -1;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
@@ -1056,7 +1060,7 @@ h2 em {
     align-self: center;
   }
   .hero-image-frame img {
-    height: 66vh;
+    max-height: 66vh;
   }
   .featured-section {
     grid-template-columns: 0.52fr 1.48fr;
@@ -1208,7 +1212,7 @@ h2 em {
     line-height: 1.7;
   }
   .hero-image-frame img {
-    height: 52vh;
+    max-height: 52vh;
   }
   .project-grid {
     grid-template-columns: 1fr;
