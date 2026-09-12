@@ -1,3 +1,5 @@
+import waterParkBanner from '@/assets/images/featured/WaterParkBanner.png'
+
 export const projects = [
   {
     slug: 'taipei-water-park',
@@ -15,7 +17,17 @@ export const projects = [
     role: 'Role — 待補',
     tools: ['Figma', 'Illustration', 'Front-end'],
     tags: ['UI/UX', 'Visual', 'Interaction'],
-    image: null,
+    media: {
+      type: 'image',
+      src: waterParkBanner,
+      width: 2996,
+      height: 1502,
+      alt: {
+        'zh-Hant': '台北自來水園區網站重構主視覺',
+        en: 'Taipei Water Park website redesign key visual',
+        ja: '台北自来水園区ウェブサイト・リデザインのキービジュアル',
+      },
+    },
   },
   {
     slug: 'snake-maze',

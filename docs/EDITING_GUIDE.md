@@ -26,6 +26,7 @@
 | 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
 | Featured 三個子面板              | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder    | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
+| Featured 圖片／影片路徑          | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
 | 桌面與手機版面                   | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |
@@ -107,6 +108,32 @@ src/assets/images/artworks/
 ```
 
 目前卡片顯示的是 `ProjectSummaryCard.vue` 與 `ArtworkPreviewCard.vue` 中的 Placeholder。正式接圖時，應先在資料物件加入圖片路徑，再由卡片元件依 `image` 是否存在切換 `<img>` 或 Placeholder，避免把每張圖片硬寫進 Section。
+
+Featured 範例目前在 `src/data/projects.js` 檔案頂端匯入：
+
+```js
+import waterParkBanner from '@/assets/images/featured/WaterParkBanner.png'
+```
+
+並在精選專案的 `media` 填入 `type: 'image'`、`src`、實際寬高及三語替代文字。若改用影片，建議將 MP4／WebM 放進 `src/assets/videos/featured/`，再把同一欄位改為：
+
+```js
+import waterParkVideo from '@/assets/videos/featured/water-park.mp4'
+
+media: {
+  type: 'video',
+  src: waterParkVideo,
+  mimeType: 'video/mp4',
+  poster: waterParkBanner,
+  fallbackText: {
+    'zh-Hant': '瀏覽器不支援影片播放。',
+    en: 'Your browser does not support video playback.',
+    ja: 'お使いのブラウザは動画再生に対応していません。',
+  },
+}
+```
+
+影片元件已支援原生控制列、行動裝置行內播放及預覽封面；正式上線建議優先使用 H.264 MP4，並保留壓縮後的 poster 圖片。
 
 ### 修改聯絡方式
 

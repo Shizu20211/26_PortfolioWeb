@@ -24,6 +24,10 @@ const { t } = useLanguage()
         <p class="featured-panel__progress" aria-label="1 / 3">01 — 1/3</p>
       </article>
       <article class="featured-panel featured-panel--visual" data-track-panel>
+        <div class="section-heading section-heading--subpanel" aria-hidden="true">
+          <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
+          <h2>{{ t('headings.featured') }}</h2>
+        </div>
         <div class="featured-panel__copy">
           <p class="chapter-label">01 · {{ t('featuredPanels.visual.label') }}</p>
           <h3>{{ t('featuredPanels.visual.title') }}</h3>
@@ -33,6 +37,10 @@ const { t } = useLanguage()
         <p class="featured-panel__progress" aria-label="2 / 3">01 — 2/3</p>
       </article>
       <article class="featured-panel featured-panel--interaction" data-track-panel>
+        <div class="section-heading section-heading--subpanel" aria-hidden="true">
+          <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
+          <h2>{{ t('headings.featured') }}</h2>
+        </div>
         <CinematicProjectVisual :project="project" panel="interaction" />
         <div class="featured-panel__copy">
           <p class="chapter-label">01 · {{ t('featuredPanels.interaction.label') }}</p>

@@ -1,11 +1,22 @@
 <script setup>
+import ResponsivePortfolioImage from '@/components/ResponsivePortfolioImage.vue'
 import { useLanguage } from '@/composables/useLanguage'
 defineProps({ project: { type: Object, required: true }, featured: Boolean })
 const { pick, t } = useLanguage()
 </script>
 <template>
   <article class="project-card" :class="{ 'project-card--featured': featured }">
+    <ResponsivePortfolioImage
+      v-if="project.media?.type === 'image'"
+      :src="project.media.src"
+      :alt="pick(project.media.alt)"
+      :width="project.media.width"
+      :height="project.media.height"
+      sizes="(max-width: 760px) 100vw, 50vw"
+      image-class="project-card__image"
+    />
     <div
+      v-else
       class="media-placeholder"
       role="img"
       :aria-label="`${pick(project.title)}：${t('imageNeeded')}`"
