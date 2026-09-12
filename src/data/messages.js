@@ -27,6 +27,20 @@ export const messages = {
     sections: { home: '首頁', featured: '精選', projects: '專案', artworks: '創作', about: '關於' },
     headings: { featured: '精選專案', projects: '作品專案', artworks: '藝術與工藝' },
     featuredNote: '職訓教育性重構，非官方委託。',
+    featuredPanels: {
+      visual: {
+        label: '視覺設計',
+        title: '視覺細節與圖像',
+        description: '正式設計畫面與圖像說明待補；目前保留對應版面與圖片位置。',
+        image: '視覺設計細節圖片待補',
+      },
+      interaction: {
+        label: '互動製作',
+        title: '互動說明與後續入口',
+        description: '互動流程、個人職責與完成狀態待補；不宣稱尚未確認的成果。',
+        image: '互動製作畫面待補',
+      },
+    },
     aboutTitle: '理性開發與感性工藝的交界',
     aboutBody: [
       '我是一位不斷跨界與探索的創作者。掌握前端程式與動態視覺的精準邏輯；同時凝練金工、版畫與傳統染織的手感溫度。',
@@ -73,6 +87,22 @@ export const messages = {
     },
     featuredNote:
       'An educational redesign completed during vocational training; not an official commission.',
+    featuredPanels: {
+      visual: {
+        label: 'Visual Design',
+        title: 'Visual Details and Imagery',
+        description:
+          'Final design screens and image notes are pending; the intended layout and image position are reserved.',
+        image: 'Visual design detail image to be added',
+      },
+      interaction: {
+        label: 'Interaction',
+        title: 'Interaction Notes and Next Step',
+        description:
+          'Interaction flow, personal role, and completion status are pending; unconfirmed outcomes are not claimed.',
+        image: 'Interaction implementation image to be added',
+      },
+    },
     aboutTitle: 'Where rational development meets tactile craft',
     aboutBody: [
       'I am a creator who continually explores across disciplines. I work with the precise logic of front-end code and motion, while cultivating the tactile warmth of metalwork, printmaking, and traditional dyeing.',
@@ -118,6 +148,21 @@ export const messages = {
       artworks: 'アートと素材',
     },
     featuredNote: '職業訓練で制作した教育目的のリデザインであり、公式の依頼案件ではありません。',
+    featuredPanels: {
+      visual: {
+        label: 'ビジュアルデザイン',
+        title: 'ビジュアルの詳細と画像',
+        description:
+          '最終デザイン画面と画像の説明は追加予定です。現在はレイアウトと画像位置を確保しています。',
+        image: 'ビジュアルデザインの詳細画像を追加予定',
+      },
+      interaction: {
+        label: 'インタラクション',
+        title: '制作説明と次の入口',
+        description: '操作フロー、担当範囲、完成状況は追加予定です。未確認の成果は記載しません。',
+        image: 'インタラクション制作画面を追加予定',
+      },
+    },
     aboutTitle: '論理的な開発と感性豊かな工芸のあいだ',
     aboutBody: [
       '私は分野を越え、探求を続けるクリエイターです。フロントエンドとモーション表現の緻密な論理を身につける一方、金工、版画、伝統染織が持つ手仕事の温もりを磨いてきました。',

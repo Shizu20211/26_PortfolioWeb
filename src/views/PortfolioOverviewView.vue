@@ -20,14 +20,14 @@ import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
 const track = ref(null)
 const sectionIds = sections.map(({ id }) => id)
-const { measurements, getSectionIndex, getSectionOffset, refreshAfterLayout } =
+const { measurements, getSectionIndex, getSectionOffset, getAdjacentOffset, refreshAfterLayout } =
   useTrackMeasurements(sectionIds, track)
 const { activeSectionIndex } = useActiveSection(sectionIds, track, measurements, getSectionIndex)
 const { goTo } = useHorizontalNavigation({
   sectionIds,
   trackRef: track,
-  activeSectionIndex,
   getSectionOffset,
+  getAdjacentOffset,
 })
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
 const { language, isLanguageChanging, t } = useLanguage()

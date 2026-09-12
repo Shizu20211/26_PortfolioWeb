@@ -703,10 +703,116 @@ h2 em {
   }
 }
 .featured-section {
+  --featured-panel-count: 3;
+  display: block;
+  flex-basis: calc(100vw * var(--featured-panel-count));
+  width: calc(100vw * var(--featured-panel-count));
+  padding: 0;
+  scroll-snap-align: none;
+}
+.featured-panels {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+}
+.featured-panel {
+  position: relative;
   display: grid;
+  flex: 0 0 100vw;
   grid-template-columns: minmax(18rem, 0.58fr) minmax(34rem, 1.42fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 6rem);
+  width: 100vw;
+  height: 100svh;
+  padding: clamp(5.5rem, 10vh, 7rem) var(--page-pad) clamp(4.5rem, 10vh, 6rem);
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.featured-panel--interaction {
+  grid-template-columns: minmax(28rem, 1.2fr) minmax(20rem, 0.8fr);
+}
+.featured-panel__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+.featured-panel__copy h3 {
+  margin: 0.6rem 0 1.2rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 6rem);
+  font-weight: 400;
+  line-height: 1;
+}
+.featured-panel__copy > p:last-of-type {
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+.featured-panel__progress {
+  position: absolute;
+  z-index: 2;
+  right: var(--page-pad);
+  bottom: 4.7rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+.featured-panel__meta {
+  margin: 1.4rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+.featured-panel__meta div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+  margin-top: 0.45rem;
+}
+.featured-panel__meta dt {
+  color: var(--color-muted);
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+}
+.featured-panel__meta dd {
+  margin: 0;
+}
+.featured-panel__copy a {
+  border-bottom: 1px solid currentColor;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.cinematic-project-visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: min(62vh, 42rem);
+  place-content: center;
+  gap: 0.65rem;
+  overflow: hidden;
+  border: 1px dashed var(--color-line);
+  border-radius: 45% 45% var(--radius-lg) var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  color: var(--color-muted);
+  font-family: var(--font-label);
+  text-align: center;
+  transform: scale(0.94);
+  transition:
+    transform var(--duration-slow) var(--ease-soft),
+    border-radius var(--duration-slow) var(--ease-soft);
+}
+.featured-panel:focus-within .cinematic-project-visual,
+.cinematic-project-visual:hover {
+  border-radius: var(--radius-lg);
+  transform: scale(1);
+}
+.cinematic-project-visual small {
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
 }
 .project-card {
   position: relative;
@@ -1078,8 +1184,22 @@ h2 em {
     max-height: 66vh;
   }
   .featured-section {
+    display: block;
+    padding: 0;
+  }
+  .featured-panel {
     grid-template-columns: 0.52fr 1.48fr;
     gap: 1rem;
+    padding: 3.3rem 1.2rem 2.8rem;
+  }
+  .featured-panel--interaction {
+    grid-template-columns: 1.35fr 0.65fr;
+  }
+  .featured-panel__copy h3 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+  }
+  .cinematic-project-visual {
+    min-height: 56vh;
   }
   .section-heading h2 {
     font-size: clamp(2.6rem, 7vw, 4.5rem);
@@ -1207,13 +1327,37 @@ h2 em {
     text-align: center;
   }
   .home-section,
-  .featured-section,
   .projects-section,
   .artworks-section,
   .about-section {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+  .featured-section {
+    display: block;
+    flex-basis: auto;
+    width: 100%;
+    padding: 0;
+  }
+  .featured-panels {
+    display: grid;
+    height: auto;
+  }
+  .featured-panel,
+  .featured-panel--interaction {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-height: 100svh;
+    height: auto;
+    padding: 8rem var(--page-pad) 5rem;
+  }
+  .featured-panel__progress {
+    bottom: 1.5rem;
+  }
+  .cinematic-project-visual {
+    min-height: 45vh;
   }
   .home-section::before {
     display: none;
@@ -1272,6 +1416,9 @@ h2 em {
   }
   .floating-cloud {
     animation: none;
+  }
+  .cinematic-project-visual {
+    transition: none;
   }
   .home-section,
   .home-night-backdrop,

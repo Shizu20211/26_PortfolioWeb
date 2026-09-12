@@ -4,8 +4,8 @@ import { useReducedMotion } from './useReducedMotion'
 export function useHorizontalNavigation({
   sectionIds,
   trackRef,
-  activeSectionIndex,
   getSectionOffset,
+  getAdjacentOffset,
 }) {
   const { prefersReducedMotion } = useReducedMotion()
   const initialSectionId = location.hash.slice(1)
@@ -18,6 +18,13 @@ export function useHorizontalNavigation({
     const boundedIndex = Math.max(0, Math.min(index, sectionIds.length - 1))
     const left = getSectionOffset(boundedIndex)
 
+    trackRef.value?.scrollTo({
+      left,
+      behavior: options.immediate || prefersReducedMotion.value ? 'auto' : 'smooth',
+    })
+  }
+
+  function scrollToOffset(left, options = {}) {
     trackRef.value?.scrollTo({
       left,
       behavior: options.immediate || prefersReducedMotion.value ? 'auto' : 'smooth',
@@ -50,8 +57,8 @@ export function useHorizontalNavigation({
     }
 
     const direction = accumulatedDelta > 0 ? 1 : -1
-    const targetIndex = activeSectionIndex.value + direction
-    if (targetIndex < 0 || targetIndex >= sectionIds.length) {
+    const targetOffset = getAdjacentOffset(trackRef.value.scrollLeft, direction)
+    if (targetOffset === undefined) {
       resetWheelGesture()
       return
     }
@@ -59,7 +66,7 @@ export function useHorizontalNavigation({
     event.preventDefault()
     gestureLocked = true
     accumulatedDelta = 0
-    goTo(targetIndex)
+    scrollToOffset(targetOffset)
   }
 
   function onKeydown(event) {
@@ -70,7 +77,8 @@ export function useHorizontalNavigation({
 
     event.preventDefault()
     const direction = event.key === 'ArrowRight' ? 1 : -1
-    goTo(activeSectionIndex.value + direction)
+    const targetOffset = getAdjacentOffset(trackRef.value.scrollLeft, direction)
+    if (targetOffset !== undefined) scrollToOffset(targetOffset)
   }
 
   onMounted(() => {

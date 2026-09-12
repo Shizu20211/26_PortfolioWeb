@@ -24,6 +24,8 @@
 | Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
 | Home 日夜彩蛋狀態                | `src/composables/useHomeTheme.js`             | 本次 App 使用期間共用的日／夜狀態                   |
 | 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
+| Featured 三個子面板              | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
+| Featured 圖片展開 Placeholder    | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
 | 桌面與手機版面                   | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |
