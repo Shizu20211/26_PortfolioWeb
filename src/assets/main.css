@@ -708,6 +708,7 @@ h2 em {
   flex-basis: calc(100vw * var(--featured-panel-count));
   width: calc(100vw * var(--featured-panel-count));
   padding: 0;
+  overflow: visible;
   scroll-snap-align: none;
 }
 .featured-panels {
