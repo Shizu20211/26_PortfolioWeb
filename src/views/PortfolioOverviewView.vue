@@ -13,6 +13,7 @@ import { projects } from '@/data/projects'
 import { artworks } from '@/data/artworks'
 import { useActiveSection } from '@/composables/useActiveSection'
 import { useHorizontalNavigation } from '@/composables/useHorizontalNavigation'
+import { useFeaturedGalleryMotion } from '@/composables/useFeaturedGalleryMotion'
 import { useHomeIntro } from '@/composables/useHomeIntro'
 import { useHomeTheme } from '@/composables/useHomeTheme'
 import { useLanguage } from '@/composables/useLanguage'
@@ -29,6 +30,7 @@ const { goTo } = useHorizontalNavigation({
   getSectionOffset,
   getAdjacentOffset,
 })
+useFeaturedGalleryMotion(track)
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
 const { language, isLanguageChanging, t } = useLanguage()
 const { isHomeIntroPlaying } = useHomeIntro()

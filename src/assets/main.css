@@ -54,7 +54,7 @@ body {
   height: 100svh;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 .portfolio-track::-webkit-scrollbar {
@@ -367,11 +367,13 @@ h2 em {
   z-index: 3;
   top: clamp(5.5rem, 10vh, 7rem);
   left: var(--page-pad);
+  max-width: min(18rem, 30vw);
   align-self: auto;
 }
 .section-heading--subpanel h2 {
   margin-top: 0.15rem;
   font-size: clamp(1rem, 1.75vw, 2.125rem);
+  line-height: 1.08;
 }
 .home-section {
   display: grid;
@@ -807,12 +809,12 @@ h2 em {
   gap: 0.65rem;
   overflow: hidden;
   border: 1px dashed var(--color-line);
-  border-radius: 45% 45% var(--radius-lg) var(--radius-lg);
+  border-radius: clamp(1.75rem, 4vw, 4rem);
   background: color-mix(in srgb, var(--color-surface) 72%, transparent);
   color: var(--color-muted);
   font-family: var(--font-label);
   text-align: center;
-  transform: scale(0.94);
+  transform: scale(0.985);
   transition:
     transform var(--duration-slow) var(--ease-soft),
     border-radius var(--duration-slow) var(--ease-soft);
@@ -841,6 +843,9 @@ h2 em {
 .cinematic-project-visual__image,
 .cinematic-project-visual__video {
   object-fit: cover;
+}
+.cinematic-project-visual__image {
+  will-change: transform;
 }
 .project-card {
   position: relative;
@@ -1230,6 +1235,14 @@ h2 em {
     gap: 1rem;
     padding: 3.3rem 1.2rem 2.8rem;
   }
+  .section-heading--subpanel {
+    top: 3.35rem;
+    left: 1.2rem;
+    max-width: 28vw;
+  }
+  .section-heading--subpanel h2 {
+    font-size: clamp(0.8rem, 2.4vw, 1.2rem);
+  }
   .featured-panel--interaction {
     grid-template-columns: 1.35fr 0.65fr;
   }
@@ -1391,6 +1404,13 @@ h2 em {
     height: auto;
     padding: 8rem var(--page-pad) 5rem;
   }
+  .section-heading--subpanel {
+    top: 4.75rem;
+    max-width: calc(100% - var(--page-pad) * 2);
+  }
+  .section-heading--subpanel h2 {
+    font-size: clamp(1rem, 5vw, 1.4rem);
+  }
   .featured-panel__progress {
     bottom: 1.5rem;
   }
@@ -1442,6 +1462,11 @@ h2 em {
     font-size: clamp(3rem, 4.6vw, 6.75rem);
     line-height: 1.08;
     white-space: nowrap;
+  }
+  .section-heading--subpanel h2 {
+    max-width: 18rem;
+    font-size: 2.125rem;
+    white-space: normal;
   }
 }
 @media (prefers-reduced-motion: reduce) {
