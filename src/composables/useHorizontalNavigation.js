@@ -85,7 +85,7 @@ export function useHorizontalNavigation({
 
     gsap.to(track, {
       scrollLeft: featuredTarget,
-      duration: 0.62,
+      duration: 0.78,
       ease: 'power3.out',
       overwrite: 'auto',
     })
