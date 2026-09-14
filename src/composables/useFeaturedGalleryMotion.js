@@ -36,6 +36,7 @@ export function useFeaturedGalleryMotion(trackRef) {
               start: 'left right',
               end: 'right left',
               scrub: 0.8,
+              // 圖片視差
               invalidateOnRefresh: true,
             },
           },
