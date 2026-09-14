@@ -20,7 +20,10 @@ export function useHorizontalNavigation({
     const boundedIndex = Math.max(0, Math.min(index, sectionIds.length - 1))
     const left = getSectionOffset(boundedIndex)
 
-    if (trackRef.value) gsap.killTweensOf(trackRef.value, 'scrollLeft')
+    if (trackRef.value) {
+      gsap.killTweensOf(trackRef.value, 'scrollLeft')
+      trackRef.value.classList.remove('is-featured-scrubbing')
+    }
     featuredTarget = undefined
     trackRef.value?.scrollTo({
       left,
@@ -29,7 +32,10 @@ export function useHorizontalNavigation({
   }
 
   function scrollToOffset(left, options = {}) {
-    if (trackRef.value) gsap.killTweensOf(trackRef.value, 'scrollLeft')
+    if (trackRef.value) {
+      gsap.killTweensOf(trackRef.value, 'scrollLeft')
+      trackRef.value.classList.remove('is-featured-scrubbing')
+    }
     featuredTarget = undefined
     trackRef.value?.scrollTo({
       left,
@@ -67,6 +73,7 @@ export function useHorizontalNavigation({
 
     event.preventDefault()
     resetWheelGesture()
+    track.classList.add('is-featured-scrubbing')
 
     const base = featuredTarget ?? current
     featuredTarget = Math.max(start, Math.min(end, base + delta))
@@ -89,7 +96,11 @@ export function useHorizontalNavigation({
     const isPortrait = matchMedia('(max-width: 760px) and (orientation: portrait)').matches
     const isHorizontalGesture = Math.abs(event.deltaX) >= Math.abs(event.deltaY)
 
-    if (isPortrait || isHorizontalGesture || event.ctrlKey) return
+    if (isPortrait || event.ctrlKey) return
+    if (isHorizontalGesture) {
+      featuredTarget = undefined
+      return
+    }
     if (scrollFeaturedGallery(event)) return
 
     featuredTarget = undefined
@@ -145,7 +156,10 @@ export function useHorizontalNavigation({
 
   onBeforeUnmount(() => {
     window.clearTimeout(gestureTimer)
-    if (trackRef.value) gsap.killTweensOf(trackRef.value, 'scrollLeft')
+    if (trackRef.value) {
+      gsap.killTweensOf(trackRef.value, 'scrollLeft')
+      trackRef.value.classList.remove('is-featured-scrubbing')
+    }
     trackRef.value?.removeEventListener('wheel', onWheel)
     document.removeEventListener('keydown', onKeydown)
   })

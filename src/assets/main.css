@@ -60,6 +60,9 @@ body {
 .portfolio-track::-webkit-scrollbar {
   display: none;
 }
+.portfolio-track.is-featured-scrubbing {
+  scroll-snap-type: none;
+}
 .section {
   position: relative;
   flex: 0 0 100vw;
@@ -763,17 +766,6 @@ h2 em {
   color: var(--color-muted);
   line-height: 1.7;
 }
-.featured-panel__progress {
-  position: absolute;
-  z-index: 2;
-  right: var(--page-pad);
-  bottom: 4.7rem;
-  margin: 0;
-  color: var(--color-muted);
-  font-family: var(--font-label);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-}
 .featured-panel__meta {
   margin: 1.4rem 0;
   padding-top: 1rem;
@@ -1410,9 +1402,6 @@ h2 em {
   }
   .section-heading--subpanel h2 {
     font-size: clamp(1rem, 5vw, 1.4rem);
-  }
-  .featured-panel__progress {
-    bottom: 1.5rem;
   }
   .cinematic-project-visual {
     min-height: 45vh;

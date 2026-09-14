@@ -21,7 +21,6 @@ const { t } = useLanguage()
           <p>{{ t('featuredNote') }}</p>
         </div>
         <ProjectSummaryCard :project="project" featured />
-        <p class="featured-panel__progress" aria-label="1 / 3">01 — 1/3</p>
       </article>
       <article class="featured-panel featured-panel--visual" data-track-panel>
         <div class="section-heading section-heading--subpanel" aria-hidden="true">
@@ -34,7 +33,6 @@ const { t } = useLanguage()
           <p>{{ t('featuredPanels.visual.description') }}</p>
         </div>
         <CinematicProjectVisual :project="project" panel="visual" />
-        <p class="featured-panel__progress" aria-label="2 / 3">01 — 2/3</p>
       </article>
       <article class="featured-panel featured-panel--interaction" data-track-panel>
         <div class="section-heading section-heading--subpanel" aria-hidden="true">
@@ -58,7 +56,6 @@ const { t } = useLanguage()
           </dl>
           <RouterLink :to="`/projects/${project.slug}`">{{ t('viewProject') }} ↗</RouterLink>
         </div>
-        <p class="featured-panel__progress" aria-label="3 / 3">01 — 3/3</p>
       </article>
     </div>
   </section>
