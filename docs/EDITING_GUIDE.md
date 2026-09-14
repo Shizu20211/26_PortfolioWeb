@@ -26,6 +26,7 @@
 | 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
 | Featured 三個子面板              | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder    | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
+| Projects Hover List              | `src/components/ProjectHoverList.vue`         | 專案列、Hover／Focus 與用途式圖片 Preview           |
 | Featured 圖片／影片路徑          | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
