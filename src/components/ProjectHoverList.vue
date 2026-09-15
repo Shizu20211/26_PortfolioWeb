@@ -75,7 +75,7 @@ function setupIntersectionObserver() {
 onMounted(() => {
   canFollowPointer = matchMedia('(hover: hover) and (pointer: fine)').matches
   landscapeQuery = matchMedia(
-    '(max-width: 1024px) and (max-height: 600px) and (orientation: landscape)',
+    '(max-width: 1180px) and (max-height: 720px) and (orientation: landscape)',
   )
   activeProject.value = props.projects[0] ?? null
   landscapeQuery.addEventListener('change', setupIntersectionObserver)
@@ -126,14 +126,20 @@ onBeforeUnmount(() => {
       </RouterLink>
     </div>
 
-    <div ref="galleryTrack" class="project-flex-gallery" :aria-label="t('headings.projects')">
-      <RouterLink
+    <div
+      ref="galleryTrack"
+      class="project-flex-gallery"
+      :aria-label="t('headings.projects')"
+      @pointerdown.stop
+      @touchstart.stop
+      @touchmove.stop
+    >
+      <article
         v-for="(project, index) in projects"
         :key="project.slug"
         class="project-flex-gallery__card"
         :class="{ 'is-active': activeProject?.slug === project.slug }"
         :data-gallery-index="index"
-        :to="`/projects/${project.slug}`"
       >
         <div class="project-flex-gallery__media">
           <ResponsivePortfolioImage
@@ -160,8 +166,16 @@ onBeforeUnmount(() => {
             <p>{{ pick(project.summary) }}</p>
           </div>
         </div>
-      </RouterLink>
+      </article>
     </div>
+
+    <RouterLink
+      v-if="activeProject"
+      class="project-flex-gallery__link"
+      :to="`/projects/${activeProject.slug}`"
+    >
+      {{ t('viewProject') }} ↗
+    </RouterLink>
 
     <div
       ref="preview"

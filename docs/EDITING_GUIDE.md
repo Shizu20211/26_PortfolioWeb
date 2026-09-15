@@ -177,23 +177,23 @@ media: {
 | About        | `.about-section`、`.contact-grid`                       |
 | 底部導覽     | `.section-navigation`                                   |
 | 頁碼         | `.section-progress`                                     |
-| 手機橫向     | `@media (max-width: 1024px) and (max-height: 600px)`    |
+| 手機橫向     | `@media (max-width: 1180px) and (max-height: 720px)`    |
 | 手機直向     | `@media (max-width: 760px) and (orientation: portrait)` |
 | 減少動態     | `@media (prefers-reduced-motion: reduce)`               |
 
 ## 互動邏輯從哪裡改
 
-| 功能               | 檔案                                          | 注意事項                                             |
-| ------------------ | --------------------------------------------- | ---------------------------------------------------- |
-| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。 |
-| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。 |
-| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。        |
-| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。        |
-| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Flex Gallery。 |
-| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                 |
-| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。     |
-| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                           |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。             |
+| 功能               | 檔案                                          | 注意事項                                                                                   |
+| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。                                       |
+| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。                                       |
+| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。                                              |
+| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。                                              |
+| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Flex Gallery；卡片只負責滑動，右下按鈕才會開啟子頁。 |
+| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                                                       |
+| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                                           |
+| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                                                 |
+| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                                                   |
 
 ### HomeCelestialToggle 狀態規格
 
