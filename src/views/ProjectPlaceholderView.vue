@@ -9,7 +9,7 @@ const project = computed(() => projects.find(({ slug }) => slug === route.params
 </script>
 <template>
   <main class="placeholder-view">
-    <RouterLink to="/">← CHING-YUNG HUANG</RouterLink>
+    <RouterLink :to="{ path: '/', hash: '#projects' }">← CHING-YUNG HUANG</RouterLink>
     <div v-if="project">
       <p class="chapter-label">PROJECT · {{ project.slug }}</p>
       <h1>{{ pick(project.title) }}</h1>

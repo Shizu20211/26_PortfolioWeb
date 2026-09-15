@@ -26,7 +26,7 @@
 | 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
 | Featured 三個子面板              | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder    | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
-| Projects Hover List              | `src/components/ProjectHoverList.vue`         | 專案列、Hover／Focus 與用途式圖片 Preview           |
+| Projects Hover List              | `src/components/ProjectHoverList.vue`         | 第 0 項標題、專案列、Sticky Gallery 與 Preview      |
 | Featured 圖片／影片路徑          | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
@@ -165,34 +165,35 @@ media: {
 
 修改 `src/assets/main.css`，可用下列 class 搜尋：
 
-| 畫面區域     | CSS class                                                |
-| ------------ | -------------------------------------------------------- |
-| 固定頁首     | `.site-header`、`.identity`                              |
-| 語言切換     | `.language-switcher`、`.language-switcher__option`       |
-| 五章橫向容器 | `.portfolio-track`、`.portfolio-section`                 |
-| Home         | `.home-section`、`.hero-copy`、`.layered-hero`           |
-| Featured     | `.featured-section`、`.project-card--featured`           |
-| Projects     | `.projects-section`、`.project-grid`                     |
-| Artworks     | `.artworks-section`、`.artworks-grid`                    |
-| About        | `.about-section`、`.contact-grid`                        |
-| 底部導覽     | `.section-navigation`                                    |
-| 頁碼         | `.section-progress`                                      |
-| 手機橫向     | `@media (max-width: 760px) and (orientation: landscape)` |
-| 手機直向     | `@media (max-width: 760px) and (orientation: portrait)`  |
-| 減少動態     | `@media (prefers-reduced-motion: reduce)`                |
+| 畫面區域     | CSS class                                               |
+| ------------ | ------------------------------------------------------- |
+| 固定頁首     | `.site-header`、`.identity`                             |
+| 語言切換     | `.language-switcher`、`.language-switcher__option`      |
+| 五章橫向容器 | `.portfolio-track`、`.portfolio-section`                |
+| Home         | `.home-section`、`.hero-copy`、`.layered-hero`          |
+| Featured     | `.featured-section`、`.project-card--featured`          |
+| Projects     | `.projects-section`、`.project-gallery`                 |
+| Artworks     | `.artworks-section`、`.artworks-grid`                   |
+| About        | `.about-section`、`.contact-grid`                       |
+| 底部導覽     | `.section-navigation`                                   |
+| 頁碼         | `.section-progress`                                     |
+| 手機橫向     | `@media (max-width: 1024px) and (max-height: 600px)`    |
+| 手機直向     | `@media (max-width: 760px) and (orientation: portrait)` |
+| 減少動態     | `@media (prefers-reduced-motion: reduce)`               |
 
 ## 互動邏輯從哪裡改
 
-| 功能               | 檔案                                          | 注意事項                                             |
-| ------------------ | --------------------------------------------- | ---------------------------------------------------- |
-| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。 |
-| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。 |
-| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。        |
-| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。        |
-| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                 |
-| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。     |
-| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                           |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。             |
+| 功能               | 檔案                                          | 注意事項                                               |
+| ------------------ | --------------------------------------------- | ------------------------------------------------------ |
+| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。   |
+| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。   |
+| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。          |
+| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。          |
+| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Sticky Gallery。 |
+| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                   |
+| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。       |
+| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                             |
+| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。               |
 
 ### HomeCelestialToggle 狀態規格
 

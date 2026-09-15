@@ -92,6 +92,17 @@ export function useHorizontalNavigation({
     return true
   }
 
+  function canScrollNestedContent(event) {
+    const scroller = event.target.closest('[data-vertical-scroll]')
+    if (!scroller) return false
+
+    const direction = Math.sign(event.deltaY)
+    const canScrollUp = scroller.scrollTop > 1
+    const canScrollDown = scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 1
+
+    return (direction < 0 && canScrollUp) || (direction > 0 && canScrollDown)
+  }
+
   function onWheel(event) {
     const isPortrait = matchMedia('(max-width: 760px) and (orientation: portrait)').matches
     const isHorizontalGesture = Math.abs(event.deltaX) >= Math.abs(event.deltaY)
@@ -101,6 +112,7 @@ export function useHorizontalNavigation({
       featuredTarget = undefined
       return
     }
+    if (canScrollNestedContent(event)) return
     if (scrollFeaturedGallery(event)) return
 
     featuredTarget = undefined

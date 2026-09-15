@@ -56,7 +56,7 @@ npm run preview
 | ---------------------------------- | ------------------------------------------------ |
 | `src/sections/HomeSection.vue`     | 姓名定位、主標、自介、能力標籤、作品與履歷入口。 |
 | `src/sections/FeaturedSection.vue` | 台北自來水園區精選專案及非官方委託說明。         |
-| `src/sections/ProjectsSection.vue` | 其他網站／互動專案卡片集合。                     |
+| `src/sections/ProjectsSection.vue` | 其他網站／互動專案的垂直 Hover List。            |
 | `src/sections/ArtworksSection.vue` | 八類藝術與工藝作品預覽。                         |
 | `src/sections/AboutSection.vue`    | 長版自介、技能、AI 協作原則及聯絡資料插槽。      |
 
