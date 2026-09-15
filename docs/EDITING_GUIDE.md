@@ -4,36 +4,36 @@
 
 ## 最常修改的地方
 
-| 想修改的內容                     | 修改檔案                                      | 要找的欄位／位置                                    |
-| -------------------------------- | --------------------------------------------- | --------------------------------------------------- |
-| 中文、英文、日文介面文字         | `src/data/messages.js`                        | `messages['zh-Hant']`、`messages.en`、`messages.ja` |
-| 首頁主標與短自介                 | `src/data/messages.js`                        | `homeTitle`、`homeLead`、`homeShort`                |
-| About 長版自介                   | `src/data/messages.js`                        | `aboutTitle`、`aboutBody`                           |
-| 姓名                             | `src/components/AppHeader.vue`                | `CHING-YUNG HUANG`；頁尾另見 `AboutSection.vue`     |
-| 職稱與三個能力標籤               | `src/sections/HomeSection.vue`                | `.role` 與 `.skill-pills`                           |
-| 專案名稱、摘要、Role、Tools      | `src/data/projects.js`                        | 對應專案物件的 `title`、`summary`、`role`、`tools`  |
-| 專案網址代稱                     | `src/data/projects.js`、`src/router/index.js` | `slug` 與 `projectSlugs` 必須一致                   |
-| Artwork 名稱、分類、Contribution | `src/data/artworks.js`                        | `title`、`type`、`contribution`                     |
-| Intro 圖片                       | `src/components/LayeredHeroArtwork.vue`       | `introMain` 匯入路徑                                |
-| Intro 圖片替代文字               | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
-| 共用響應式圖片規則               | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
-| 雲朵圖片、款式與動畫             | `src/components/FloatingCloud.vue`            | `cloudA`、`cloudB`、`variant` 與動畫 props          |
-| Home 雲朵位置與速度              | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的位置、尺寸與速度 props          |
-| Home 裝飾花朵                    | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
-| 其他章節花朵與雲朵               | `src/components/SectionDecorations.vue`       | `section` 預設配置與 `.section-decoration`          |
-| Home 首次進場狀態                | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
-| Home 日夜彩蛋狀態                | `src/composables/useHomeTheme.js`             | 本次 App 使用期間共用的日／夜狀態                   |
-| 太陽、月亮與星點                 | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
-| Featured 三個子面板              | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
-| Featured 圖片展開 Placeholder    | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
-| Projects Hover List              | `src/components/ProjectHoverList.vue`         | 第 0 項標題、專案列、Sticky Gallery 與 Preview      |
-| Featured 圖片／影片路徑          | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
-| 五章背景色                       | `src/data/sections.js`                        | 每章的 `color`                                      |
-| 全站品牌色與字型                 | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
-| 桌面與手機版面                   | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |
-| 語言切換時間                     | `src/composables/useLanguage.js`              | `setTimeout(..., 120)`                              |
-| 語言淡出程度                     | `src/assets/main.css`                         | `.is-language-changing` 的 `opacity`                |
-| 網站標題與搜尋描述               | `index.html`                                  | `<title>`、`meta name="description"`                |
+| 想修改的內容                      | 修改檔案                                      | 要找的欄位／位置                                    |
+| --------------------------------- | --------------------------------------------- | --------------------------------------------------- |
+| 中文、英文、日文介面文字          | `src/data/messages.js`                        | `messages['zh-Hant']`、`messages.en`、`messages.ja` |
+| 首頁主標與短自介                  | `src/data/messages.js`                        | `homeTitle`、`homeLead`、`homeShort`                |
+| About 長版自介                    | `src/data/messages.js`                        | `aboutTitle`、`aboutBody`                           |
+| 姓名                              | `src/components/AppHeader.vue`                | `CHING-YUNG HUANG`；頁尾另見 `AboutSection.vue`     |
+| 職稱與三個能力標籤                | `src/sections/HomeSection.vue`                | `.role` 與 `.skill-pills`                           |
+| 專案名稱、摘要、Role、Tools       | `src/data/projects.js`                        | 對應專案物件的 `title`、`summary`、`role`、`tools`  |
+| 專案網址代稱                      | `src/data/projects.js`、`src/router/index.js` | `slug` 與 `projectSlugs` 必須一致                   |
+| Artwork 名稱、分類、Contribution  | `src/data/artworks.js`                        | `title`、`type`、`contribution`                     |
+| Intro 圖片                        | `src/components/LayeredHeroArtwork.vue`       | `introMain` 匯入路徑                                |
+| Intro 圖片替代文字                | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
+| 共用響應式圖片規則                | `src/components/ResponsivePortfolioImage.vue` | Source、尺寸、載入優先級及 `currentSrc`             |
+| 雲朵圖片、款式與動畫              | `src/components/FloatingCloud.vue`            | `cloudA`、`cloudB`、`variant` 與動畫 props          |
+| Home 雲朵位置與速度               | `src/components/LayeredHeroArtwork.vue`       | `<FloatingCloud>` 的位置、尺寸與速度 props          |
+| Home 裝飾花朵                     | `src/components/HomeDecorativeFlowers.vue`    | `flowerBlue`、`flowerPink` 與 `.hero-decoration`    |
+| 其他章節花朵與雲朵                | `src/components/SectionDecorations.vue`       | `section` 預設配置與 `.section-decoration`          |
+| Home 首次進場狀態                 | `src/composables/useHomeIntro.js`             | 單次播放狀態與 1100ms 結束時間                      |
+| Home 日夜彩蛋狀態                 | `src/composables/useHomeTheme.js`             | 本次 App 使用期間共用的日／夜狀態                   |
+| 太陽、月亮與星點                  | `src/components/HomeCelestialToggle.vue`      | 點擊切換、三語名稱及裝飾狀態                        |
+| Featured 三個子面板               | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
+| Featured 圖片展開 Placeholder     | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
+| Projects Hover List／Flex Gallery | `src/components/ProjectHoverList.vue`         | 桌面專案列、手機橫向 Gallery 與 Preview             |
+| Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
+| 五章背景色                        | `src/data/sections.js`                        | 每章的 `color`                                      |
+| 全站品牌色與字型                  | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
+| 桌面與手機版面                    | `src/assets/main.css`                         | 對應元件 class 與檔案底部 media queries             |
+| 語言切換時間                      | `src/composables/useLanguage.js`              | `setTimeout(..., 120)`                              |
+| 語言淡出程度                      | `src/assets/main.css`                         | `.is-language-changing` 的 `opacity`                |
+| 網站標題與搜尋描述                | `index.html`                                  | `<title>`、`meta name="description"`                |
 
 ## 修改內容的安全順序
 
@@ -183,17 +183,17 @@ media: {
 
 ## 互動邏輯從哪裡改
 
-| 功能               | 檔案                                          | 注意事項                                               |
-| ------------------ | --------------------------------------------- | ------------------------------------------------------ |
-| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。   |
-| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。   |
-| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。          |
-| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。          |
-| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Sticky Gallery。 |
-| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                   |
-| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。       |
-| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                             |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。               |
+| 功能               | 檔案                                          | 注意事項                                             |
+| ------------------ | --------------------------------------------- | ---------------------------------------------------- |
+| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。 |
+| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。 |
+| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。        |
+| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。        |
+| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Flex Gallery。 |
+| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                 |
+| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。     |
+| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                           |
+| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。             |
 
 ### HomeCelestialToggle 狀態規格
 

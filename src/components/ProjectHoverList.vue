@@ -13,6 +13,7 @@ const { pick, t } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
 const activeProject = ref(null)
 const projectList = ref(null)
+const galleryTrack = ref(null)
 const preview = ref(null)
 const isPreviewVisible = ref(false)
 
@@ -45,7 +46,7 @@ function movePreview(event) {
 
 function setupIntersectionObserver() {
   intersectionObserver?.disconnect()
-  if (!landscapeQuery?.matches || !projectList.value) return
+  if (!landscapeQuery?.matches || !galleryTrack.value) return
 
   const visibility = new Map()
   intersectionObserver = new IntersectionObserver(
@@ -55,19 +56,19 @@ function setupIntersectionObserver() {
       const current = [...visibility.entries()]
         .filter(([, ratio]) => ratio > 0)
         .sort((a, b) => b[1] - a[1])[0]?.[0]
-      const index = Number(current?.dataset.projectIndex)
+      const index = Number(current?.dataset.galleryIndex)
 
       if (Number.isInteger(index)) activeProject.value = props.projects[index]
     },
     {
-      root: projectList.value,
-      rootMargin: '-28% 0px -28% 0px',
-      threshold: [0, 0.25, 0.5, 0.75, 1],
+      root: galleryTrack.value,
+      rootMargin: '0px -78% 0px 0px',
+      threshold: [0, 0.15, 0.35, 0.65],
     },
   )
 
-  projectList.value
-    .querySelectorAll('[data-project-index]')
+  galleryTrack.value
+    .querySelectorAll('[data-gallery-index]')
     .forEach((item) => intersectionObserver.observe(item))
 }
 
@@ -103,11 +104,8 @@ onBeforeUnmount(() => {
       @pointerleave="hidePreview"
     >
       <header class="project-hover-list__heading">
-        <span class="project-hover-list__number">00</span>
-        <div class="project-hover-list__heading-copy">
-          <p class="chapter-label">02 · {{ t('sections.projects') }}</p>
-          <h2 id="projects-title">{{ t('headings.projects') }}</h2>
-        </div>
+        <p class="chapter-label">02 · {{ t('sections.projects') }}</p>
+        <h2 id="projects-title">{{ t('headings.projects') }}</h2>
       </header>
 
       <RouterLink
@@ -128,28 +126,42 @@ onBeforeUnmount(() => {
       </RouterLink>
     </div>
 
-    <aside class="project-sticky-preview" aria-hidden="true">
-      <div class="project-strip-gallery">
-        <div
-          v-for="project in projects"
-          :key="project.slug"
-          class="project-strip-gallery__panel"
-          :class="{ 'is-active': activeProject?.slug === project.slug }"
-        >
+    <div ref="galleryTrack" class="project-flex-gallery" :aria-label="t('headings.projects')">
+      <RouterLink
+        v-for="(project, index) in projects"
+        :key="project.slug"
+        class="project-flex-gallery__card"
+        :class="{ 'is-active': activeProject?.slug === project.slug }"
+        :data-gallery-index="index"
+        :to="`/projects/${project.slug}`"
+      >
+        <div class="project-flex-gallery__media">
           <ResponsivePortfolioImage
             v-if="project.media?.type === 'image'"
             :src="project.media.src"
             :alt="pick(project.media.alt)"
             :width="project.media.width"
             :height="project.media.height"
-            sizes="60vw"
-            image-class="project-strip-gallery__image"
+            sizes="100svh"
+            image-class="project-flex-gallery__image"
           />
-          <div v-else class="project-strip-gallery__placeholder"></div>
-          <p>{{ pick(project.title) }}</p>
+          <div v-else class="project-flex-gallery__placeholder">
+            <small>{{ t('imageNeeded') }}</small>
+          </div>
         </div>
-      </div>
-    </aside>
+        <div class="project-flex-gallery__meta">
+          <div class="project-flex-gallery__reveal">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+          </div>
+          <div class="project-flex-gallery__reveal">
+            <h3>{{ pick(project.title) }}</h3>
+          </div>
+          <div class="project-flex-gallery__reveal">
+            <p>{{ pick(project.summary) }}</p>
+          </div>
+        </div>
+      </RouterLink>
+    </div>
 
     <div
       ref="preview"
