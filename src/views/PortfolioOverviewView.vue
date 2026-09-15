@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
+import PortfolioDecorations from '@/components/PortfolioDecorations.vue'
 import SectionNavigation from '@/components/SectionNavigation.vue'
 import SectionProgress from '@/components/SectionProgress.vue'
 import HomeSection from '@/sections/HomeSection.vue'
@@ -32,6 +33,7 @@ const { goTo } = useHorizontalNavigation({
 })
 useFeaturedGalleryMotion(track)
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
+const activeSectionId = computed(() => sections[activeSectionIndex.value]?.id ?? 'home')
 const { language, isLanguageChanging, t } = useLanguage()
 const { isHomeIntroPlaying } = useHomeIntro()
 const { isHomeNight } = useHomeTheme()
@@ -52,6 +54,7 @@ watch(language, refreshAfterLayout, { flush: 'post' })
     <a class="skip-link" href="#home-title">{{ t('skip') }}</a
     ><AppHeader />
     <p class="orientation-note">{{ t('rotate') }}</p>
+    <PortfolioDecorations :active-section="activeSectionId" />
     <main ref="track" class="portfolio-track" tabindex="-1">
       <HomeSection @next="goTo(1)" /><FeaturedSection :project="projects[0]" /><ProjectsSection
         :projects="projects.slice(1)"

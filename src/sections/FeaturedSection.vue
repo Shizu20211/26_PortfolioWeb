@@ -22,11 +22,14 @@ const { t } = useLanguage()
         </div>
         <ProjectSummaryCard :project="project" featured />
       </article>
+      <div
+        class="section-heading section-heading--subpanel featured-shared-heading"
+        aria-hidden="true"
+      >
+        <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
+        <h2>{{ t('headings.featured') }}</h2>
+      </div>
       <article class="featured-panel featured-panel--visual" data-track-panel>
-        <div class="section-heading section-heading--subpanel" aria-hidden="true">
-          <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
-          <h2>{{ t('headings.featured') }}</h2>
-        </div>
         <div class="featured-panel__copy">
           <p class="chapter-label">01 · {{ t('featuredPanels.visual.label') }}</p>
           <h3>{{ t('featuredPanels.visual.title') }}</h3>
@@ -35,10 +38,6 @@ const { t } = useLanguage()
         <CinematicProjectVisual :project="project" panel="visual" />
       </article>
       <article class="featured-panel featured-panel--interaction" data-track-panel>
-        <div class="section-heading section-heading--subpanel" aria-hidden="true">
-          <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
-          <h2>{{ t('headings.featured') }}</h2>
-        </div>
         <CinematicProjectVisual :project="project" panel="interaction" />
         <div class="featured-panel__copy">
           <p class="chapter-label">01 · {{ t('featuredPanels.interaction.label') }}</p>
