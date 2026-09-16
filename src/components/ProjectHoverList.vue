@@ -25,7 +25,6 @@ let intersectionObserver
 let moveX
 let moveY
 let touchStartX = 0
-let touchStartTime = 0
 
 function showPreview(project, fromKeyboard = false) {
   activeProject.value = project
@@ -48,7 +47,6 @@ function movePreview(event) {
 
 function handleGalleryTouchStart(event) {
   touchStartX = event.touches[0]?.clientX ?? 0
-  touchStartTime = performance.now()
 }
 
 function handleGalleryTouchEnd(event) {
@@ -56,12 +54,22 @@ function handleGalleryTouchEnd(event) {
   const endX = event.changedTouches[0]?.clientX ?? touchStartX
   const delta = touchStartX - endX
   const distance = Math.abs(delta)
-  const duration = performance.now() - touchStartTime
-  const startedNearEdge = touchStartX <= 44 || touchStartX >= innerWidth - 44
-  const isStrongSwipe = duration <= 320 && distance >= innerWidth * 0.22
-  if (!gallery || distance < 36 || (!startedNearEdge && !isStrongSwipe)) return
+  if (!gallery || distance < 36) return
 
   const direction = delta > 0 ? 1 : -1
+  const activeIndex = props.projects.findIndex(
+    (project) => project.slug === activeProject.value?.slug,
+  )
+  const isLeavingStart = direction < 0 && activeIndex === 0
+  const isLeavingEnd = direction > 0 && activeIndex === props.projects.length - 1
+
+  if (isLeavingStart || isLeavingEnd) goToAdjacentSection(direction)
+}
+
+function goToAdjacentSection(direction) {
+  const gallery = galleryTrack.value
+  if (!gallery) return
+
   const outerTrack = gallery.closest('.portfolio-track')
   const projectsSection = gallery.closest('#projects')
   const target =
@@ -79,18 +87,15 @@ function updateGalleryActive() {
   if (!landscapeQuery?.matches || !gallery) return
 
   const galleryRect = gallery.getBoundingClientRect()
-  const marker = galleryRect.left + Math.min(96, gallery.clientWidth * 0.18)
+  const marker = galleryRect.left + gallery.clientWidth * 0.5
   const cards = [...gallery.querySelectorAll('[data-gallery-index]')]
-  const current =
-    cards.find((card) => {
-      const rect = card.getBoundingClientRect()
-      return rect.left <= marker && rect.right > marker
-    }) ??
-    cards.sort(
-      (a, b) =>
-        Math.abs(a.getBoundingClientRect().left - marker) -
-        Math.abs(b.getBoundingClientRect().left - marker),
-    )[0]
+  const current = cards.sort((a, b) => {
+    const aRect = a.getBoundingClientRect()
+    const bRect = b.getBoundingClientRect()
+    const aCenter = aRect.left + aRect.width / 2
+    const bCenter = bRect.left + bRect.width / 2
+    return Math.abs(aCenter - marker) - Math.abs(bCenter - marker)
+  })[0]
   const index = Number(current?.dataset.galleryIndex)
 
   if (Number.isInteger(index) && activeProject.value?.slug !== props.projects[index]?.slug) {
@@ -104,7 +109,7 @@ function setupIntersectionObserver() {
 
   intersectionObserver = new IntersectionObserver(updateGalleryActive, {
     root: galleryTrack.value,
-    rootMargin: '0px -65% 0px -15%',
+    rootMargin: '0px -40% 0px -40%',
     threshold: [0, 0.2, 0.5],
   })
 
@@ -122,6 +127,12 @@ onMounted(() => {
   landscapeQuery.addEventListener('change', setupIntersectionObserver)
   galleryTrack.value?.addEventListener('scroll', updateGalleryActive, { passive: true })
   setupIntersectionObserver()
+  requestAnimationFrame(() => {
+    const firstCard = galleryTrack.value?.querySelector('[data-gallery-index="0"]')
+    if (!firstCard || !galleryTrack.value) return
+    galleryTrack.value.scrollLeft =
+      firstCard.offsetLeft - (galleryTrack.value.clientWidth - firstCard.offsetWidth) / 2
+  })
   if (!preview.value) return
 
   gsap.set(preview.value, { xPercent: -50, yPercent: -50 })
@@ -211,6 +222,22 @@ onBeforeUnmount(() => {
           >
             {{ t('viewProject') }} ↗
           </RouterLink>
+          <button
+            v-if="index === 0 && activeProject?.slug === project.slug"
+            class="project-flex-gallery__section-link project-flex-gallery__section-link--previous"
+            type="button"
+            @click.stop="goToAdjacentSection(-1)"
+          >
+            ← {{ t('goFeatured') }}
+          </button>
+          <button
+            v-if="index === projects.length - 1 && activeProject?.slug === project.slug"
+            class="project-flex-gallery__section-link project-flex-gallery__section-link--next"
+            type="button"
+            @click.stop="goToAdjacentSection(1)"
+          >
+            {{ t('goArtworks') }} →
+          </button>
         </div>
         <div class="project-flex-gallery__meta">
           <div class="project-flex-gallery__reveal">
