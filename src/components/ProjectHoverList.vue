@@ -24,6 +24,9 @@ let landscapeQuery
 let intersectionObserver
 let moveX
 let moveY
+let touchStartX = 0
+let armedBoundary = 0
+let boundaryTimer
 
 function showPreview(project, fromKeyboard = false) {
   activeProject.value = project
@@ -42,6 +45,42 @@ function movePreview(event) {
   if (!canFollowPointer || !isPreviewVisible.value) return
   moveX?.(event.clientX)
   moveY?.(event.clientY)
+}
+
+function resetBoundaryGesture() {
+  armedBoundary = 0
+  window.clearTimeout(boundaryTimer)
+}
+
+function handleGalleryTouchStart(event) {
+  touchStartX = event.touches[0]?.clientX ?? 0
+}
+
+function handleGalleryTouchEnd(event) {
+  const gallery = galleryTrack.value
+  const endX = event.changedTouches[0]?.clientX ?? touchStartX
+  const delta = touchStartX - endX
+  if (!gallery || Math.abs(delta) < 36) return
+
+  const direction = delta > 0 ? 1 : -1
+  const maxScroll = gallery.scrollWidth - gallery.clientWidth
+  const isAtBoundary = direction > 0 ? gallery.scrollLeft >= maxScroll - 3 : gallery.scrollLeft <= 3
+
+  if (!isAtBoundary) {
+    resetBoundaryGesture()
+    return
+  }
+
+  if (armedBoundary === direction) {
+    const outerTrack = gallery.closest('.portfolio-track')
+    outerTrack?.scrollBy({ left: direction * innerWidth, behavior: 'smooth' })
+    resetBoundaryGesture()
+    return
+  }
+
+  armedBoundary = direction
+  window.clearTimeout(boundaryTimer)
+  boundaryTimer = window.setTimeout(resetBoundaryGesture, 900)
 }
 
 function setupIntersectionObserver() {
@@ -88,6 +127,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  window.clearTimeout(boundaryTimer)
   landscapeQuery?.removeEventListener('change', setupIntersectionObserver)
   intersectionObserver?.disconnect()
   if (preview.value) gsap.killTweensOf(preview.value)
@@ -131,8 +171,9 @@ onBeforeUnmount(() => {
       class="project-flex-gallery"
       :aria-label="t('headings.projects')"
       @pointerdown.stop
-      @touchstart.stop
+      @touchstart.stop="handleGalleryTouchStart"
       @touchmove.stop
+      @touchend.stop="handleGalleryTouchEnd"
     >
       <article
         v-for="(project, index) in projects"
@@ -154,6 +195,14 @@ onBeforeUnmount(() => {
           <div v-else class="project-flex-gallery__placeholder">
             <small>{{ t('imageNeeded') }}</small>
           </div>
+          <RouterLink
+            v-if="activeProject?.slug === project.slug"
+            class="project-flex-gallery__link"
+            :to="`/projects/${project.slug}`"
+            @click.stop
+          >
+            {{ t('viewProject') }} ↗
+          </RouterLink>
         </div>
         <div class="project-flex-gallery__meta">
           <div class="project-flex-gallery__reveal">
@@ -168,14 +217,6 @@ onBeforeUnmount(() => {
         </div>
       </article>
     </div>
-
-    <RouterLink
-      v-if="activeProject"
-      class="project-flex-gallery__link"
-      :to="`/projects/${activeProject.slug}`"
-    >
-      {{ t('viewProject') }} ↗
-    </RouterLink>
 
     <div
       ref="preview"

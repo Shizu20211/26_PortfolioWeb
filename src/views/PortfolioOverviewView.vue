@@ -22,8 +22,14 @@ import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
 const track = ref(null)
 const sectionIds = sections.map(({ id }) => id)
-const { measurements, getSectionIndex, getSectionOffset, getAdjacentOffset, refreshAfterLayout } =
-  useTrackMeasurements(sectionIds, track)
+const {
+  measurements,
+  trackScrollWidth,
+  getSectionIndex,
+  getSectionOffset,
+  getAdjacentOffset,
+  refreshAfterLayout,
+} = useTrackMeasurements(sectionIds, track)
 const { activeSectionIndex } = useActiveSection(sectionIds, track, measurements, getSectionIndex)
 const { goTo } = useHorizontalNavigation({
   sectionIds,
@@ -33,7 +39,6 @@ const { goTo } = useHorizontalNavigation({
 })
 useFeaturedGalleryMotion(track)
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
-const activeSectionId = computed(() => sections[activeSectionIndex.value]?.id ?? 'home')
 const { language, isLanguageChanging, t } = useLanguage()
 const { isHomeIntroPlaying } = useHomeIntro()
 const { isHomeNight } = useHomeTheme()
@@ -54,9 +59,10 @@ watch(language, refreshAfterLayout, { flush: 'post' })
     <a class="skip-link" href="#home-title">{{ t('skip') }}</a
     ><AppHeader />
     <p class="orientation-note">{{ t('rotate') }}</p>
-    <PortfolioDecorations :active-section="activeSectionId" />
     <main ref="track" class="portfolio-track" tabindex="-1">
-      <HomeSection @next="goTo(1)" /><FeaturedSection :project="projects[0]" /><ProjectsSection
+      <PortfolioDecorations :style="{ width: `${trackScrollWidth}px` }" /><HomeSection
+        @next="goTo(1)"
+      /><FeaturedSection :project="projects[0]" /><ProjectsSection
         :projects="projects.slice(1)"
       /><ArtworksSection :artworks="artworks" /><AboutSection />
     </main>

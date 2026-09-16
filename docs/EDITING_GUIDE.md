@@ -27,7 +27,7 @@
 | Featured 三個子面板               | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder     | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
 | Projects Hover List／Flex Gallery | `src/components/ProjectHoverList.vue`         | 桌面專案列、手機橫向 Gallery 與 Preview             |
-| 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | 不受 Section 裁切的雲朵與花朵；依目前章節換圖       |
+| 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | 寬度跟隨完整 Track；裝飾定位在各 Section 邊界       |
 | Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                        | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                  | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
