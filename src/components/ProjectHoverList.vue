@@ -63,31 +63,50 @@ function handleGalleryTouchEnd(event) {
 
   const direction = delta > 0 ? 1 : -1
   const outerTrack = gallery.closest('.portfolio-track')
-  outerTrack?.scrollBy({ left: direction * innerWidth, behavior: 'smooth' })
+  const projectsSection = gallery.closest('#projects')
+  const target =
+    direction > 0
+      ? document.getElementById('artworks')?.offsetLeft
+      : Math.max(0, (projectsSection?.offsetLeft ?? innerWidth) - innerWidth)
+
+  if (outerTrack && Number.isFinite(target)) {
+    outerTrack.scrollTo({ left: target, behavior: 'smooth' })
+  }
+}
+
+function updateGalleryActive() {
+  const gallery = galleryTrack.value
+  if (!landscapeQuery?.matches || !gallery) return
+
+  const galleryRect = gallery.getBoundingClientRect()
+  const marker = galleryRect.left + Math.min(96, gallery.clientWidth * 0.18)
+  const cards = [...gallery.querySelectorAll('[data-gallery-index]')]
+  const current =
+    cards.find((card) => {
+      const rect = card.getBoundingClientRect()
+      return rect.left <= marker && rect.right > marker
+    }) ??
+    cards.sort(
+      (a, b) =>
+        Math.abs(a.getBoundingClientRect().left - marker) -
+        Math.abs(b.getBoundingClientRect().left - marker),
+    )[0]
+  const index = Number(current?.dataset.galleryIndex)
+
+  if (Number.isInteger(index) && activeProject.value?.slug !== props.projects[index]?.slug) {
+    activeProject.value = props.projects[index]
+  }
 }
 
 function setupIntersectionObserver() {
   intersectionObserver?.disconnect()
   if (!landscapeQuery?.matches || !galleryTrack.value) return
 
-  const visibility = new Map()
-  intersectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => visibility.set(entry.target, entry.intersectionRatio))
-
-      const current = [...visibility.entries()]
-        .filter(([, ratio]) => ratio > 0)
-        .sort((a, b) => b[1] - a[1])[0]?.[0]
-      const index = Number(current?.dataset.galleryIndex)
-
-      if (Number.isInteger(index)) activeProject.value = props.projects[index]
-    },
-    {
-      root: galleryTrack.value,
-      rootMargin: '0px -78% 0px 0px',
-      threshold: [0, 0.15, 0.35, 0.65],
-    },
-  )
+  intersectionObserver = new IntersectionObserver(updateGalleryActive, {
+    root: galleryTrack.value,
+    rootMargin: '0px -65% 0px -15%',
+    threshold: [0, 0.2, 0.5],
+  })
 
   galleryTrack.value
     .querySelectorAll('[data-gallery-index]')
@@ -101,6 +120,7 @@ onMounted(() => {
   )
   activeProject.value = props.projects[0] ?? null
   landscapeQuery.addEventListener('change', setupIntersectionObserver)
+  galleryTrack.value?.addEventListener('scroll', updateGalleryActive, { passive: true })
   setupIntersectionObserver()
   if (!preview.value) return
 
@@ -111,6 +131,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   landscapeQuery?.removeEventListener('change', setupIntersectionObserver)
+  galleryTrack.value?.removeEventListener('scroll', updateGalleryActive)
   intersectionObserver?.disconnect()
   if (preview.value) gsap.killTweensOf(preview.value)
 })
@@ -126,7 +147,12 @@ onBeforeUnmount(() => {
       @pointerleave="hidePreview"
     >
       <header class="project-hover-list__heading">
-        <p class="chapter-label">02 · {{ t('sections.projects') }}</p>
+        <p class="chapter-label project-heading-label project-heading-label--desktop">
+          02 · {{ t('sections.projects') }}
+        </p>
+        <p class="chapter-label project-heading-label project-heading-label--mobile">
+          02 · {{ t('headings.projects') }}
+        </p>
         <h2 id="projects-title">{{ t('headings.projects') }}</h2>
       </header>
 

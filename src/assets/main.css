@@ -1042,6 +1042,9 @@ h2 em {
   font-size: clamp(2.8rem, 6vw, 7rem);
   line-height: 0.9;
 }
+.project-heading-label--mobile {
+  display: none;
+}
 .project-hover-list__item {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr) minmax(7rem, auto) 1.5rem;
@@ -1586,8 +1589,18 @@ h2 em {
     border: 0;
   }
   .project-hover-list__heading h2 {
-    margin-top: 0.25rem;
-    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+  .project-heading-label--desktop {
+    display: none;
+  }
+  .project-heading-label--mobile {
+    display: block;
+    margin: 0;
   }
   .project-hover-list__item {
     display: none;
@@ -1947,6 +1960,17 @@ h2 em {
     max-width: 18rem;
     font-size: 2.125rem;
     white-space: normal;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .section-heading h2,
+  .featured-panel__copy h3,
+  .project-hover-list__heading h2,
+  .about-intro h2,
+  .placeholder-view h1 {
+    max-width: 12ch;
+    font-size: clamp(2.6rem, 4.4vw, 5.4rem);
+    line-height: 1.05;
   }
 }
 @media (prefers-reduced-motion: reduce) {
