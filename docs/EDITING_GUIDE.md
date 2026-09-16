@@ -184,17 +184,17 @@ media: {
 
 ## 互動邏輯從哪裡改
 
-| 功能               | 檔案                                          | 注意事項                                                             |
-| ------------------ | --------------------------------------------- | -------------------------------------------------------------------- |
-| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。                 |
-| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。                 |
-| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。                        |
-| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。                        |
-| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 中央判定與首尾 Spacer 控制吸附；第 1／5 張按鈕或向外滑動可切換章節。 |
-| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                                 |
-| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                     |
-| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                           |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                             |
+| 功能               | 檔案                                          | 注意事項                                                         |
+| ------------------ | --------------------------------------------- | ---------------------------------------------------------------- |
+| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。             |
+| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。             |
+| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。                    |
+| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。                    |
+| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 中央判定控制吸附；首尾導覽區按鈕或第 1／5 張向外滑動可切換章節。 |
+| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                             |
+| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                 |
+| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                       |
+| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                         |
 
 ### HomeCelestialToggle 狀態規格
 

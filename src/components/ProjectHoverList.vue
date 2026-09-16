@@ -194,6 +194,15 @@ onBeforeUnmount(() => {
       @touchmove.stop
       @touchend.stop="handleGalleryTouchEnd"
     >
+      <button
+        class="project-flex-gallery__section-gate project-flex-gallery__section-gate--previous"
+        type="button"
+        @click.stop="goToAdjacentSection(-1)"
+      >
+        <span>{{ t('goFeatured') }}</span>
+        <span class="project-flex-gallery__gate-line" aria-hidden="true"></span>
+      </button>
+
       <article
         v-for="(project, index) in projects"
         :key="project.slug"
@@ -222,22 +231,6 @@ onBeforeUnmount(() => {
           >
             {{ t('viewProject') }} ↗
           </RouterLink>
-          <button
-            v-if="index === 0 && activeProject?.slug === project.slug"
-            class="project-flex-gallery__section-link project-flex-gallery__section-link--previous"
-            type="button"
-            @click.stop="goToAdjacentSection(-1)"
-          >
-            ← {{ t('goFeatured') }}
-          </button>
-          <button
-            v-if="index === projects.length - 1 && activeProject?.slug === project.slug"
-            class="project-flex-gallery__section-link project-flex-gallery__section-link--next"
-            type="button"
-            @click.stop="goToAdjacentSection(1)"
-          >
-            {{ t('goArtworks') }} →
-          </button>
         </div>
         <div class="project-flex-gallery__meta">
           <div class="project-flex-gallery__reveal">
@@ -251,6 +244,15 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </article>
+
+      <button
+        class="project-flex-gallery__section-gate project-flex-gallery__section-gate--next"
+        type="button"
+        @click.stop="goToAdjacentSection(1)"
+      >
+        <span class="project-flex-gallery__gate-line" aria-hidden="true"></span>
+        <span>{{ t('goArtworks') }}</span>
+      </button>
     </div>
 
     <div
