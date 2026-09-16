@@ -25,8 +25,7 @@ let intersectionObserver
 let moveX
 let moveY
 let touchStartX = 0
-let armedBoundary = 0
-let boundaryTimer
+let touchStartTime = 0
 
 function showPreview(project, fromKeyboard = false) {
   activeProject.value = project
@@ -47,40 +46,24 @@ function movePreview(event) {
   moveY?.(event.clientY)
 }
 
-function resetBoundaryGesture() {
-  armedBoundary = 0
-  window.clearTimeout(boundaryTimer)
-}
-
 function handleGalleryTouchStart(event) {
   touchStartX = event.touches[0]?.clientX ?? 0
+  touchStartTime = performance.now()
 }
 
 function handleGalleryTouchEnd(event) {
   const gallery = galleryTrack.value
   const endX = event.changedTouches[0]?.clientX ?? touchStartX
   const delta = touchStartX - endX
-  if (!gallery || Math.abs(delta) < 36) return
+  const distance = Math.abs(delta)
+  const duration = performance.now() - touchStartTime
+  const startedNearEdge = touchStartX <= 44 || touchStartX >= innerWidth - 44
+  const isStrongSwipe = duration <= 320 && distance >= innerWidth * 0.22
+  if (!gallery || distance < 36 || (!startedNearEdge && !isStrongSwipe)) return
 
   const direction = delta > 0 ? 1 : -1
-  const maxScroll = gallery.scrollWidth - gallery.clientWidth
-  const isAtBoundary = direction > 0 ? gallery.scrollLeft >= maxScroll - 3 : gallery.scrollLeft <= 3
-
-  if (!isAtBoundary) {
-    resetBoundaryGesture()
-    return
-  }
-
-  if (armedBoundary === direction) {
-    const outerTrack = gallery.closest('.portfolio-track')
-    outerTrack?.scrollBy({ left: direction * innerWidth, behavior: 'smooth' })
-    resetBoundaryGesture()
-    return
-  }
-
-  armedBoundary = direction
-  window.clearTimeout(boundaryTimer)
-  boundaryTimer = window.setTimeout(resetBoundaryGesture, 900)
+  const outerTrack = gallery.closest('.portfolio-track')
+  outerTrack?.scrollBy({ left: direction * innerWidth, behavior: 'smooth' })
 }
 
 function setupIntersectionObserver() {
@@ -127,7 +110,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  window.clearTimeout(boundaryTimer)
   landscapeQuery?.removeEventListener('change', setupIntersectionObserver)
   intersectionObserver?.disconnect()
   if (preview.value) gsap.killTweensOf(preview.value)

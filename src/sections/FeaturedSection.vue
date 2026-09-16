@@ -39,7 +39,8 @@ onBeforeUnmount(() => {
     <div class="featured-panels">
       <article class="featured-panel featured-panel--overview" data-track-panel>
         <div class="section-heading">
-          <p id="featured-title" class="chapter-label">01 · {{ t('headings.featured') }}</p>
+          <p class="chapter-label">01 · {{ t('sections.featured') }}</p>
+          <h2 id="featured-title">{{ t('headings.featured') }}</h2>
           <p>{{ t('featuredNote') }}</p>
         </div>
         <ProjectSummaryCard :project="project" featured />

@@ -27,7 +27,7 @@
 | Featured 三個子面板               | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder     | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
 | Projects Hover List／Flex Gallery | `src/components/ProjectHoverList.vue`         | 桌面專案列、手機橫向 Gallery 與 Preview             |
-| 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | 寬度跟隨完整 Track；裝飾定位在各 Section 邊界       |
+| 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | `boundaries` 可追加裝飾，並調整邊界、上下位置與旋轉 |
 | Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                        | `src/data/sections.js`                        | 每章的 `color`                                      |
 | 全站品牌色與字型                  | `src/assets/styles/tokens.css`                | `--color-*`、`--font-*`                             |
@@ -184,17 +184,17 @@ media: {
 
 ## 互動邏輯從哪裡改
 
-| 功能               | 檔案                                          | 注意事項                                                                                   |
-| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。                                       |
-| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。                                       |
-| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。                                              |
-| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。                                              |
-| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 手機橫向由 Intersection Observer 更新 Flex Gallery；卡片只負責滑動，獨立按鈕才會開啟子頁。 |
-| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                                                       |
-| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                                           |
-| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                                                 |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                                                   |
+| 功能               | 檔案                                          | 注意事項                                                               |
+| ------------------ | --------------------------------------------- | ---------------------------------------------------------------------- |
+| 目前章節判定       | `src/composables/useActiveSection.js`         | 背景、導覽、頁碼與 Hash 共用此狀態，不要另建第二套。                   |
+| Track 真實尺寸量測 | `src/composables/useTrackMeasurements.js`     | Section Offset、Track Width 與版面變動重算集中於此。                   |
+| 滾輪與左右鍵       | `src/composables/useHorizontalNavigation.js`  | 滾輪數值會影響手感；桌面不接管 Pointer Drag。                          |
+| Featured 圖片視差  | `src/composables/useFeaturedGalleryMotion.js` | GSAP ScrollTrigger 僅綁定 Featured 水平進度。                          |
+| Projects 列表切換  | `src/components/ProjectHoverList.vue`         | 一般手勢瀏覽 Gallery；邊緣或快速長滑切換章節，卡片內獨立連結開啟子頁。 |
+| 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                                   |
+| Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                       |
+| Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                             |
+| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                               |
 
 ### HomeCelestialToggle 狀態規格
 

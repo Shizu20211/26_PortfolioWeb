@@ -12,6 +12,11 @@ const boundaries = [
     flower: flowerPink,
     width: 231,
     height: 231,
+    cloudTop: '12%',
+    cloudX: '-5rem',
+    flowerBottom: '12%',
+    flowerX: '-2.5rem',
+    flowerRotation: '-8deg',
   },
   {
     key: 'featured-projects',
@@ -20,6 +25,11 @@ const boundaries = [
     flower: flowerBlue,
     width: 233,
     height: 232,
+    cloudTop: '8%',
+    cloudX: '-4rem',
+    flowerBottom: '18%',
+    flowerX: '-3rem',
+    flowerRotation: '6deg',
   },
   {
     key: 'projects-artworks',
@@ -28,6 +38,11 @@ const boundaries = [
     flower: flowerPink,
     width: 231,
     height: 231,
+    cloudTop: '16%',
+    cloudX: '-6rem',
+    flowerBottom: '10%',
+    flowerX: '-2rem',
+    flowerRotation: '-10deg',
   },
   {
     key: 'artworks-about',
@@ -36,6 +51,11 @@ const boundaries = [
     flower: flowerBlue,
     width: 233,
     height: 232,
+    cloudTop: '10%',
+    cloudX: '-4.5rem',
+    flowerBottom: '20%',
+    flowerX: '-3.5rem',
+    flowerRotation: '8deg',
   },
 ]
 </script>
@@ -46,7 +66,14 @@ const boundaries = [
       v-for="boundary in boundaries"
       :key="boundary.key"
       class="portfolio-boundary-decoration"
-      :style="{ '--boundary-offset': boundary.offset }"
+      :style="{
+        '--boundary-offset': boundary.offset,
+        '--boundary-cloud-top': boundary.cloudTop,
+        '--boundary-cloud-x': boundary.cloudX,
+        '--boundary-flower-bottom': boundary.flowerBottom,
+        '--boundary-flower-x': boundary.flowerX,
+        '--boundary-flower-rotation': boundary.flowerRotation,
+      }"
     >
       <FloatingCloud
         class="portfolio-decoration portfolio-decoration--cloud"
