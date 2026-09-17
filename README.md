@@ -70,7 +70,7 @@ npm run preview
 | `src/components/LanguageSwitcher.vue`       | 三顆獨立的 `中　EN　日` 純文字按鈕與明確語言切換。  |
 | `src/components/SectionNavigation.vue`      | 桌面底部五章導覽及 `aria-current`。                 |
 | `src/components/SectionProgress.vue`        | 目前章節頁碼，例如 `01 / 05`。                      |
-| `src/components/NavigationKitten.vue`       | 底部導覽附近的小貓追隨、行走與定時跳躍。            |
+| `src/components/CatFollower.vue`            | PSD 分層小貓的追隨、視線、步行與定時跳躍。          |
 | `src/components/PortfolioFooter.vue`        | About Footer、版權資訊與返回首頁操作。              |
 | `src/components/LayeredHeroArtwork.vue`     | Intro 主圖、Pointer 視差、雲朵與花朵裝飾。          |
 | `src/components/HomeCelestialToggle.vue`    | Home 太陽／月亮按鈕與夜間星點。                     |
@@ -107,6 +107,7 @@ npm run preview
 | `src/assets/styles/tokens.css`                       | 色彩、字型、圓角、陰影及頁面間距變數。            |
 | `src/assets/styles/base.css`                         | Reset、Focus Visible 與 Reduced Motion 基礎規則。 |
 | `src/assets/images/intro/intro-main.png`             | 目前 Intro 主視覺。                               |
+| `src/assets/cat/`                                    | 小貓八層透明 PNG 與原始 500×500 圖層座標。        |
 | `src/assets/images/{featured,projects,artworks}`     | 後續正式作品圖片存放位置。                        |
 | `src/assets/illustrations/{hero,clouds,decorations}` | 後續分層插畫、雲朵與裝飾素材位置。                |
 

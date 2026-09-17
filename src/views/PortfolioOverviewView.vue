@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import PortfolioDecorations from '@/components/PortfolioDecorations.vue'
-import NavigationKitten from '@/components/NavigationKitten.vue'
+import CatFollower from '@/components/CatFollower.vue'
 import SectionNavigation from '@/components/SectionNavigation.vue'
 import SectionProgress from '@/components/SectionProgress.vue'
 import HomeSection from '@/sections/HomeSection.vue'
@@ -69,7 +69,7 @@ watch(language, refreshAfterLayout, { flush: 'post' })
         :projects="projects.slice(1)"
       /><ArtworksSection :artworks="artworks" /><AboutSection @home="goTo(0)" />
     </main>
-    <NavigationKitten />
+    <CatFollower />
     <SectionNavigation
       :sections="sections"
       :active-index="activeSectionIndex"
