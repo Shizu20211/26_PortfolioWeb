@@ -1289,8 +1289,8 @@ body.project-detail-open {
 .project-detail__close {
   position: absolute;
   z-index: 3;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 1.75rem;
+  right: 1.75rem;
   padding: 0.35rem 0;
   border: 0;
   border-bottom: 1px solid currentColor;
