@@ -12,7 +12,7 @@
 | 姓名                              | `src/components/AppHeader.vue`                | `CHING-YUNG HUANG`；頁尾另見 `AboutSection.vue`     |
 | 職稱與三個能力標籤                | `src/sections/HomeSection.vue`                | `.role` 與 `.skill-pills`                           |
 | 專案名稱、摘要、Role、Tools       | `src/data/projects.js`                        | 對應專案物件的 `title`、`summary`、`role`、`tools`  |
-| 專案網址代稱                      | `src/data/projects.js`、`src/router/index.js` | `slug` 與 `projectSlugs` 必須一致                   |
+| 專案識別名稱                      | `src/data/projects.js`                        | `slug` 需保持唯一，供 Overlay 與畫面狀態辨識        |
 | Artwork 名稱、分類、Contribution  | `src/data/artworks.js`                        | `title`、`type`、`contribution`                     |
 | Intro 圖片                        | `src/components/LayeredHeroArtwork.vue`       | `introMain` 匯入路徑                                |
 | Intro 圖片替代文字                | `src/components/LayeredHeroArtwork.vue`       | `introAlt` 三語物件                                 |
@@ -29,6 +29,9 @@
 | Projects Hover List／Flex Gallery | `src/components/ProjectHoverList.vue`         | 桌面專案列、手機橫向 Gallery 與 Preview             |
 | Project Detail Overlay            | `src/components/ProjectDetailOverlay.vue`     | 專案細節、右欄捲動、關閉按鈕與焦點控制              |
 | Project 空間轉場                  | `src/composables/useProjectTransition.js`     | Temporary visual、GSAP Flip.fit 與清理              |
+| Magnetic Hover                    | `src/composables/useMagneticHover.js`         | 僅套用於具有 `data-magnetic` 的主要操作元素。       |
+| Navigation 小貓                   | `src/components/NavigationKitten.vue`         | Pointer 追隨、活動範圍、行走及每秒跳躍判斷。        |
+| About Footer                      | `src/components/PortfolioFooter.vue`          | 版權資訊與返回首頁按鈕。                            |
 | 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | `boundaries` 可追加裝飾，並調整邊界、上下位置與旋轉 |
 | Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
 | 五章背景色                        | `src/data/sections.js`                        | 每章的 `color`                                      |
@@ -64,7 +67,7 @@
 }
 ```
 
-若是新增專案路由，還要把相同 `slug` 加進 `src/router/index.js` 的 `projectSlugs`。沒有確認的內容維持待補，不要推測填寫。
+`slug` 用於首頁 Project Overlay 與畫面狀態辨識，不需另建專案路由。沒有確認的內容維持待補，不要推測填寫。
 
 ### 新增或修改 Artwork
 
@@ -196,6 +199,8 @@ media: {
 | 語言與轉場         | `src/composables/useLanguage.js`              | 語言值固定為 `zh-Hant`、`en`、`ja`。                             |
 | Hero Pointer 視差  | `src/composables/usePointerParallax.js`       | 保留 RAF 節流、Touch 停用及 Pointer Leave 歸零。                 |
 | Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                       |
+| Magnetic Hover     | `src/composables/useMagneticHover.js`         | `data-magnetic` 選取；Touch 與 Reduced Motion 不執行。           |
+| Navigation 小貓    | `src/components/NavigationKitten.vue`         | 僅桌面顯示，Listener、RAF、Interval 必須清理。                   |
 | 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                         |
 
 ### HomeCelestialToggle 狀態規格

@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import PortfolioDecorations from '@/components/PortfolioDecorations.vue'
+import NavigationKitten from '@/components/NavigationKitten.vue'
 import SectionNavigation from '@/components/SectionNavigation.vue'
 import SectionProgress from '@/components/SectionProgress.vue'
 import HomeSection from '@/sections/HomeSection.vue'
@@ -18,6 +19,7 @@ import { useFeaturedGalleryMotion } from '@/composables/useFeaturedGalleryMotion
 import { useHomeIntro } from '@/composables/useHomeIntro'
 import { useHomeTheme } from '@/composables/useHomeTheme'
 import { useLanguage } from '@/composables/useLanguage'
+import { useMagneticHover } from '@/composables/useMagneticHover'
 import { useTrackMeasurements } from '@/composables/useTrackMeasurements'
 
 const track = ref(null)
@@ -38,6 +40,7 @@ const { goTo } = useHorizontalNavigation({
   getAdjacentOffset,
 })
 useFeaturedGalleryMotion(track)
+useMagneticHover()
 const activeColor = computed(() => sections[activeSectionIndex.value]?.color)
 const { language, isLanguageChanging, t } = useLanguage()
 const { isHomeIntroPlaying } = useHomeIntro()
@@ -64,8 +67,9 @@ watch(language, refreshAfterLayout, { flush: 'post' })
         @next="goTo(1)"
       /><FeaturedSection :project="projects[0]" /><ProjectsSection
         :projects="projects.slice(1)"
-      /><ArtworksSection :artworks="artworks" /><AboutSection />
+      /><ArtworksSection :artworks="artworks" /><AboutSection @home="goTo(0)" />
     </main>
+    <NavigationKitten />
     <SectionNavigation
       :sections="sections"
       :active-index="activeSectionIndex"

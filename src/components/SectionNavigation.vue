@@ -13,6 +13,7 @@ const { t } = useLanguage()
       <li v-for="(section, index) in sections" :key="section.id">
         <a
           :href="`#${section.id}`"
+          data-magnetic
           :aria-current="activeIndex === index ? 'page' : undefined"
           @click.prevent="$emit('navigate', index)"
           ><span>{{ section.number }}</span

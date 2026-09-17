@@ -28,6 +28,7 @@ export const messages = {
     capabilities: '能力領域',
     aiCollaboration: 'AI 協作',
     contact: '聯絡方式',
+    backHome: '回到首頁',
     aiStatement: '能閱讀、驗證並修改 AI 輔助產出的程式；不將協作成果宣稱為完全手寫。',
     homeTitle: '日常微光',
     homeLead: '在未知中尋找秩序，在反覆嘗試中找到自己。',
@@ -86,6 +87,7 @@ export const messages = {
     capabilities: 'Capabilities',
     aiCollaboration: 'AI Collaboration',
     contact: 'Contact',
+    backHome: 'Back to Home',
     aiStatement:
       'I can read, validate, and revise AI-assisted code, and do not present collaborative output as entirely hand-written.',
     homeTitle: 'Everyday Glow',
@@ -157,6 +159,7 @@ export const messages = {
     capabilities: 'スキル',
     aiCollaboration: 'AIとの協働',
     contact: 'お問い合わせ',
+    backHome: 'ホームへ戻る',
     aiStatement:
       'AIが支援したコードを読み、検証し、修正できます。協働による成果を完全な手書きコードとは表記しません。',
     homeTitle: '日々の微光',

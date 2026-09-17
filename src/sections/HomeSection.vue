@@ -24,7 +24,7 @@ const { isHomeNight } = useHomeTheme()
       <div class="skill-pills" aria-label="Core skills">
         <span>Visual Design</span><span>Vue / Front-end</span><span>Craft & Culture</span>
       </div>
-      <button class="primary-link" type="button" @click="emit('next')">
+      <button class="primary-link" type="button" data-magnetic @click="emit('next')">
         {{ t('viewWork') }} <span>↗</span></button
       ><button class="text-link" type="button" disabled>
         {{ t('resume') }} <span aria-hidden="true">↓</span>

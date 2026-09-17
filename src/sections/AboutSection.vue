@@ -1,6 +1,8 @@
 <script setup>
 import { useLanguage } from '@/composables/useLanguage'
 import SectionDecorations from '@/components/SectionDecorations.vue'
+import PortfolioFooter from '@/components/PortfolioFooter.vue'
+defineEmits(['home'])
 const { t } = useLanguage()
 const skills = [
   'Visual — Illustrator / Photoshop / Figma',
@@ -39,6 +41,6 @@ const contacts = ['Email', 'GitHub', '104', 'Résumé PDF']
         </div>
       </section>
     </div>
-    <footer class="about-footer">© 2026 CHING-YUNG HUANG</footer>
+    <PortfolioFooter @home="$emit('home')" />
   </section>
 </template>

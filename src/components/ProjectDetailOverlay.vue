@@ -161,6 +161,7 @@ onBeforeUnmount(() => {
         ref="closeButton"
         class="project-detail__close"
         type="button"
+        data-magnetic
         :aria-label="t('closeProject')"
         :disabled="isTransitioning"
         @click="closeDetail"

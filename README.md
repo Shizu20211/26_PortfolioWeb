@@ -21,6 +21,9 @@ npm run preview
 - `02 Projects`：五項網頁／互動作品入口。
 - `03 Artworks`：八類視覺、3D 與工藝作品入口。
 - `04 About`：轉職敘事、技能、AI 協作原則與聯絡方式插槽。
+- About Footer 提供版權資訊與返回首頁操作。
+- 桌面主要操作支援輕量 Magnetic Hover；Reduced Motion 時停用。
+- 桌面 Navigation 上方的小貓會追隨水平 Pointer，並約每秒判斷一次跳躍；手機隱藏。
 - 中文、英文、日文介面；語言偏好儲存在瀏覽器。
 - 桌面支援滾輪逐章、Trackpad 原生水平捲動、鍵盤與導覽列；不接管 Pointer Drag。
 - 手機橫向支援左右滑動；手機直向提示旋轉，但仍能縱向閱讀。
@@ -45,7 +48,7 @@ npm run preview
 | ------------------------------------- | ----------------------------------------------------------- |
 | `src/main.js`                         | 建立 Vue App、載入全域 CSS 與 Vue Router。                  |
 | `src/App.vue`                         | 最外層 Router View；路由頁面由此顯示。                      |
-| `src/router/index.js`                 | 首頁、六個專案詳情、Artworks 及無效網址轉址。               |
+| `src/router/index.js`                 | 首頁、Artworks 預留頁及無效網址轉址。                       |
 | `src/views/PortfolioOverviewView.vue` | 組合五個橫向章節，連接 Active Section、背景色、導覽及頁碼。 |
 | `src/views/ArtworksView.vue`          | Artworks 分類預留頁。                                       |
 
@@ -67,6 +70,8 @@ npm run preview
 | `src/components/LanguageSwitcher.vue`       | 三顆獨立的 `中　EN　日` 純文字按鈕與明確語言切換。  |
 | `src/components/SectionNavigation.vue`      | 桌面底部五章導覽及 `aria-current`。                 |
 | `src/components/SectionProgress.vue`        | 目前章節頁碼，例如 `01 / 05`。                      |
+| `src/components/NavigationKitten.vue`       | 底部導覽附近的小貓追隨、行走與定時跳躍。            |
+| `src/components/PortfolioFooter.vue`        | About Footer、版權資訊與返回首頁操作。              |
 | `src/components/LayeredHeroArtwork.vue`     | Intro 主圖、Pointer 視差、雲朵與花朵裝飾。          |
 | `src/components/HomeCelestialToggle.vue`    | Home 太陽／月亮按鈕與夜間星點。                     |
 | `src/components/FloatingCloud.vue`          | 使用既有圖片、可設定位置、尺寸與速度的裝飾雲。      |
@@ -87,6 +92,7 @@ npm run preview
 | `src/composables/useTrackMeasurements.js`    | 集中量測 Section Offset、Track 寬度並監聽版面尺寸改變。      |
 | `src/composables/usePointerParallax.js`      | Hero Pointer 座標、RAF 節流與離開時歸零。                    |
 | `src/composables/useReducedMotion.js`        | 監聽系統 Reduced Motion 設定。                               |
+| `src/composables/useMagneticHover.js`        | 桌面主要操作的 Magnetic Hover、動態元件監聽與清理。          |
 | `src/composables/useProjectTransition.js`    | Project temporary visual 與 GSAP Flip 空間轉場。             |
 | `src/data/messages.js`                       | 所有介面與長、短自介的中／英／日文案。                       |
 | `src/data/sections.js`                       | 五章 ID、編號及背景色。                                      |

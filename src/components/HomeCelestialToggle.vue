@@ -12,6 +12,7 @@ const { t } = useLanguage()
     <button
       class="home-celestial-toggle"
       type="button"
+      data-magnetic
       :aria-label="isHomeNight ? t('switchToDay') : t('switchToNight')"
       :aria-pressed="isHomeNight"
       @click="toggleHomeTheme"

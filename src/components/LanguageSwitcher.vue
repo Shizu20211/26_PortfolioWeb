@@ -17,6 +17,7 @@ const options = [
       class="language-switcher__option"
       :class="{ 'is-active': language === option.value }"
       type="button"
+      data-magnetic
       :aria-pressed="language === option.value"
       @click="setLanguage(option.value)"
     >
