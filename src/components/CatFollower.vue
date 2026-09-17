@@ -10,7 +10,7 @@ import rightFrontImage from '@/assets/cat/right-front.png'
 import tailImage from '@/assets/cat/tail.png'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
-const CAT_WIDTH = 110
+const CAT_WIDTH = 118
 const EDGE_GAP = 12
 const { prefersReducedMotion } = useReducedMotion()
 
@@ -57,7 +57,7 @@ function updateFromPointer() {
   window.clearTimeout(walkTimer)
   walkTimer = window.setTimeout(() => {
     isWalking.value = false
-  }, 720)
+  }, 950)
   animationFrame = undefined
 }
 
@@ -147,9 +147,9 @@ onBeforeUnmount(() => {
 .cat-follower-mover {
   position: absolute;
   bottom: 0;
-  width: 110px;
-  height: 110px;
-  transition: left 650ms var(--ease-soft);
+  width: 118px;
+  height: 118px;
+  transition: left 900ms var(--ease-soft);
   will-change: left, bottom;
 }
 .cat-follower-facing,
@@ -163,11 +163,11 @@ onBeforeUnmount(() => {
 }
 .cat-follower-puppet {
   position: absolute;
-  top: 29px;
+  top: 31px;
   left: 0;
   width: 500px;
   height: 500px;
-  transform: scale(0.22);
+  transform: scale(0.235);
   transform-origin: top left;
 }
 .cat-part {
@@ -239,17 +239,17 @@ onBeforeUnmount(() => {
 }
 .is-walking .right-front,
 .is-walking .left-back {
-  animation: cat-walk-a 320ms ease-in-out infinite;
+  animation: cat-walk-a 420ms ease-in-out infinite;
 }
 .is-walking .left-front,
 .is-walking .right-back {
-  animation: cat-walk-b 320ms ease-in-out infinite;
+  animation: cat-walk-b 420ms ease-in-out infinite;
 }
 .is-walking .body {
-  animation: cat-body-bob 320ms ease-in-out infinite;
+  animation: cat-body-bob 420ms ease-in-out infinite;
 }
 .is-walking .head {
-  animation: cat-head-bob 320ms ease-in-out infinite;
+  animation: cat-head-bob 420ms ease-in-out infinite;
 }
 .is-jumping {
   animation: cat-jump 850ms cubic-bezier(0.37, 0, 0.63, 1);
