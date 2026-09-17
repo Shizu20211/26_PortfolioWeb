@@ -133,6 +133,10 @@ onBeforeUnmount(() => {
             {{ pick(project.title) }}
           </h2>
           <p class="project-detail__category">{{ project.tags.join(' · ') }}</p>
+          <section class="project-detail__section">
+            <h3>{{ t('projectOverview') }}</h3>
+            <p class="project-detail__description">{{ pick(project.summary) }}</p>
+          </section>
           <dl class="project-detail__meta">
             <div>
               <dt>{{ t('roleLabel') }}</dt>
@@ -142,11 +146,15 @@ onBeforeUnmount(() => {
               <dt>{{ t('toolsLabel') }}</dt>
               <dd>{{ project.tools.join(' / ') }}</dd>
             </div>
+            <div>
+              <dt>{{ t('statusLabel') }}</dt>
+              <dd>{{ t('comingSoon') }}</dd>
+            </div>
           </dl>
-          <p class="project-detail__description">{{ pick(project.summary) }}</p>
-          <RouterLink class="project-detail__case-link" :to="`/projects/${project.slug}`">
-            {{ t('viewProject') }} ↗
-          </RouterLink>
+          <section class="project-detail__section">
+            <h3>{{ t('projectDetails') }}</h3>
+            <p class="project-detail__description">{{ t('projectDetailsPending') }}</p>
+          </section>
         </div>
       </section>
       <button

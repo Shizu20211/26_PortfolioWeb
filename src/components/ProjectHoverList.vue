@@ -66,9 +66,9 @@ function openDesktopProject(project, index, triggerElement) {
 }
 
 function openMobileProject(project, index, event) {
-  const source = event.currentTarget.querySelector(
-    '.project-flex-gallery__image, .project-flex-gallery__placeholder',
-  )
+  const source = event.currentTarget
+    .closest('[data-gallery-index]')
+    ?.querySelector('.project-flex-gallery__image, .project-flex-gallery__placeholder')
   openProject(project, index, source, event.currentTarget)
 }
 
@@ -248,33 +248,27 @@ onBeforeUnmount(() => {
         :data-gallery-index="index"
       >
         <div class="project-flex-gallery__media">
+          <ResponsivePortfolioImage
+            v-if="project.media?.type === 'image'"
+            :src="project.media.src"
+            :alt="pick(project.media.alt)"
+            :width="project.media.width"
+            :height="project.media.height"
+            sizes="100svh"
+            image-class="project-flex-gallery__image"
+          />
+          <div v-else class="project-flex-gallery__placeholder">
+            <small>{{ t('imageNeeded') }}</small>
+          </div>
           <button
-            class="project-flex-gallery__trigger"
+            v-if="activeProject?.slug === project.slug"
+            class="project-flex-gallery__link"
             type="button"
             :aria-label="`${t('openProject')}：${pick(project.title)}`"
             @click.stop="openMobileProject(project, index, $event)"
           >
-            <ResponsivePortfolioImage
-              v-if="project.media?.type === 'image'"
-              :src="project.media.src"
-              :alt="pick(project.media.alt)"
-              :width="project.media.width"
-              :height="project.media.height"
-              sizes="100svh"
-              image-class="project-flex-gallery__image"
-            />
-            <div v-else class="project-flex-gallery__placeholder">
-              <small>{{ t('imageNeeded') }}</small>
-            </div>
-          </button>
-          <RouterLink
-            v-if="activeProject?.slug === project.slug"
-            class="project-flex-gallery__link"
-            :to="`/projects/${project.slug}`"
-            @click.stop
-          >
             {{ t('viewProject') }} ↗
-          </RouterLink>
+          </button>
         </div>
         <div class="project-flex-gallery__meta">
           <div class="project-flex-gallery__reveal">

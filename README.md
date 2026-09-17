@@ -24,7 +24,7 @@ npm run preview
 - 中文、英文、日文介面；語言偏好儲存在瀏覽器。
 - 桌面支援滾輪逐章、Trackpad 原生水平捲動、鍵盤與導覽列；不接管 Pointer Drag。
 - 手機橫向支援左右滑動；手機直向提示旋轉，但仍能縱向閱讀。
-- 所有專案詳情目前為誠實的製作中頁面，不代表完整 Case Study 已完成。
+- 所有專案詳情目前顯示於首頁 Overlay；待補資料保持製作中標示，不代表完整 Case Study 已完成。
 
 ## 檔案與控制區域
 
@@ -41,14 +41,13 @@ npm run preview
 
 ### Vue 入口與頁面
 
-| 檔案                                   | 控制區域／用途                                              |
-| -------------------------------------- | ----------------------------------------------------------- |
-| `src/main.js`                          | 建立 Vue App、載入全域 CSS 與 Vue Router。                  |
-| `src/App.vue`                          | 最外層 Router View；路由頁面由此顯示。                      |
-| `src/router/index.js`                  | 首頁、六個專案詳情、Artworks 及無效網址轉址。               |
-| `src/views/PortfolioOverviewView.vue`  | 組合五個橫向章節，連接 Active Section、背景色、導覽及頁碼。 |
-| `src/views/ProjectPlaceholderView.vue` | 六個專案共用的 Case Study 製作中頁面。                      |
-| `src/views/ArtworksView.vue`           | Artworks 分類預留頁。                                       |
+| 檔案                                  | 控制區域／用途                                              |
+| ------------------------------------- | ----------------------------------------------------------- |
+| `src/main.js`                         | 建立 Vue App、載入全域 CSS 與 Vue Router。                  |
+| `src/App.vue`                         | 最外層 Router View；路由頁面由此顯示。                      |
+| `src/router/index.js`                 | 首頁、六個專案詳情、Artworks 及無效網址轉址。               |
+| `src/views/PortfolioOverviewView.vue` | 組合五個橫向章節，連接 Active Section、背景色、導覽及頁碼。 |
+| `src/views/ArtworksView.vue`          | Artworks 分類預留頁。                                       |
 
 ### 首頁章節
 
@@ -74,7 +73,7 @@ npm run preview
 | `src/components/SectionDecorations.vue`     | Featured 至 About 的少量花朵與雲朵配置。            |
 | `src/components/CinematicProjectVisual.vue` | Featured Panel 2／3 的圖片 Placeholder 與展開外觀。 |
 | `src/components/ProjectSummaryCard.vue`     | 專案圖片插槽、摘要、Role、Tools 與詳情入口。        |
-| `src/components/ProjectDetailOverlay.vue`   | Project 預覽 Overlay、返回動畫與 Case Study 入口。  |
+| `src/components/ProjectDetailOverlay.vue`   | Project 細節 Overlay、內容捲動與返回動畫。          |
 | `src/components/ArtworkPreviewCard.vue`     | Artwork 圖片插槽、類型與 Contribution。             |
 | `src/components/ScrollHint.vue`             | 首頁橫向捲動提示。                                  |
 

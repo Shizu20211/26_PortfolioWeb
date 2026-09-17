@@ -27,7 +27,7 @@
 | Featured 三個子面板               | `src/sections/FeaturedSection.vue`            | Overview、Visual、Interaction 與各自子頁碼          |
 | Featured 圖片展開 Placeholder     | `src/components/CinematicProjectVisual.vue`   | Panel 2／3 圖片位置與 Reveal 外觀                   |
 | Projects Hover List／Flex Gallery | `src/components/ProjectHoverList.vue`         | 桌面專案列、手機橫向 Gallery 與 Preview             |
-| Project Detail Overlay            | `src/components/ProjectDetailOverlay.vue`     | 專案預覽內容、關閉按鈕、焦點與 Case Study 入口      |
+| Project Detail Overlay            | `src/components/ProjectDetailOverlay.vue`     | 專案細節、右欄捲動、關閉按鈕與焦點控制              |
 | Project 空間轉場                  | `src/composables/useProjectTransition.js`     | Temporary visual、GSAP Flip.fit 與清理              |
 | 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | `boundaries` 可追加裝飾，並調整邊界、上下位置與旋轉 |
 | Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
