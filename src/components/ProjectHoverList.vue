@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
+import ProjectDetailOverlay from '@/components/ProjectDetailOverlay.vue'
 import ResponsivePortfolioImage from '@/components/ResponsivePortfolioImage.vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useReducedMotion } from '@/composables/useReducedMotion'
@@ -16,6 +17,10 @@ const projectList = ref(null)
 const galleryTrack = ref(null)
 const preview = ref(null)
 const isPreviewVisible = ref(false)
+const selectedProject = ref(null)
+const selectedSource = ref(null)
+const selectedNumber = ref('')
+const selectedTrigger = ref(null)
 
 const activeMedia = computed(() => activeProject.value?.media)
 
@@ -43,6 +48,37 @@ function movePreview(event) {
   if (!canFollowPointer || !isPreviewVisible.value) return
   moveX?.(event.clientX)
   moveY?.(event.clientY)
+}
+
+function openProject(project, index, sourceElement, triggerElement) {
+  if (selectedProject.value) return
+  selectedProject.value = project
+  selectedNumber.value = String(index + 1).padStart(2, '0')
+  selectedSource.value = sourceElement ?? null
+  selectedTrigger.value = triggerElement ?? null
+}
+
+function openDesktopProject(project, index, triggerElement) {
+  const source = preview.value?.querySelector(
+    '.project-hover-preview__image, .project-hover-preview__placeholder',
+  )
+  openProject(project, index, source, triggerElement)
+}
+
+function openMobileProject(project, index, event) {
+  const source = event.currentTarget.querySelector(
+    '.project-flex-gallery__image, .project-flex-gallery__placeholder',
+  )
+  openProject(project, index, source, event.currentTarget)
+}
+
+function finishClosingProject() {
+  const trigger = selectedTrigger.value
+  selectedProject.value = null
+  selectedSource.value = null
+  selectedNumber.value = ''
+  selectedTrigger.value = null
+  requestAnimationFrame(() => trigger?.focus())
 }
 
 function handleGalleryTouchStart(event) {
@@ -167,22 +203,23 @@ onBeforeUnmount(() => {
         <h2 id="projects-title">{{ t('headings.projects') }}</h2>
       </header>
 
-      <RouterLink
+      <button
         v-for="(project, index) in projects"
         :key="project.slug"
         class="project-hover-list__item"
         :class="{ 'is-active': activeProject?.slug === project.slug }"
         :data-project-index="index"
-        :to="`/projects/${project.slug}`"
+        type="button"
         @pointerenter="showPreview(project)"
         @focus="showPreview(project, true)"
         @blur="hidePreview"
+        @click="openDesktopProject(project, index, $event.currentTarget)"
       >
         <span class="project-hover-list__number">{{ String(index + 1).padStart(2, '0') }}</span>
         <span class="project-hover-list__title">{{ pick(project.title) }}</span>
         <span class="project-hover-list__tags">{{ project.tags.join(' · ') }}</span>
         <span class="project-hover-list__arrow" aria-hidden="true">↗</span>
-      </RouterLink>
+      </button>
     </div>
 
     <div
@@ -211,18 +248,25 @@ onBeforeUnmount(() => {
         :data-gallery-index="index"
       >
         <div class="project-flex-gallery__media">
-          <ResponsivePortfolioImage
-            v-if="project.media?.type === 'image'"
-            :src="project.media.src"
-            :alt="pick(project.media.alt)"
-            :width="project.media.width"
-            :height="project.media.height"
-            sizes="100svh"
-            image-class="project-flex-gallery__image"
-          />
-          <div v-else class="project-flex-gallery__placeholder">
-            <small>{{ t('imageNeeded') }}</small>
-          </div>
+          <button
+            class="project-flex-gallery__trigger"
+            type="button"
+            :aria-label="`${t('openProject')}：${pick(project.title)}`"
+            @click.stop="openMobileProject(project, index, $event)"
+          >
+            <ResponsivePortfolioImage
+              v-if="project.media?.type === 'image'"
+              :src="project.media.src"
+              :alt="pick(project.media.alt)"
+              :width="project.media.width"
+              :height="project.media.height"
+              sizes="100svh"
+              image-class="project-flex-gallery__image"
+            />
+            <div v-else class="project-flex-gallery__placeholder">
+              <small>{{ t('imageNeeded') }}</small>
+            </div>
+          </button>
           <RouterLink
             v-if="activeProject?.slug === project.slug"
             class="project-flex-gallery__link"
@@ -275,5 +319,13 @@ onBeforeUnmount(() => {
         <small>{{ t('imageNeeded') }}</small>
       </div>
     </div>
+
+    <ProjectDetailOverlay
+      v-if="selectedProject"
+      :project="selectedProject"
+      :number="selectedNumber"
+      :source-element="selectedSource"
+      @closed="finishClosingProject"
+    />
   </div>
 </template>

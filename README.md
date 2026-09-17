@@ -74,6 +74,7 @@ npm run preview
 | `src/components/SectionDecorations.vue`     | Featured 至 About 的少量花朵與雲朵配置。            |
 | `src/components/CinematicProjectVisual.vue` | Featured Panel 2／3 的圖片 Placeholder 與展開外觀。 |
 | `src/components/ProjectSummaryCard.vue`     | 專案圖片插槽、摘要、Role、Tools 與詳情入口。        |
+| `src/components/ProjectDetailOverlay.vue`   | Project 預覽 Overlay、返回動畫與 Case Study 入口。  |
 | `src/components/ArtworkPreviewCard.vue`     | Artwork 圖片插槽、類型與 Contribution。             |
 | `src/components/ScrollHint.vue`             | 首頁橫向捲動提示。                                  |
 
@@ -87,6 +88,7 @@ npm run preview
 | `src/composables/useTrackMeasurements.js`    | 集中量測 Section Offset、Track 寬度並監聽版面尺寸改變。      |
 | `src/composables/usePointerParallax.js`      | Hero Pointer 座標、RAF 節流與離開時歸零。                    |
 | `src/composables/useReducedMotion.js`        | 監聽系統 Reduced Motion 設定。                               |
+| `src/composables/useProjectTransition.js`    | Project temporary visual 與 GSAP Flip 空間轉場。             |
 | `src/data/messages.js`                       | 所有介面與長、短自介的中／英／日文案。                       |
 | `src/data/sections.js`                       | 五章 ID、編號及背景色。                                      |
 | `src/data/projects.js`                       | 專案 slug、三語標題、摘要、標籤、Role 與 Tools。             |
