@@ -24,7 +24,10 @@
 
 ### 手機橫向與直向
 
-- [ ] 小貓與 Magnetic Hover 不執行，不攔截 Swipe／Touch。
+- [ ] 手機橫向小貓腳底貼齊 `.section-navigation ol` 上緣分隔線。
+- [ ] 左右 Swipe 時，小貓依整體 Track 連續進度移動、正確轉向並保留走路動畫。
+- [ ] 小貓所有圖層維持等比縮放，不攔截 Swipe／Touch；手機不執行 Pointer 跟隨或 Magnetic Hover。
+- [ ] 手機直向 Navigation 隱藏時，小貓也一併隱藏。
 - [ ] Footer 仍可閱讀，返回首頁按鈕可觸碰。
 - [ ] 五個 Section 原有的橫向／直向操作未受影響。
 

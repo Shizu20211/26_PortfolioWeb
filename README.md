@@ -23,7 +23,7 @@ npm run preview
 - `04 About`：轉職敘事、技能、AI 協作原則與聯絡方式插槽。
 - About Footer 提供版權資訊與返回首頁操作。
 - 桌面主要操作支援輕量 Magnetic Hover；Reduced Motion 時停用。
-- 桌面 Navigation 上方的小貓會追隨水平 Pointer，並約每秒判斷一次跳躍；手機隱藏。
+- 桌面 Navigation 上方的小貓會追隨水平 Pointer，並約每秒判斷一次跳躍；手機橫向則沿 Navigation 分隔線顯示連續瀏覽進度。
 - 中文、英文、日文介面；語言偏好儲存在瀏覽器。
 - 桌面支援滾輪逐章、Trackpad 原生水平捲動、鍵盤與導覽列；不接管 Pointer Drag。
 - 手機橫向支援左右滑動；手機直向提示旋轉，但仍能縱向閱讀。

@@ -32,7 +32,12 @@ const {
   getAdjacentOffset,
   refreshAfterLayout,
 } = useTrackMeasurements(sectionIds, track)
-const { activeSectionIndex } = useActiveSection(sectionIds, track, measurements, getSectionIndex)
+const { activeSectionIndex, trackProgress } = useActiveSection(
+  sectionIds,
+  track,
+  measurements,
+  getSectionIndex,
+)
 const { goTo } = useHorizontalNavigation({
   sectionIds,
   trackRef: track,
@@ -69,7 +74,7 @@ watch(language, refreshAfterLayout, { flush: 'post' })
         :projects="projects.slice(1)"
       /><ArtworksSection :artworks="artworks" /><AboutSection @home="goTo(0)" />
     </main>
-    <CatFollower />
+    <CatFollower :progress="trackProgress" />
     <SectionNavigation
       :sections="sections"
       :active-index="activeSectionIndex"

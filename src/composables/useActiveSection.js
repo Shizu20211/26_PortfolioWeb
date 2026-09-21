@@ -1,7 +1,8 @@
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, readonly, ref, watch } from 'vue'
 
 export function useActiveSection(sectionIds, trackRef, measurements, getSectionIndex) {
   const activeSectionIndex = ref(0)
+  const trackProgress = ref(0)
 
   let intersectionObserver
   let scrollFrame = 0
@@ -25,8 +26,13 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
   }
 
   function updateFromTrack() {
-    if (portraitQuery.matches || !trackRef.value) return
-    setActiveSection(getSectionIndex(trackRef.value.scrollLeft))
+    const track = trackRef.value
+    if (!track) return
+
+    const maximum = Math.max(track.scrollWidth - track.clientWidth, 0)
+    trackProgress.value = maximum ? Math.max(0, Math.min(track.scrollLeft / maximum, 1)) : 0
+    if (portraitQuery.matches) return
+    setActiveSection(getSectionIndex(track.scrollLeft))
   }
 
   function onTrackScroll() {
@@ -78,5 +84,9 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
     if (scrollFrame) cancelAnimationFrame(scrollFrame)
   })
 
-  return { activeSectionIndex, setActiveSection }
+  return {
+    activeSectionIndex: readonly(activeSectionIndex),
+    trackProgress: readonly(trackProgress),
+    setActiveSection,
+  }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import bodyImage from '@/assets/cat/body.png'
 import headImage from '@/assets/cat/head.png'
 import hitomiImage from '@/assets/cat/hitomi.png'
@@ -10,10 +10,13 @@ import rightFrontImage from '@/assets/cat/right-front.png'
 import tailImage from '@/assets/cat/tail.png'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
-const CAT_WIDTH = 118
 const EDGE_GAP = 12
+const props = defineProps({
+  progress: { type: Number, default: 0 },
+})
 const { prefersReducedMotion } = useReducedMotion()
 
+const stageRef = ref(null)
 const catX = ref(32)
 const direction = ref('right')
 const isWalking = ref(false)
@@ -22,6 +25,7 @@ const eyeX = ref(0)
 const eyeY = ref(0)
 
 let finePointerQuery
+let mobileLandscapeQuery
 let pointer = { x: 32, y: 0 }
 let animationFrame
 let walkTimer
@@ -39,10 +43,14 @@ function clamp(value, minimum, maximum) {
 }
 
 function updateFromPointer() {
+  const stage = stageRef.value
+  if (!stage) return
+  const stageBounds = stage.getBoundingClientRect()
+  const catWidth = stage.querySelector('.cat-follower-mover')?.offsetWidth ?? 118
   const nextX = clamp(
-    pointer.x - CAT_WIDTH / 2,
+    pointer.x - stageBounds.left - catWidth / 2,
     EDGE_GAP,
-    Math.max(window.innerWidth - CAT_WIDTH - EDGE_GAP, EDGE_GAP),
+    Math.max(stageBounds.width - catWidth - EDGE_GAP, EDGE_GAP),
   )
   direction.value = nextX >= catX.value ? 'right' : 'left'
   catX.value = nextX
@@ -59,6 +67,28 @@ function updateFromPointer() {
     isWalking.value = false
   }, 950)
   animationFrame = undefined
+}
+
+function updateFromProgress() {
+  if (!mobileLandscapeQuery?.matches || finePointerQuery?.matches) return
+  const stage = stageRef.value
+  if (!stage) return
+
+  const catWidth = stage.querySelector('.cat-follower-mover')?.offsetWidth ?? 88
+  const nextX = clamp(props.progress, 0, 1) * Math.max(stage.clientWidth - catWidth, 0)
+  if (Math.abs(nextX - catX.value) < 0.5) return
+
+  direction.value = nextX >= catX.value ? 'right' : 'left'
+  catX.value = nextX
+  isWalking.value = !prefersReducedMotion.value
+  window.clearTimeout(walkTimer)
+  walkTimer = window.setTimeout(() => {
+    isWalking.value = false
+  }, 220)
+}
+
+function updateLayoutMode() {
+  if (mobileLandscapeQuery.matches && !finePointerQuery.matches) updateFromProgress()
 }
 
 function handlePointerMove(event) {
@@ -86,13 +116,25 @@ function considerJump() {
 
 onMounted(() => {
   finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)')
+  mobileLandscapeQuery = window.matchMedia(
+    '(max-width: 1180px) and (max-height: 720px) and (orientation: landscape)',
+  )
   pointer.y = window.innerHeight
   document.addEventListener('pointermove', handlePointerMove, { passive: true })
+  window.addEventListener('resize', updateLayoutMode, { passive: true })
+  finePointerQuery.addEventListener('change', updateLayoutMode)
+  mobileLandscapeQuery.addEventListener('change', updateLayoutMode)
   jumpInterval = window.setInterval(considerJump, 1000)
+  updateLayoutMode()
 })
+
+watch(() => props.progress, updateFromProgress, { flush: 'post' })
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointermove', handlePointerMove)
+  window.removeEventListener('resize', updateLayoutMode)
+  finePointerQuery?.removeEventListener('change', updateLayoutMode)
+  mobileLandscapeQuery?.removeEventListener('change', updateLayoutMode)
   window.clearInterval(jumpInterval)
   window.clearTimeout(walkTimer)
   window.clearTimeout(jumpTimer)
@@ -102,6 +144,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
+    ref="stageRef"
     class="cat-follower-stage"
     :class="{ 'is-reduced': prefersReducedMotion }"
     aria-hidden="true"
@@ -353,10 +396,34 @@ onBeforeUnmount(() => {
     display: none;
   }
 }
+@media (max-width: 1180px) and (max-height: 720px) and (orientation: landscape) {
+  .cat-follower-stage {
+    right: var(--page-pad);
+    bottom: 2.4rem;
+    left: var(--page-pad);
+    display: block;
+    height: 6.5rem;
+  }
+  .cat-follower-mover {
+    width: 88px;
+    height: 88px;
+    transition: left 180ms linear;
+  }
+  .cat-follower-puppet {
+    top: 23px;
+    transform: scale(0.175);
+  }
+  .is-jumping {
+    animation: none;
+  }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  .cat-follower-stage {
+    display: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .cat-follower-mover {
-    left: 50% !important;
-    transform: translateX(-50%);
     transition: none;
   }
   .tail,
