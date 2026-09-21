@@ -24,7 +24,7 @@ npm run preview
 - About Footer 提供版權資訊與返回首頁操作。
 - 桌面主要操作支援輕量 Magnetic Hover；Reduced Motion 時停用。
 - 桌面 Navigation 上方的小貓會追隨水平 Pointer，並約每秒判斷一次跳躍；手機橫向則沿 Navigation 分隔線顯示連續瀏覽進度。
-- 桌面靜止 5 秒、手機橫向停止滑動 8 秒後，小貓兩耳間會顯示 Loading 狀態；恢復操作即柔和退場。
+- 桌面靜止 5 秒、手機橫向停止滑動 8 秒後，小貓會切換為 PSD Loading 貓與逐點淡入圓環；恢復操作即柔和回到走路貓。
 - 中文、英文、日文介面；語言偏好儲存在瀏覽器。
 - 桌面支援滾輪逐章、Trackpad 原生水平捲動、鍵盤與導覽列；不接管 Pointer Drag。
 - 手機橫向支援左右滑動；手機直向提示旋轉，但仍能縱向閱讀。

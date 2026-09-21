@@ -204,7 +204,8 @@ media: {
 | Navigation 小貓    | `src/components/CatFollower.vue`              | 桌面跟隨 Pointer；手機橫向使用 `trackProgress`，事件必須清理。   |
 
 Loading 狀態的主要微調值也位於 `CatFollower.vue`：桌面閒置 `5000ms`、手機閒置
-`8000ms`、`.cat-loading-spinner` 的位置與大小，以及 `cat-loading-rotate` 的旋轉速度。
+`8000ms`、`.cat-loading-state__cat` 的等比尺寸、`.cat-loading-spinner` 的位置與大小，
+以及 `cat-loading-fade` 的逐點淡入速度。
 | 雲朵動畫 | `src/components/FloatingCloud.vue` | 位置和速度由呼叫端傳入，不在元件內硬寫。 |
 
 ### HomeCelestialToggle 狀態規格

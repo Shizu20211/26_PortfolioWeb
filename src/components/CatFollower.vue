@@ -12,6 +12,7 @@ import loadWhiteImage from '@/assets/cat/loading/load-w.png'
 import loadGrayImage from '@/assets/cat/loading/load-b01.png'
 import loadDarkGrayImage from '@/assets/cat/loading/load-b02.png'
 import loadBlackImage from '@/assets/cat/loading/load-black.png'
+import loadingCatImage from '@/assets/cat/loading/cat_loading.png'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const EDGE_GAP = 12
@@ -223,16 +224,22 @@ onBeforeUnmount(() => {
             <img class="cat-part head" :src="headImage" alt="" />
             <img class="cat-part hitomi" :src="hitomiImage" alt="" />
           </div>
-          <div class="cat-loading-spinner">
-            <div class="cat-loading-ring">
-              <img
-                v-for="(dot, index) in loadingDots"
-                :key="index"
-                class="cat-loading-dot"
-                :src="dot"
-                alt=""
-                :style="{ '--dot-angle': `${index * 45}deg` }"
-              />
+          <div class="cat-loading-state">
+            <img class="cat-loading-state__cat" :src="loadingCatImage" alt="" />
+            <div class="cat-loading-spinner">
+              <div class="cat-loading-ring">
+                <img
+                  v-for="(dot, index) in loadingDots"
+                  :key="index"
+                  class="cat-loading-dot"
+                  :src="dot"
+                  alt=""
+                  :style="{
+                    '--dot-angle': `${index * 45}deg`,
+                    '--dot-delay': `${(index - loadingDots.length) * 0.15}s`,
+                  }"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -277,6 +284,37 @@ onBeforeUnmount(() => {
   height: 500px;
   transform: scale(0.235);
   transform-origin: top left;
+  opacity: 1;
+  transition: opacity 300ms var(--ease-standard);
+}
+.cat-loading-state {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.96);
+  transform-origin: center bottom;
+  transition:
+    opacity 300ms var(--ease-standard),
+    transform 420ms var(--ease-soft);
+  pointer-events: none;
+}
+.cat-loading-state__cat {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: auto;
+  height: 76%;
+  max-width: none;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+.is-loading .cat-follower-puppet {
+  opacity: 0;
+}
+.is-loading .cat-loading-state {
+  opacity: 1;
+  transform: scale(1);
 }
 .cat-loading-spinner {
   --spinner-size: 29px;
@@ -284,8 +322,8 @@ onBeforeUnmount(() => {
   --dot-radius: 10px;
   position: absolute;
   z-index: 12;
-  top: 45%;
-  left: 72%;
+  top: 24%;
+  left: 50%;
   width: var(--spinner-size);
   height: var(--spinner-size);
   opacity: 0;
@@ -304,6 +342,7 @@ onBeforeUnmount(() => {
   height: var(--dot-size);
   max-width: none;
   object-fit: contain;
+  opacity: 0;
   transform: translate(-50%, -50%) rotate(var(--dot-angle)) translateY(calc(var(--dot-radius) * -1));
   transform-origin: center;
 }
@@ -316,8 +355,9 @@ onBeforeUnmount(() => {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
-.is-loading .cat-loading-ring {
-  animation: cat-loading-rotate 1.1s linear infinite;
+.is-loading .cat-loading-dot {
+  animation: cat-loading-fade 1.2s infinite ease-in-out both;
+  animation-delay: var(--dot-delay);
 }
 .cat-part {
   position: absolute;
@@ -497,12 +537,14 @@ onBeforeUnmount(() => {
     transform: rotate(38deg);
   }
 }
-@keyframes cat-loading-rotate {
-  from {
-    transform: rotate(0deg);
+@keyframes cat-loading-fade {
+  0%,
+  39%,
+  100% {
+    opacity: 0.12;
   }
-  to {
-    transform: rotate(360deg);
+  40% {
+    opacity: 1;
   }
 }
 @media (hover: none), (pointer: coarse) {
@@ -552,8 +594,9 @@ onBeforeUnmount(() => {
   .cat-follower-pose {
     animation: none !important;
   }
-  .is-loading .cat-loading-ring {
+  .is-loading .cat-loading-dot {
     animation: none;
+    opacity: 0.72;
   }
 }
 </style>
