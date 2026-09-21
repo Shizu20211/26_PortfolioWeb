@@ -19,6 +19,7 @@
 - [ ] 頭、身體、尾巴、瞳孔與四腳維持正確圖層，瞳孔朝 Pointer 方向小幅追蹤。
 - [ ] 步行時四腳交錯且頭身起伏；Idle 尾巴持續擺動；Jump 時前後腳收起。
 - [ ] Pointer 位於導覽上方內容區時，小貓約每秒判斷並觸發一次跳躍。
+- [ ] 滑鼠靜止 5 秒後兩耳間柔和顯示 Loading；再次移動立即柔和恢復。
 - [ ] About Footer 不覆蓋長文、聯絡資料或底部 Navigation。
 - [ ] Footer 返回首頁後 Active Section、頁碼及網址 Hash 同步。
 
@@ -26,6 +27,7 @@
 
 - [ ] 手機橫向小貓腳底貼齊 `.section-navigation ol` 上緣分隔線。
 - [ ] 左右 Swipe 時，小貓依整體 Track 連續進度移動、正確轉向並保留走路動畫。
+- [ ] 停止滑動 8 秒後在原進度位置顯示 Loading；再次滑動立即恢復走路狀態。
 - [ ] 小貓所有圖層維持等比縮放，不攔截 Swipe／Touch；手機不執行 Pointer 跟隨或 Magnetic Hover。
 - [ ] 手機直向 Navigation 隱藏時，小貓也一併隱藏。
 - [ ] Footer 仍可閱讀，返回首頁按鈕可觸碰。

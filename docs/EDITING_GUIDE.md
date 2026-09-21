@@ -30,8 +30,8 @@
 | Project Detail Overlay            | `src/components/ProjectDetailOverlay.vue`     | 專案細節、右欄捲動、關閉按鈕與焦點控制              |
 | Project 空間轉場                  | `src/composables/useProjectTransition.js`     | Temporary visual、GSAP Flip.fit 與清理              |
 | Magnetic Hover                    | `src/composables/useMagneticHover.js`         | 僅套用於具有 `data-magnetic` 的主要操作元素。       |
-| Navigation 小貓                   | `src/components/CatFollower.vue`              | 桌面 Pointer；手機依 Track 進度沿導覽線移動。       |
-| 小貓分層素材與座標                | `src/assets/cat/`                             | 八張透明 PNG；`layer-map.json` 記錄 500×500 座標。  |
+| Navigation 小貓                   | `src/components/CatFollower.vue`              | 桌面 Pointer、手機 Track 進度與 5／8 秒閒置狀態。   |
+| 小貓分層素材與座標                | `src/assets/cat/`                             | 八張身體 PNG、四張 Loading PNG 與圖層座標。         |
 | About Footer                      | `src/components/PortfolioFooter.vue`          | 版權資訊與返回首頁按鈕。                            |
 | 全域邊界裝飾                      | `src/components/PortfolioDecorations.vue`     | `boundaries` 可追加裝飾，並調整邊界、上下位置與旋轉 |
 | Featured 圖片／影片路徑           | `src/data/projects.js`                        | 精選專案的 `media` 物件                             |
@@ -202,7 +202,10 @@ media: {
 | Reduced Motion     | `src/composables/useReducedMotion.js`         | 不要移除，這是無障礙需求。                                       |
 | Magnetic Hover     | `src/composables/useMagneticHover.js`         | `data-magnetic` 選取；Touch 與 Reduced Motion 不執行。           |
 | Navigation 小貓    | `src/components/CatFollower.vue`              | 桌面跟隨 Pointer；手機橫向使用 `trackProgress`，事件必須清理。   |
-| 雲朵動畫           | `src/components/FloatingCloud.vue`            | 位置和速度由呼叫端傳入，不在元件內硬寫。                         |
+
+Loading 狀態的主要微調值也位於 `CatFollower.vue`：桌面閒置 `5000ms`、手機閒置
+`8000ms`、`.cat-loading-spinner` 的位置與大小，以及 `cat-loading-rotate` 的旋轉速度。
+| 雲朵動畫 | `src/components/FloatingCloud.vue` | 位置和速度由呼叫端傳入，不在元件內硬寫。 |
 
 ### HomeCelestialToggle 狀態規格
 

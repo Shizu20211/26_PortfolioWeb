@@ -8,6 +8,10 @@ import leftFrontImage from '@/assets/cat/left-front.png'
 import rightBackImage from '@/assets/cat/right-back.png'
 import rightFrontImage from '@/assets/cat/right-front.png'
 import tailImage from '@/assets/cat/tail.png'
+import loadWhiteImage from '@/assets/cat/loading/load-w.png'
+import loadGrayImage from '@/assets/cat/loading/load-b01.png'
+import loadDarkGrayImage from '@/assets/cat/loading/load-b02.png'
+import loadBlackImage from '@/assets/cat/loading/load-black.png'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const EDGE_GAP = 12
@@ -21,6 +25,7 @@ const catX = ref(32)
 const direction = ref('right')
 const isWalking = ref(false)
 const isJumping = ref(false)
+const isLoading = ref(false)
 const eyeX = ref(0)
 const eyeY = ref(0)
 
@@ -31,6 +36,18 @@ let animationFrame
 let walkTimer
 let jumpTimer
 let jumpInterval
+let idleTimer
+
+const loadingDots = [
+  loadWhiteImage,
+  loadGrayImage,
+  loadDarkGrayImage,
+  loadBlackImage,
+  loadBlackImage,
+  loadDarkGrayImage,
+  loadGrayImage,
+  loadWhiteImage,
+]
 
 const moverStyle = computed(() => ({
   left: `${catX.value}px`,
@@ -69,8 +86,29 @@ function updateFromPointer() {
   animationFrame = undefined
 }
 
+function usesMobileProgress() {
+  return mobileLandscapeQuery?.matches && !finePointerQuery?.matches
+}
+
+function startIdleTimer() {
+  window.clearTimeout(idleTimer)
+  const delay = usesMobileProgress() ? 8000 : finePointerQuery?.matches ? 5000 : 0
+  if (!delay) return
+
+  idleTimer = window.setTimeout(() => {
+    isWalking.value = false
+    isJumping.value = false
+    isLoading.value = true
+  }, delay)
+}
+
+function registerActivity() {
+  isLoading.value = false
+  startIdleTimer()
+}
+
 function updateFromProgress() {
-  if (!mobileLandscapeQuery?.matches || finePointerQuery?.matches) return
+  if (!usesMobileProgress()) return
   const stage = stageRef.value
   if (!stage) return
 
@@ -78,6 +116,7 @@ function updateFromProgress() {
   const nextX = clamp(props.progress, 0, 1) * Math.max(stage.clientWidth - catWidth, 0)
   if (Math.abs(nextX - catX.value) < 0.5) return
 
+  registerActivity()
   direction.value = nextX >= catX.value ? 'right' : 'left'
   catX.value = nextX
   isWalking.value = !prefersReducedMotion.value
@@ -88,19 +127,27 @@ function updateFromProgress() {
 }
 
 function updateLayoutMode() {
-  if (mobileLandscapeQuery.matches && !finePointerQuery.matches) updateFromProgress()
+  if (usesMobileProgress()) updateFromProgress()
+  startIdleTimer()
 }
 
 function handlePointerMove(event) {
-  if (!finePointerQuery.matches || prefersReducedMotion.value) return
+  if (!finePointerQuery.matches) return
+  registerActivity()
+  if (prefersReducedMotion.value) return
   pointer = { x: event.clientX, y: event.clientY }
   if (!animationFrame) animationFrame = window.requestAnimationFrame(updateFromPointer)
+}
+
+function handleMobileActivity() {
+  if (usesMobileProgress()) registerActivity()
 }
 
 function considerJump() {
   if (
     prefersReducedMotion.value ||
     !finePointerQuery.matches ||
+    isLoading.value ||
     pointer.y >= window.innerHeight - 150 ||
     isJumping.value
   ) {
@@ -121,6 +168,8 @@ onMounted(() => {
   )
   pointer.y = window.innerHeight
   document.addEventListener('pointermove', handlePointerMove, { passive: true })
+  document.addEventListener('pointerdown', handleMobileActivity, { passive: true })
+  document.addEventListener('touchmove', handleMobileActivity, { passive: true })
   window.addEventListener('resize', updateLayoutMode, { passive: true })
   finePointerQuery.addEventListener('change', updateLayoutMode)
   mobileLandscapeQuery.addEventListener('change', updateLayoutMode)
@@ -132,12 +181,15 @@ watch(() => props.progress, updateFromProgress, { flush: 'post' })
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointermove', handlePointerMove)
+  document.removeEventListener('pointerdown', handleMobileActivity)
+  document.removeEventListener('touchmove', handleMobileActivity)
   window.removeEventListener('resize', updateLayoutMode)
   finePointerQuery?.removeEventListener('change', updateLayoutMode)
   mobileLandscapeQuery?.removeEventListener('change', updateLayoutMode)
   window.clearInterval(jumpInterval)
   window.clearTimeout(walkTimer)
   window.clearTimeout(jumpTimer)
+  window.clearTimeout(idleTimer)
   if (animationFrame) window.cancelAnimationFrame(animationFrame)
 })
 </script>
@@ -155,6 +207,7 @@ onBeforeUnmount(() => {
         'is-left': direction === 'left',
         'is-walking': isWalking,
         'is-jumping': isJumping,
+        'is-loading': isLoading,
       }"
       :style="moverStyle"
     >
@@ -169,6 +222,18 @@ onBeforeUnmount(() => {
             <img class="cat-part body" :src="bodyImage" alt="" />
             <img class="cat-part head" :src="headImage" alt="" />
             <img class="cat-part hitomi" :src="hitomiImage" alt="" />
+          </div>
+          <div class="cat-loading-spinner">
+            <div class="cat-loading-ring">
+              <img
+                v-for="(dot, index) in loadingDots"
+                :key="index"
+                class="cat-loading-dot"
+                :src="dot"
+                alt=""
+                :style="{ '--dot-angle': `${index * 45}deg` }"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -212,6 +277,47 @@ onBeforeUnmount(() => {
   height: 500px;
   transform: scale(0.235);
   transform-origin: top left;
+}
+.cat-loading-spinner {
+  --spinner-size: 29px;
+  --dot-size: 6px;
+  --dot-radius: 10px;
+  position: absolute;
+  z-index: 12;
+  top: 45%;
+  left: 72%;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.86);
+  transform-origin: center;
+  transition:
+    opacity 280ms var(--ease-standard),
+    transform 360ms var(--ease-soft);
+  pointer-events: none;
+}
+.cat-loading-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  max-width: none;
+  object-fit: contain;
+  transform: translate(-50%, -50%) rotate(var(--dot-angle)) translateY(calc(var(--dot-radius) * -1));
+  transform-origin: center;
+}
+.cat-loading-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.is-loading .cat-loading-spinner {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.is-loading .cat-loading-ring {
+  animation: cat-loading-rotate 1.1s linear infinite;
 }
 .cat-part {
   position: absolute;
@@ -391,6 +497,14 @@ onBeforeUnmount(() => {
     transform: rotate(38deg);
   }
 }
+@keyframes cat-loading-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @media (hover: none), (pointer: coarse) {
   .cat-follower-stage {
     display: none;
@@ -413,6 +527,11 @@ onBeforeUnmount(() => {
     top: 23px;
     transform: scale(0.175);
   }
+  .cat-loading-spinner {
+    --spinner-size: 22px;
+    --dot-size: 4.5px;
+    --dot-radius: 7.5px;
+  }
   .is-jumping {
     animation: none;
   }
@@ -432,6 +551,9 @@ onBeforeUnmount(() => {
   .head,
   .cat-follower-pose {
     animation: none !important;
+  }
+  .is-loading .cat-loading-ring {
+    animation: none;
   }
 }
 </style>
