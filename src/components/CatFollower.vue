@@ -16,6 +16,8 @@ import loadingCatImage from '@/assets/cat/loading/cat_loading.png'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const EDGE_GAP = 12
+const TAP_MAX_DISTANCE = 10
+const TAP_MAX_DURATION = 350
 const props = defineProps({
   progress: { type: Number, default: 0 },
 })
@@ -38,6 +40,7 @@ let walkTimer
 let jumpTimer
 let jumpInterval
 let idleTimer
+let tapStart
 
 const loadingDots = [
   loadWhiteImage,
@@ -140,8 +143,66 @@ function handlePointerMove(event) {
   if (!animationFrame) animationFrame = window.requestAnimationFrame(updateFromPointer)
 }
 
-function handleMobileActivity() {
-  if (usesMobileProgress()) registerActivity()
+function triggerJump() {
+  if (prefersReducedMotion.value || isJumping.value) return
+
+  isJumping.value = true
+  window.clearTimeout(jumpTimer)
+  jumpTimer = window.setTimeout(() => {
+    isJumping.value = false
+  }, 850)
+}
+
+function isCatTarget(target) {
+  return target instanceof Element && Boolean(target.closest('.cat-follower-mover'))
+}
+
+function isIgnoredTapTarget(target) {
+  if (!(target instanceof Element)) return true
+  return Boolean(
+    target.closest(
+      'a, button, input, textarea, select, summary, video, picture, img, p, h1, h2, h3, dl, ul, ol, [role="button"], [role="dialog"], [data-vertical-scroll], .project-flex-gallery',
+    ),
+  )
+}
+
+function handleMobilePointerDown(event) {
+  if (!usesMobileProgress() || event.pointerType !== 'touch') return
+  registerActivity()
+  tapStart = {
+    x: event.clientX,
+    y: event.clientY,
+    time: performance.now(),
+    target: event.target,
+  }
+}
+
+function handleMobilePointerMove(event) {
+  if (!usesMobileProgress() || event.pointerType !== 'touch') return
+  registerActivity()
+  if (!tapStart) return
+
+  const distance = Math.hypot(event.clientX - tapStart.x, event.clientY - tapStart.y)
+  if (distance > TAP_MAX_DISTANCE) tapStart = undefined
+}
+
+function handleMobilePointerUp(event) {
+  if (!tapStart || !usesMobileProgress() || event.pointerType !== 'touch') {
+    tapStart = undefined
+    return
+  }
+
+  const start = tapStart
+  tapStart = undefined
+  const distance = Math.hypot(event.clientX - start.x, event.clientY - start.y)
+  const duration = performance.now() - start.time
+  const canJump = isCatTarget(start.target) || !isIgnoredTapTarget(start.target)
+
+  if (distance <= TAP_MAX_DISTANCE && duration <= TAP_MAX_DURATION && canJump) triggerJump()
+}
+
+function cancelMobileTap() {
+  tapStart = undefined
 }
 
 function considerJump() {
@@ -155,11 +216,7 @@ function considerJump() {
     return
   }
 
-  isJumping.value = true
-  window.clearTimeout(jumpTimer)
-  jumpTimer = window.setTimeout(() => {
-    isJumping.value = false
-  }, 850)
+  triggerJump()
 }
 
 onMounted(() => {
@@ -169,8 +226,10 @@ onMounted(() => {
   )
   pointer.y = window.innerHeight
   document.addEventListener('pointermove', handlePointerMove, { passive: true })
-  document.addEventListener('pointerdown', handleMobileActivity, { passive: true })
-  document.addEventListener('touchmove', handleMobileActivity, { passive: true })
+  document.addEventListener('pointerdown', handleMobilePointerDown, { passive: true })
+  document.addEventListener('pointermove', handleMobilePointerMove, { passive: true })
+  document.addEventListener('pointerup', handleMobilePointerUp, { passive: true })
+  document.addEventListener('pointercancel', cancelMobileTap, { passive: true })
   window.addEventListener('resize', updateLayoutMode, { passive: true })
   finePointerQuery.addEventListener('change', updateLayoutMode)
   mobileLandscapeQuery.addEventListener('change', updateLayoutMode)
@@ -182,8 +241,10 @@ watch(() => props.progress, updateFromProgress, { flush: 'post' })
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointermove', handlePointerMove)
-  document.removeEventListener('pointerdown', handleMobileActivity)
-  document.removeEventListener('touchmove', handleMobileActivity)
+  document.removeEventListener('pointerdown', handleMobilePointerDown)
+  document.removeEventListener('pointermove', handleMobilePointerMove)
+  document.removeEventListener('pointerup', handleMobilePointerUp)
+  document.removeEventListener('pointercancel', cancelMobileTap)
   window.removeEventListener('resize', updateLayoutMode)
   finePointerQuery?.removeEventListener('change', updateLayoutMode)
   mobileLandscapeQuery?.removeEventListener('change', updateLayoutMode)
@@ -260,6 +321,7 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 .cat-follower-mover {
+  --cat-jump-height: 3.4rem;
   position: absolute;
   bottom: 0;
   width: 118px;
@@ -300,10 +362,10 @@ onBeforeUnmount(() => {
 }
 .cat-loading-state__cat {
   position: absolute;
-  bottom: 0;
+  bottom: -8px;
   left: 50%;
   width: auto;
-  height: 76%;
+  height: 72%;
   max-width: none;
   transform: translateX(-50%);
   pointer-events: none;
@@ -317,13 +379,13 @@ onBeforeUnmount(() => {
   transform: scale(1);
 }
 .cat-loading-spinner {
-  --spinner-size: 29px;
+  --spinner-size: 12px;
   --dot-size: 6px;
   --dot-radius: 10px;
   position: absolute;
   z-index: 12;
-  top: 24%;
-  left: 50%;
+  top: 44%;
+  left: 58%;
   width: var(--spinner-size);
   height: var(--spinner-size);
   opacity: 0;
@@ -505,7 +567,7 @@ onBeforeUnmount(() => {
     bottom: 0;
   }
   48% {
-    bottom: 3.4rem;
+    bottom: var(--cat-jump-height);
   }
 }
 @keyframes cat-jump-tilt {
@@ -555,15 +617,18 @@ onBeforeUnmount(() => {
 @media (max-width: 1180px) and (max-height: 720px) and (orientation: landscape) {
   .cat-follower-stage {
     right: var(--page-pad);
-    bottom: 2.4rem;
+    bottom: 2.2rem;
     left: var(--page-pad);
     display: block;
     height: 6.5rem;
   }
   .cat-follower-mover {
+    --cat-jump-height: 2.2rem;
     width: 88px;
     height: 88px;
     transition: left 180ms linear;
+    pointer-events: auto;
+    touch-action: pan-x;
   }
   .cat-follower-puppet {
     top: 23px;
@@ -573,9 +638,6 @@ onBeforeUnmount(() => {
     --spinner-size: 22px;
     --dot-size: 4.5px;
     --dot-radius: 7.5px;
-  }
-  .is-jumping {
-    animation: none;
   }
 }
 @media (max-width: 760px) and (orientation: portrait) {

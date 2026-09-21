@@ -206,6 +206,10 @@ media: {
 Loading 狀態的主要微調值也位於 `CatFollower.vue`：桌面閒置 `5000ms`、手機閒置
 `8000ms`、`.cat-loading-state__cat` 的等比尺寸、`.cat-loading-spinner` 的位置與大小，
 以及 `cat-loading-fade` 的逐點淡入速度。
+
+手機 Tap 跳躍使用 `TAP_MAX_DISTANCE` 與 `TAP_MAX_DURATION` 區分點擊和 Swipe；手機跳躍
+高度由 `.cat-follower-mover` 的 `--cat-jump-height` 控制。互動元件與 Gallery 會排除，
+避免點擊操作時誤觸貓咪跳躍。
 | 雲朵動畫 | `src/components/FloatingCloud.vue` | 位置和速度由呼叫端傳入，不在元件內硬寫。 |
 
 ### HomeCelestialToggle 狀態規格

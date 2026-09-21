@@ -29,6 +29,7 @@
 - [ ] 左右 Swipe 時，小貓依整體 Track 連續進度移動、正確轉向並保留走路動畫。
 - [ ] 停止滑動 8 秒後在原進度位置切換為 Loading 貓；再次滑動恢復走路狀態。
 - [ ] 小貓所有圖層維持等比縮放，不攔截 Swipe／Touch；手機不執行 Pointer 跟隨或 Magnetic Hover。
+- [ ] Tap 貓本體或畫面空白處可跳躍並收腳；Swipe、按鈕、Navigation 與 Gallery 不會誤觸。
 - [ ] 手機直向 Navigation 隱藏時，小貓也一併隱藏。
 - [ ] Footer 仍可閱讀，返回首頁按鈕可觸碰。
 - [ ] 五個 Section 原有的橫向／直向操作未受影響。
