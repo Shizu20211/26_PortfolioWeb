@@ -37,7 +37,11 @@ function setLanguage(nextLanguage) {
 export function useLanguage() {
   const t = (path) =>
     path.split('.').reduce((value, key) => value?.[key], messages[language.value]) ?? path
-  const pick = (value) => value?.[language.value] ?? value?.['zh-Hant'] ?? ''
+  const pick = (value) => {
+    if (value === null || value === undefined) return ''
+    if (typeof value !== 'object') return value
+    return value[language.value] ?? value['zh-Hant'] ?? ''
+  }
 
   return { language, isLanguageChanging, setLanguage, t, pick }
 }

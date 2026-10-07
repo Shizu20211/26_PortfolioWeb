@@ -12,6 +12,7 @@ const props = defineProps({
   loading: { type: String, default: 'lazy' },
   fetchpriority: { type: String, default: 'auto' },
   imageClass: { type: [String, Array, Object], default: '' },
+  imageStyle: { type: [String, Array, Object], default: '' },
 })
 
 const imageElement = ref(null)
@@ -33,6 +34,7 @@ defineExpose({ imageElement, currentSrc })
     <img
       ref="imageElement"
       :class="imageClass"
+      :style="imageStyle"
       :src="src"
       :srcset="srcset || undefined"
       :sizes="srcset ? sizes : undefined"

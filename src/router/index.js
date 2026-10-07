@@ -6,6 +6,16 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'portfolio', component: PortfolioOverviewView },
     { path: '/artworks', name: 'artworks', component: () => import('@/views/ArtworksView.vue') },
+    {
+      path: '/projects/:slug',
+      name: 'project-case-study',
+      component: () => import('@/views/ProjectCaseStudyView.vue'),
+    },
+    {
+      path: '/artworks/:slug',
+      name: 'artwork-detail',
+      component: () => import('@/views/ArtworkDetailView.vue'),
+    },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
   scrollBehavior: () => ({ top: 0 }),

@@ -8,8 +8,8 @@
   --color-line: rgb(62 110 100 / 22%);
   --color-home: #f8e9d7;
   --color-featured: #edf2dc;
-  --color-projects: #e6efed;
-  --color-artworks: #f7e2dc;
+  --color-frontend-works: #e6efed;
+  --color-artworks: #f7e8e4;
   --color-about: #fff7ea;
   --color-petal-yellow: #f3de8e;
   --color-water: #78aaa5;
@@ -40,4 +40,10 @@
   --duration-normal: 420ms;
   --duration-slow: 800ms;
   --page-pad: clamp(1.25rem, 4.2vw, 5rem);
+  --artwork-card-surface: var(--color-surface);
+  --artwork-card-border: var(--color-line);
+  --artwork-view-background: var(--color-ink-teal);
+  --artwork-view-text: var(--color-paper);
+  --artwork-reveal-duration: 1350ms;
+  --artwork-image-reveal-duration: 1200ms;
 }

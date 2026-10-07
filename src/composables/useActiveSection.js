@@ -6,6 +6,7 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
 
   let intersectionObserver
   let scrollFrame = 0
+  const portraitVisibility = new Map()
 
   const portraitQuery = window.matchMedia('(max-width: 760px) and (orientation: portrait)')
 
@@ -46,14 +47,19 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
   function onPortraitIntersection(entries) {
     if (!portraitQuery.matches) return
 
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+    entries.forEach((entry) => {
+      portraitVisibility.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0)
+    })
 
-    if (visible) setActiveSection(sectionIds.indexOf(visible.target.id))
+    const visible = [...portraitVisibility.entries()]
+      .filter(([, ratio]) => ratio > 0)
+      .sort((first, second) => second[1] - first[1])[0]
+
+    if (visible) setActiveSection(sectionIds.indexOf(visible[0]))
   }
 
   function onLayoutModeChange() {
+    portraitVisibility.clear()
     if (!portraitQuery.matches) updateFromTrack()
   }
 
@@ -81,6 +87,7 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
     trackRef.value?.removeEventListener('scroll', onTrackScroll)
     portraitQuery.removeEventListener('change', onLayoutModeChange)
     intersectionObserver?.disconnect()
+    portraitVisibility.clear()
     if (scrollFrame) cancelAnimationFrame(scrollFrame)
   })
 

@@ -17,7 +17,7 @@ export function usePointerParallax() {
     const y = (event.clientY - rect.top) / rect.height - 0.5
     if (frame) return
     frame = requestAnimationFrame(() => {
-      setPoint(x * 12, y * 10)
+      setPoint(x * 8, y * 6)
       frame = 0
     })
   }

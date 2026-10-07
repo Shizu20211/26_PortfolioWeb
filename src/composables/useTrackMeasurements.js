@@ -73,6 +73,13 @@ export function useTrackMeasurements(sectionIds, trackRef) {
     return measurements.value[index]?.start ?? 0
   }
 
+  function getSectionEndOffset(index) {
+    const section = measurements.value[index]
+    if (!section) return undefined
+
+    return Math.max(section.start, section.end - trackClientWidth.value)
+  }
+
   function getAdjacentOffset(scrollLeft, direction) {
     const tolerance = 4
     const offsets = navigationStops.value.map(({ offset }) => offset)
@@ -131,6 +138,7 @@ export function useTrackMeasurements(sectionIds, trackRef) {
     navigationStops: readonly(navigationStops),
     getSectionIndex,
     getSectionOffset,
+    getSectionEndOffset,
     getAdjacentOffset,
     refreshAfterLayout,
     requestMeasure,

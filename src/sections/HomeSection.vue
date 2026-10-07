@@ -3,7 +3,7 @@ import LayeredHeroArtwork from '@/components/LayeredHeroArtwork.vue'
 import ScrollHint from '@/components/ScrollHint.vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useHomeTheme } from '@/composables/useHomeTheme'
-const emit = defineEmits(['next'])
+const emit = defineEmits(['about'])
 const { t } = useLanguage()
 const { isHomeNight } = useHomeTheme()
 </script>
@@ -19,15 +19,14 @@ const { isHomeNight } = useHomeTheme()
       <p class="chapter-label">00 · {{ t('sections.home') }}</p>
       <p class="role">Creative Front-end Designer<br />Interactive Experience Designer</p>
       <h1 id="home-title">{{ t('homeTitle') }}</h1>
-      <p class="lead">{{ t('homeLead') }}</p>
-      <p class="hero-short">{{ t('homeShort') }}</p>
+      <p class="lead">
+        <span v-for="line in t('homeLead')" :key="line">{{ line }}</span>
+      </p>
       <div class="skill-pills" aria-label="Core skills">
         <span>Visual Design</span><span>Vue / Front-end</span><span>Craft & Culture</span>
       </div>
-      <button class="primary-link" type="button" data-magnetic @click="emit('next')">
-        {{ t('viewWork') }} <span>↗</span></button
-      ><button class="text-link" type="button" disabled>
-        {{ t('resume') }} <span aria-hidden="true">↓</span>
+      <button class="primary-link" type="button" data-magnetic @click="emit('about')">
+        {{ t('resume') }} <span aria-hidden="true">↗</span>
       </button>
     </div>
     <LayeredHeroArtwork />

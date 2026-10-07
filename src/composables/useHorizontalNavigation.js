@@ -5,41 +5,57 @@ import { useReducedMotion } from './useReducedMotion'
 export function useHorizontalNavigation({
   sectionIds,
   trackRef,
+  getSectionIndex,
   getSectionOffset,
+  getSectionEndOffset,
   getAdjacentOffset,
 }) {
   const { prefersReducedMotion } = useReducedMotion()
   const initialSectionId = location.hash.slice(1)
 
   let accumulatedDelta = 0
-  let featuredTarget
+  let wideSectionTarget
+  let activeWideSectionId
   let gestureLocked = false
+  let sectionTransitioning = false
   let gestureTimer
+
+  function restoreSectionSnap() {
+    const track = trackRef.value
+    sectionTransitioning = false
+    gestureLocked = false
+    track?.classList.remove('is-featured-scrubbing', 'is-wide-section-scrubbing')
+  }
 
   function goTo(index, options = {}) {
     const boundedIndex = Math.max(0, Math.min(index, sectionIds.length - 1))
     const left = getSectionOffset(boundedIndex)
-
-    if (trackRef.value) {
-      gsap.killTweensOf(trackRef.value, 'scrollLeft')
-      trackRef.value.classList.remove('is-featured-scrubbing')
-    }
-    featuredTarget = undefined
-    trackRef.value?.scrollTo({
-      left,
-      behavior: options.immediate || prefersReducedMotion.value ? 'auto' : 'smooth',
-    })
+    scrollToOffset(left, options)
   }
 
   function scrollToOffset(left, options = {}) {
-    if (trackRef.value) {
-      gsap.killTweensOf(trackRef.value, 'scrollLeft')
-      trackRef.value.classList.remove('is-featured-scrubbing')
+    const track = trackRef.value
+    if (!track) return
+
+    gsap.killTweensOf(track, 'scrollLeft')
+    wideSectionTarget = undefined
+    activeWideSectionId = undefined
+    sectionTransitioning = true
+    track.classList.add('is-wide-section-scrubbing')
+
+    if (options.immediate || prefersReducedMotion.value) {
+      track.scrollLeft = left
+      restoreSectionSnap()
+      return
     }
-    featuredTarget = undefined
-    trackRef.value?.scrollTo({
-      left,
-      behavior: options.immediate || prefersReducedMotion.value ? 'auto' : 'smooth',
+
+    gsap.to(track, {
+      scrollLeft: left,
+      duration: 0.72,
+      ease: 'power3.inOut',
+      overwrite: 'auto',
+      onComplete: restoreSectionSnap,
+      onInterrupt: restoreSectionSnap,
     })
   }
 
@@ -54,37 +70,64 @@ export function useHorizontalNavigation({
     return event.deltaY
   }
 
-  function scrollFeaturedGallery(event) {
+  function scrollWideSection(event, sectionId) {
     const track = trackRef.value
-    const featured = document.getElementById('featured')
-    if (!track || !featured) return false
+    const section = document.getElementById(sectionId)
+    if (!track || !section || section.offsetWidth <= track.clientWidth + 8) return false
 
-    const start = featured.offsetLeft
-    const end = start + featured.offsetWidth - track.clientWidth
+    const start = section.offsetLeft
+    const end = start + section.offsetWidth - track.clientWidth
     const current = track.scrollLeft
     const delta = normalizeWheelDelta(event)
     const direction = Math.sign(delta)
+    const sectionIndex = sectionIds.indexOf(sectionId)
     const tolerance = 6
-    const isWithinFeatured = current >= start - tolerance && current <= end + tolerance
+    const isWithinSection = current >= start - tolerance && current <= end + tolerance
     const isLeavingStart = direction < 0 && current <= start + tolerance
     const isLeavingEnd = direction > 0 && current >= end - tolerance
+    if (activeWideSectionId !== sectionId) {
+      activeWideSectionId = sectionId
+      wideSectionTarget = current
+    }
 
-    if (!isWithinFeatured || isLeavingStart || isLeavingEnd) return false
+    const targetReachedStart = direction < 0 && wideSectionTarget <= start + tolerance
+    const targetReachedEnd = direction > 0 && wideSectionTarget >= end - tolerance
+
+    if (isWithinSection && (isLeavingStart || targetReachedStart)) {
+      const previousOffset = sectionIndex > 0 ? getSectionOffset(sectionIndex - 1) : undefined
+      if (Number.isFinite(previousOffset)) {
+        event.preventDefault()
+        scrollToOffset(previousOffset)
+        return true
+      }
+    }
+
+    if (isWithinSection && (isLeavingEnd || targetReachedEnd)) {
+      const nextOffset =
+        sectionIndex < sectionIds.length - 1 ? getSectionOffset(sectionIndex + 1) : undefined
+      if (Number.isFinite(nextOffset)) {
+        event.preventDefault()
+        scrollToOffset(nextOffset)
+        return true
+      }
+    }
+
+    if (!isWithinSection || isLeavingStart || isLeavingEnd) return false
 
     event.preventDefault()
     resetWheelGesture()
-    track.classList.add('is-featured-scrubbing')
+    track.classList.add('is-wide-section-scrubbing')
 
-    const base = featuredTarget ?? current
-    featuredTarget = Math.max(start, Math.min(end, base + delta))
+    const base = wideSectionTarget ?? current
+    wideSectionTarget = Math.max(start, Math.min(end, base + delta))
 
     if (prefersReducedMotion.value) {
-      track.scrollLeft = featuredTarget
+      track.scrollLeft = wideSectionTarget
       return true
     }
 
     gsap.to(track, {
-      scrollLeft: featuredTarget,
+      scrollLeft: wideSectionTarget,
       duration: 0.78,
       ease: 'power3.out',
       overwrite: 'auto',
@@ -108,14 +151,20 @@ export function useHorizontalNavigation({
     const isHorizontalGesture = Math.abs(event.deltaX) >= Math.abs(event.deltaY)
 
     if (isPortrait || event.ctrlKey) return
+    if (sectionTransitioning) {
+      event.preventDefault()
+      return
+    }
     if (isHorizontalGesture) {
-      featuredTarget = undefined
+      wideSectionTarget = undefined
+      activeWideSectionId = undefined
       return
     }
     if (canScrollNestedContent(event)) return
-    if (scrollFeaturedGallery(event)) return
+    if (scrollWideSection(event, 'artworks')) return
 
-    featuredTarget = undefined
+    wideSectionTarget = undefined
+    activeWideSectionId = undefined
     window.clearTimeout(gestureTimer)
     gestureTimer = window.setTimeout(resetWheelGesture, 220)
 
@@ -131,7 +180,17 @@ export function useHorizontalNavigation({
     }
 
     const direction = accumulatedDelta > 0 ? 1 : -1
-    const targetOffset = getAdjacentOffset(trackRef.value.scrollLeft, direction)
+    const current = trackRef.value.scrollLeft
+    const currentSectionIndex = getSectionIndex(current)
+    const currentSectionStart = getSectionOffset(currentSectionIndex)
+    const isAtSectionStart = Math.abs(current - currentSectionStart) <= 8
+    const previousSectionEnd =
+      direction < 0 && isAtSectionStart && currentSectionIndex > 0
+        ? getSectionEndOffset(currentSectionIndex - 1)
+        : undefined
+    const targetOffset = Number.isFinite(previousSectionEnd)
+      ? previousSectionEnd
+      : getAdjacentOffset(current, direction)
     if (targetOffset === undefined) {
       resetWheelGesture()
       return
@@ -151,7 +210,16 @@ export function useHorizontalNavigation({
 
     event.preventDefault()
     const direction = event.key === 'ArrowRight' ? 1 : -1
-    const targetOffset = getAdjacentOffset(trackRef.value.scrollLeft, direction)
+    const current = trackRef.value.scrollLeft
+    const currentSectionIndex = getSectionIndex(current)
+    const currentSectionStart = getSectionOffset(currentSectionIndex)
+    const previousSectionEnd =
+      direction < 0 && Math.abs(current - currentSectionStart) <= 8 && currentSectionIndex > 0
+        ? getSectionEndOffset(currentSectionIndex - 1)
+        : undefined
+    const targetOffset = Number.isFinite(previousSectionEnd)
+      ? previousSectionEnd
+      : getAdjacentOffset(current, direction)
     if (targetOffset !== undefined) scrollToOffset(targetOffset)
   }
 
@@ -170,7 +238,7 @@ export function useHorizontalNavigation({
     window.clearTimeout(gestureTimer)
     if (trackRef.value) {
       gsap.killTweensOf(trackRef.value, 'scrollLeft')
-      trackRef.value.classList.remove('is-featured-scrubbing')
+      trackRef.value.classList.remove('is-featured-scrubbing', 'is-wide-section-scrubbing')
     }
     trackRef.value?.removeEventListener('wheel', onWheel)
     document.removeEventListener('keydown', onKeydown)
