@@ -31,7 +31,7 @@ const { pick, t } = useLanguage()
       <dl>
         <div>
           <dt>{{ t('roleLabel') }}</dt>
-          <dd>{{ project.role.includes('待補') ? t('comingSoon') : project.role }}</dd>
+          <dd>{{ pick(project.role).includes('待補') ? t('comingSoon') : pick(project.role) }}</dd>
         </div>
         <div>
           <dt>{{ t('toolsLabel') }}</dt>
