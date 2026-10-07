@@ -3,7 +3,7 @@ import { Flip } from 'gsap/Flip'
 
 gsap.registerPlugin(Flip)
 
-export function useProjectTransition() {
+export function useFrontendWorkTransition() {
   let transitionLayer = null
 
   function createTransitionLayer(sourceElement) {
@@ -13,7 +13,7 @@ export function useProjectTransition() {
     const layer = document.createElement('div')
     const visual = sourceElement.cloneNode(true)
 
-    layer.className = 'project-transition-image'
+    layer.className = 'frontend-work-transition-image'
     layer.setAttribute('aria-hidden', 'true')
     layer.appendChild(visual)
     document.body.appendChild(layer)

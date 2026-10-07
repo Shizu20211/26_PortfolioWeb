@@ -1,13 +1,22 @@
 <script setup>
+import { computed } from 'vue'
 import flowerBlue from '@/assets/illustrations/decorations/FlowerBlue.png'
 import flowerPink from '@/assets/illustrations/decorations/FlowerPink.png'
 import FloatingCloud from '@/components/FloatingCloud.vue'
 import ResponsivePortfolioImage from '@/components/ResponsivePortfolioImage.vue'
 
-const boundaries = [
+const props = defineProps({
+  measurements: {
+    type: Array,
+    default: () => [],
+  },
+})
+
+const boundaryDefinitions = [
   {
     key: 'home-featured',
-    offset: '100vw',
+    sectionId: 'featured',
+    fallbackOffset: '100vw',
     cloud: 'a',
     flower: flowerPink,
     width: 231,
@@ -19,8 +28,9 @@ const boundaries = [
     flowerRotation: '-8deg',
   },
   {
-    key: 'featured-projects',
-    offset: '400vw',
+    key: 'featured-frontend-works',
+    sectionId: 'frontend-works',
+    fallbackOffset: '400vw',
     cloud: 'b',
     flower: flowerBlue,
     width: 233,
@@ -32,8 +42,9 @@ const boundaries = [
     flowerRotation: '6deg',
   },
   {
-    key: 'projects-artworks',
-    offset: '500vw',
+    key: 'frontend-works-artworks',
+    sectionId: 'artworks',
+    fallbackOffset: '500vw',
     cloud: 'a',
     flower: flowerPink,
     width: 231,
@@ -46,7 +57,8 @@ const boundaries = [
   },
   {
     key: 'artworks-about',
-    offset: '600vw',
+    sectionId: 'about',
+    fallbackOffset: '600vw',
     cloud: 'b',
     flower: flowerBlue,
     width: 233,
@@ -58,6 +70,16 @@ const boundaries = [
     flowerRotation: '8deg',
   },
 ]
+
+const boundaries = computed(() =>
+  boundaryDefinitions.map((boundary) => {
+    const section = props.measurements.find(({ id }) => id === boundary.sectionId)
+    return {
+      ...boundary,
+      offset: Number.isFinite(section?.start) ? `${section.start}px` : boundary.fallbackOffset,
+    }
+  }),
+)
 </script>
 
 <template>

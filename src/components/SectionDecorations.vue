@@ -9,14 +9,14 @@ const props = defineProps({
   section: {
     type: String,
     required: true,
-    validator: (value) => ['featured', 'projects', 'artworks', 'about'].includes(value),
+    validator: (value) => ['featured', 'frontend-works', 'artworks', 'about'].includes(value),
   },
 })
 
 const decoration = computed(() => {
   const variants = {
     featured: { cloud: 'a', flower: flowerPink, width: 231, height: 231 },
-    projects: { cloud: 'b', flower: flowerBlue, width: 233, height: 232 },
+    'frontend-works': { cloud: 'b', flower: flowerBlue, width: 233, height: 232 },
     artworks: { cloud: 'a', flower: flowerPink, width: 231, height: 231 },
     about: { cloud: 'b', flower: flowerBlue, width: 233, height: 232 },
   }

@@ -13,6 +13,7 @@ import loadGrayImage from '@/assets/cat/loading/load-b01.png'
 import loadDarkGrayImage from '@/assets/cat/loading/load-b02.png'
 import loadBlackImage from '@/assets/cat/loading/load-black.png'
 import loadingCatImage from '@/assets/cat/loading/cat_loading.png'
+import { usePointerPosition } from '@/composables/usePointerPosition'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const EDGE_GAP = 12
@@ -22,6 +23,11 @@ const props = defineProps({
   progress: { type: Number, default: 0 },
 })
 const { prefersReducedMotion } = useReducedMotion()
+const {
+  position: sharedPointer,
+  connect: connectPointer,
+  disconnect: disconnectPointer,
+} = usePointerPosition()
 
 const stageRef = ref(null)
 const catX = ref(32)
@@ -161,7 +167,7 @@ function isIgnoredTapTarget(target) {
   if (!(target instanceof Element)) return true
   return Boolean(
     target.closest(
-      'a, button, input, textarea, select, summary, video, picture, img, p, h1, h2, h3, dl, ul, ol, [role="button"], [role="dialog"], [data-vertical-scroll], .project-flex-gallery',
+      'a, button, input, textarea, select, summary, video, picture, img, p, h1, h2, h3, dl, ul, ol, [role="button"], [role="dialog"], [data-vertical-scroll], .frontend-work-flex-gallery',
     ),
   )
 }
@@ -184,6 +190,16 @@ function handleMobilePointerMove(event) {
 
   const distance = Math.hypot(event.clientX - tapStart.x, event.clientY - tapStart.y)
   if (distance > TAP_MAX_DISTANCE) tapStart = undefined
+}
+
+function handleSharedPointer(point) {
+  const event = {
+    clientX: point.x,
+    clientY: point.y,
+    pointerType: point.pointerType,
+  }
+  handlePointerMove(event)
+  handleMobilePointerMove(event)
 }
 
 function handleMobilePointerUp(event) {
@@ -225,9 +241,8 @@ onMounted(() => {
     '(max-width: 1180px) and (max-height: 720px) and (orientation: landscape)',
   )
   pointer.y = window.innerHeight
-  document.addEventListener('pointermove', handlePointerMove, { passive: true })
+  connectPointer()
   document.addEventListener('pointerdown', handleMobilePointerDown, { passive: true })
-  document.addEventListener('pointermove', handleMobilePointerMove, { passive: true })
   document.addEventListener('pointerup', handleMobilePointerUp, { passive: true })
   document.addEventListener('pointercancel', cancelMobileTap, { passive: true })
   window.addEventListener('resize', updateLayoutMode, { passive: true })
@@ -238,11 +253,11 @@ onMounted(() => {
 })
 
 watch(() => props.progress, updateFromProgress, { flush: 'post' })
+watch(sharedPointer, handleSharedPointer)
 
 onBeforeUnmount(() => {
-  document.removeEventListener('pointermove', handlePointerMove)
+  disconnectPointer()
   document.removeEventListener('pointerdown', handleMobilePointerDown)
-  document.removeEventListener('pointermove', handleMobilePointerMove)
   document.removeEventListener('pointerup', handleMobilePointerUp)
   document.removeEventListener('pointercancel', cancelMobileTap)
   window.removeEventListener('resize', updateLayoutMode)

@@ -1,28 +1,28 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
-import ProjectDetailOverlay from '@/components/ProjectDetailOverlay.vue'
+import FrontendWorkDetailOverlay from '@/components/FrontendWorkDetailOverlay.vue'
 import ResponsivePortfolioImage from '@/components/ResponsivePortfolioImage.vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const props = defineProps({
-  projects: { type: Array, required: true },
+  frontendWorks: { type: Array, required: true },
 })
 
 const { pick, t } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
-const activeProject = ref(null)
-const projectList = ref(null)
+const activeWork = ref(null)
+const workList = ref(null)
 const galleryTrack = ref(null)
 const preview = ref(null)
 const isPreviewVisible = ref(false)
-const selectedProject = ref(null)
+const selectedWork = ref(null)
 const selectedSource = ref(null)
 const selectedNumber = ref('')
 const selectedTrigger = ref(null)
 
-const activeMedia = computed(() => activeProject.value?.media)
+const activeMedia = computed(() => activeWork.value?.media)
 
 let canFollowPointer = false
 let landscapeQuery
@@ -31,8 +31,8 @@ let moveX
 let moveY
 let touchStartX = 0
 
-function showPreview(project, fromKeyboard = false) {
-  activeProject.value = project
+function showPreview(work, fromKeyboard = false) {
+  activeWork.value = work
   isPreviewVisible.value = true
 
   if (fromKeyboard && preview.value) {
@@ -50,31 +50,31 @@ function movePreview(event) {
   moveY?.(event.clientY)
 }
 
-function openProject(project, index, sourceElement, triggerElement) {
-  if (selectedProject.value) return
-  selectedProject.value = project
+function openWork(work, index, sourceElement, triggerElement) {
+  if (selectedWork.value) return
+  selectedWork.value = work
   selectedNumber.value = String(index + 1).padStart(2, '0')
   selectedSource.value = sourceElement ?? null
   selectedTrigger.value = triggerElement ?? null
 }
 
-function openDesktopProject(project, index, triggerElement) {
+function openDesktopWork(work, index, triggerElement) {
   const source = preview.value?.querySelector(
-    '.project-hover-preview__image, .project-hover-preview__placeholder',
+    '.frontend-work-hover-preview__image, .frontend-work-hover-preview__placeholder',
   )
-  openProject(project, index, source, triggerElement)
+  openWork(work, index, source, triggerElement)
 }
 
-function openMobileProject(project, index, event) {
+function openMobileWork(work, index, event) {
   const source = event.currentTarget
     .closest('[data-gallery-index]')
-    ?.querySelector('.project-flex-gallery__image, .project-flex-gallery__placeholder')
-  openProject(project, index, source, event.currentTarget)
+    ?.querySelector('.frontend-work-flex-gallery__image, .frontend-work-flex-gallery__placeholder')
+  openWork(work, index, source, event.currentTarget)
 }
 
-function finishClosingProject() {
+function finishClosingWork() {
   const trigger = selectedTrigger.value
-  selectedProject.value = null
+  selectedWork.value = null
   selectedSource.value = null
   selectedNumber.value = ''
   selectedTrigger.value = null
@@ -93,11 +93,9 @@ function handleGalleryTouchEnd(event) {
   if (!gallery || distance < 36) return
 
   const direction = delta > 0 ? 1 : -1
-  const activeIndex = props.projects.findIndex(
-    (project) => project.slug === activeProject.value?.slug,
-  )
+  const activeIndex = props.frontendWorks.findIndex((work) => work.slug === activeWork.value?.slug)
   const isLeavingStart = direction < 0 && activeIndex === 0
-  const isLeavingEnd = direction > 0 && activeIndex === props.projects.length - 1
+  const isLeavingEnd = direction > 0 && activeIndex === props.frontendWorks.length - 1
 
   if (isLeavingStart || isLeavingEnd) goToAdjacentSection(direction)
 }
@@ -107,11 +105,11 @@ function goToAdjacentSection(direction) {
   if (!gallery) return
 
   const outerTrack = gallery.closest('.portfolio-track')
-  const projectsSection = gallery.closest('#projects')
+  const frontendWorksSection = gallery.closest('#frontend-works')
   const target =
     direction > 0
       ? document.getElementById('artworks')?.offsetLeft
-      : Math.max(0, (projectsSection?.offsetLeft ?? innerWidth) - innerWidth)
+      : Math.max(0, (frontendWorksSection?.offsetLeft ?? innerWidth) - innerWidth)
 
   if (outerTrack && Number.isFinite(target)) {
     outerTrack.scrollTo({ left: target, behavior: 'smooth' })
@@ -134,8 +132,8 @@ function updateGalleryActive() {
   })[0]
   const index = Number(current?.dataset.galleryIndex)
 
-  if (Number.isInteger(index) && activeProject.value?.slug !== props.projects[index]?.slug) {
-    activeProject.value = props.projects[index]
+  if (Number.isInteger(index) && activeWork.value?.slug !== props.frontendWorks[index]?.slug) {
+    activeWork.value = props.frontendWorks[index]
   }
 }
 
@@ -159,7 +157,7 @@ onMounted(() => {
   landscapeQuery = matchMedia(
     '(max-width: 1180px) and (max-height: 720px) and (orientation: landscape)',
   )
-  activeProject.value = props.projects[0] ?? null
+  activeWork.value = props.frontendWorks[0] ?? null
   landscapeQuery.addEventListener('change', setupIntersectionObserver)
   galleryTrack.value?.addEventListener('scroll', updateGalleryActive, { passive: true })
   setupIntersectionObserver()
@@ -185,117 +183,119 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="project-gallery">
+  <div class="frontend-work-gallery">
     <div
-      ref="projectList"
-      class="project-hover-list"
+      ref="workList"
+      class="frontend-work-hover-list"
       data-vertical-scroll
       @pointermove="movePreview"
       @pointerleave="hidePreview"
     >
-      <header class="project-hover-list__heading">
-        <p class="chapter-label project-heading-label project-heading-label--desktop">
-          02 · {{ t('sections.projects') }}
+      <header class="frontend-work-hover-list__heading">
+        <p class="chapter-label frontend-work-heading-label frontend-work-heading-label--desktop">
+          02 · {{ t('sections.frontendWorks') }}
         </p>
-        <p class="chapter-label project-heading-label project-heading-label--mobile">
-          02 · {{ t('headings.projects') }}
+        <p class="chapter-label frontend-work-heading-label frontend-work-heading-label--mobile">
+          02 · {{ t('headings.frontendWorks') }}
         </p>
-        <h2 id="projects-title">{{ t('headings.projects') }}</h2>
+        <h2 id="frontend-works-title">{{ t('headings.frontendWorks') }}</h2>
       </header>
 
       <button
-        v-for="(project, index) in projects"
-        :key="project.slug"
-        class="project-hover-list__item"
-        :class="{ 'is-active': activeProject?.slug === project.slug }"
-        :data-project-index="index"
+        v-for="(work, index) in frontendWorks"
+        :key="work.slug"
+        class="frontend-work-hover-list__item"
+        :class="{ 'is-active': activeWork?.slug === work.slug }"
+        :data-frontend-work-index="index"
         type="button"
-        @pointerenter="showPreview(project)"
-        @focus="showPreview(project, true)"
+        @pointerenter="showPreview(work)"
+        @focus="showPreview(work, true)"
         @blur="hidePreview"
-        @click="openDesktopProject(project, index, $event.currentTarget)"
+        @click="openDesktopWork(work, index, $event.currentTarget)"
       >
-        <span class="project-hover-list__number">{{ String(index + 1).padStart(2, '0') }}</span>
-        <span class="project-hover-list__title">{{ pick(project.title) }}</span>
-        <span class="project-hover-list__tags">{{ project.tags.join(' · ') }}</span>
-        <span class="project-hover-list__arrow" aria-hidden="true">↗</span>
+        <span class="frontend-work-hover-list__number">{{
+          String(index + 1).padStart(2, '0')
+        }}</span>
+        <span class="frontend-work-hover-list__title">{{ pick(work.title) }}</span>
+        <span class="frontend-work-hover-list__tags">{{ work.tags.join(' · ') }}</span>
+        <span class="frontend-work-hover-list__arrow" aria-hidden="true">↗</span>
       </button>
     </div>
 
     <div
       ref="galleryTrack"
-      class="project-flex-gallery"
-      :aria-label="t('headings.projects')"
+      class="frontend-work-flex-gallery"
+      :aria-label="t('headings.frontendWorks')"
       @pointerdown.stop
       @touchstart.stop="handleGalleryTouchStart"
       @touchmove.stop
       @touchend.stop="handleGalleryTouchEnd"
     >
       <button
-        class="project-flex-gallery__section-gate project-flex-gallery__section-gate--previous"
+        class="frontend-work-flex-gallery__section-gate frontend-work-flex-gallery__section-gate--previous"
         type="button"
         @click.stop="goToAdjacentSection(-1)"
       >
         <span>{{ t('goFeatured') }}</span>
-        <span class="project-flex-gallery__gate-line" aria-hidden="true"></span>
+        <span class="frontend-work-flex-gallery__gate-line" aria-hidden="true"></span>
       </button>
 
       <article
-        v-for="(project, index) in projects"
-        :key="project.slug"
-        class="project-flex-gallery__card"
-        :class="{ 'is-active': activeProject?.slug === project.slug }"
+        v-for="(work, index) in frontendWorks"
+        :key="work.slug"
+        class="frontend-work-flex-gallery__card"
+        :class="{ 'is-active': activeWork?.slug === work.slug }"
         :data-gallery-index="index"
       >
-        <div class="project-flex-gallery__media">
+        <div class="frontend-work-flex-gallery__media">
           <ResponsivePortfolioImage
-            v-if="project.media?.type === 'image'"
-            :src="project.media.src"
-            :alt="pick(project.media.alt)"
-            :width="project.media.width"
-            :height="project.media.height"
+            v-if="work.media?.type === 'image'"
+            :src="work.media.src"
+            :alt="pick(work.media.alt)"
+            :width="work.media.width"
+            :height="work.media.height"
             sizes="100svh"
-            image-class="project-flex-gallery__image"
+            image-class="frontend-work-flex-gallery__image"
           />
-          <div v-else class="project-flex-gallery__placeholder">
+          <div v-else class="frontend-work-flex-gallery__placeholder">
             <small>{{ t('imageNeeded') }}</small>
           </div>
           <button
-            v-if="activeProject?.slug === project.slug"
-            class="project-flex-gallery__link"
+            v-if="activeWork?.slug === work.slug"
+            class="frontend-work-flex-gallery__link"
             type="button"
-            :aria-label="`${t('openProject')}：${pick(project.title)}`"
-            @click.stop="openMobileProject(project, index, $event)"
+            :aria-label="`${t('openProject')}：${pick(work.title)}`"
+            @click.stop="openMobileWork(work, index, $event)"
           >
             {{ t('viewProject') }} ↗
           </button>
         </div>
-        <div class="project-flex-gallery__meta">
-          <div class="project-flex-gallery__reveal">
+        <div class="frontend-work-flex-gallery__meta">
+          <div class="frontend-work-flex-gallery__reveal">
             <span>{{ String(index + 1).padStart(2, '0') }}</span>
           </div>
-          <div class="project-flex-gallery__reveal">
-            <h3>{{ pick(project.title) }}</h3>
+          <div class="frontend-work-flex-gallery__reveal">
+            <h3>{{ pick(work.title) }}</h3>
           </div>
-          <div class="project-flex-gallery__reveal">
-            <p>{{ pick(project.summary) }}</p>
+          <div class="frontend-work-flex-gallery__reveal">
+            <p>{{ pick(work.summary) }}</p>
           </div>
         </div>
       </article>
 
       <button
-        class="project-flex-gallery__section-gate project-flex-gallery__section-gate--next"
+        class="frontend-work-flex-gallery__section-gate frontend-work-flex-gallery__section-gate--next"
         type="button"
         @click.stop="goToAdjacentSection(1)"
       >
-        <span class="project-flex-gallery__gate-line" aria-hidden="true"></span>
+        <span class="frontend-work-flex-gallery__gate-line" aria-hidden="true"></span>
         <span>{{ t('goArtworks') }}</span>
       </button>
     </div>
 
     <div
       ref="preview"
-      class="project-hover-preview"
+      class="frontend-work-hover-preview"
       :class="{ 'is-visible': isPreviewVisible && !prefersReducedMotion }"
       aria-hidden="true"
     >
@@ -306,20 +306,20 @@ onBeforeUnmount(() => {
         :width="activeMedia.width"
         :height="activeMedia.height"
         sizes="28vw"
-        image-class="project-hover-preview__image"
+        image-class="frontend-work-hover-preview__image"
       />
-      <div v-else class="project-hover-preview__placeholder">
-        <span>{{ activeProject ? pick(activeProject.title) : t('sections.projects') }}</span>
+      <div v-else class="frontend-work-hover-preview__placeholder">
+        <span>{{ activeWork ? pick(activeWork.title) : t('sections.frontendWorks') }}</span>
         <small>{{ t('imageNeeded') }}</small>
       </div>
     </div>
 
-    <ProjectDetailOverlay
-      v-if="selectedProject"
-      :project="selectedProject"
+    <FrontendWorkDetailOverlay
+      v-if="selectedWork"
+      :work="selectedWork"
       :number="selectedNumber"
       :source-element="selectedSource"
-      @closed="finishClosingProject"
+      @closed="finishClosingWork"
     />
   </div>
 </template>

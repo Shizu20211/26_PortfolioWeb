@@ -2,11 +2,11 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 import { useLanguage } from '@/composables/useLanguage'
-import { useProjectTransition } from '@/composables/useProjectTransition'
+import { useFrontendWorkTransition } from '@/composables/useFrontendWorkTransition'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const props = defineProps({
-  project: { type: Object, required: true },
+  work: { type: Object, required: true },
   number: { type: String, required: true },
   sourceElement: { type: Object, default: null },
 })
@@ -20,11 +20,11 @@ const content = ref(null)
 const closeButton = ref(null)
 const isTransitioning = ref(true)
 const { createTransitionLayer, fitTo, removeTransitionLayer, getTransitionLayer } =
-  useProjectTransition()
+  useFrontendWorkTransition()
 
 async function enterDetail() {
   await nextTick()
-  document.body.classList.add('project-detail-open')
+  document.body.classList.add('frontend-work-detail-open')
   gsap.set(content.value, { opacity: 0, y: 24 })
 
   if (!prefersReducedMotion.value && props.sourceElement) {
@@ -61,7 +61,7 @@ async function closeDetail() {
 
   if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
   removeTransitionLayer()
-  document.body.classList.remove('project-detail-open')
+  document.body.classList.remove('frontend-work-detail-open')
   emit('closed')
 }
 
@@ -93,7 +93,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
-  document.body.classList.remove('project-detail-open')
+  document.body.classList.remove('frontend-work-detail-open')
   if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
   removeTransitionLayer()
 })
@@ -103,63 +103,63 @@ onBeforeUnmount(() => {
   <Teleport to="body">
     <div
       ref="overlay"
-      class="project-detail is-active"
+      class="frontend-work-detail is-active"
       role="dialog"
       aria-modal="true"
-      :aria-labelledby="`project-detail-${project.slug}`"
+      :aria-labelledby="`frontend-work-detail-${work.slug}`"
     >
-      <section class="project-detail__media" aria-hidden="true">
-        <div ref="imageTarget" class="project-detail__image-target">
+      <section class="frontend-work-detail__media" aria-hidden="true">
+        <div ref="imageTarget" class="frontend-work-detail__image-target">
           <img
-            v-if="project.media?.type === 'image'"
-            class="project-detail__target-visual"
+            v-if="work.media?.type === 'image'"
+            class="frontend-work-detail__target-visual"
             :class="{ 'is-visible': prefersReducedMotion || !sourceElement }"
-            :src="project.media.src"
+            :src="work.media.src"
             alt=""
           />
           <div
             v-else
-            class="project-detail__target-visual project-detail__target-placeholder"
+            class="frontend-work-detail__target-visual frontend-work-detail__target-placeholder"
             :class="{ 'is-visible': prefersReducedMotion || !sourceElement }"
           >
             {{ t('imageNeeded') }}
           </div>
         </div>
       </section>
-      <section class="project-detail__content">
-        <div ref="content" class="project-detail__inner">
-          <span class="project-detail__number">{{ number }}</span>
-          <h2 :id="`project-detail-${project.slug}`" class="project-detail__title">
-            {{ pick(project.title) }}
+      <section class="frontend-work-detail__content">
+        <div ref="content" class="frontend-work-detail__inner">
+          <span class="frontend-work-detail__number">{{ number }}</span>
+          <h2 :id="`frontend-work-detail-${work.slug}`" class="frontend-work-detail__title">
+            {{ pick(work.title) }}
           </h2>
-          <p class="project-detail__category">{{ project.tags.join(' · ') }}</p>
-          <section class="project-detail__section">
+          <p class="frontend-work-detail__category">{{ work.tags.join(' · ') }}</p>
+          <section class="frontend-work-detail__section">
             <h3>{{ t('projectOverview') }}</h3>
-            <p class="project-detail__description">{{ pick(project.summary) }}</p>
+            <p class="frontend-work-detail__description">{{ pick(work.summary) }}</p>
           </section>
-          <dl class="project-detail__meta">
+          <dl class="frontend-work-detail__meta">
             <div>
               <dt>{{ t('roleLabel') }}</dt>
-              <dd>{{ project.role }}</dd>
+              <dd>{{ pick(work.role) }}</dd>
             </div>
             <div>
               <dt>{{ t('toolsLabel') }}</dt>
-              <dd>{{ project.tools.join(' / ') }}</dd>
+              <dd>{{ work.tools.join(' / ') }}</dd>
             </div>
             <div>
               <dt>{{ t('statusLabel') }}</dt>
               <dd>{{ t('comingSoon') }}</dd>
             </div>
           </dl>
-          <section class="project-detail__section">
+          <section class="frontend-work-detail__section">
             <h3>{{ t('projectDetails') }}</h3>
-            <p class="project-detail__description">{{ t('projectDetailsPending') }}</p>
+            <p class="frontend-work-detail__description">{{ t('projectDetailsPending') }}</p>
           </section>
         </div>
       </section>
       <button
         ref="closeButton"
-        class="project-detail__close"
+        class="frontend-work-detail__close"
         type="button"
         data-magnetic
         :aria-label="t('closeProject')"
