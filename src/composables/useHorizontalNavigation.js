@@ -147,6 +147,7 @@ export function useHorizontalNavigation({
   }
 
   function onWheel(event) {
+    if (document.body.classList.contains('frontend-work-detail-open')) return
     const isPortrait = matchMedia('(max-width: 760px) and (orientation: portrait)').matches
     const isHorizontalGesture = Math.abs(event.deltaX) >= Math.abs(event.deltaY)
 
@@ -203,6 +204,7 @@ export function useHorizontalNavigation({
   }
 
   function onKeydown(event) {
+    if (document.body.classList.contains('frontend-work-detail-open')) return
     const isArrowKey = ['ArrowLeft', 'ArrowRight'].includes(event.key)
     const isInteractiveTarget = event.target.closest('input, button, a, textarea, select')
 

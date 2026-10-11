@@ -1,5 +1,7 @@
 # CHING-YUNG HUANG — 日常微光
 
+目前已完成 **Phase 12：Frontend Works 完整化與跨章節整理**（2026-10-12）。詳見 [Phase 12 完成紀錄](docs/PHASE12_REVIEW.md) 與 [跨章節檢查報告](docs/FRONTEND_WORKS_AUDIT.md)。Artworks／About 待補資料及正式發布驗收另依後續階段處理。
+
 Vue 3 + Vite 橫向作品集第一階段。以 Horizontal Exhibition / Digital Editorial 為基調，讓瀏覽者在五個章節中快速理解視覺設計、前端互動與工藝背景。
 
 > 不確定要去哪裡修改？請先看 [作品集修改指南](docs/EDITING_GUIDE.md)，可依照「改文案、專案、圖片、色彩、手機版或互動」快速找到對應檔案。
@@ -81,6 +83,7 @@ npm run preview
 | `src/components/SectionDecorations.vue`        | Featured 至 About 的少量花朵與雲朵配置。              |
 | `src/components/ProjectSummaryCard.vue`        | 專案圖片插槽、摘要、Role、Tools 與詳情入口。          |
 | `src/components/ProjectHighlightGallery.vue`   | Case Study 四項成果的 Hover／Focus／觸控展開。        |
+| `src/components/FrontendWorkGallery.vue`       | 詳情滿版淡入淡出、Figma 長圖與子母畫面展示。          |
 | `src/components/FrontendWorkDetailOverlay.vue` | 前端作品細節 Overlay、內容捲動與返回動畫。            |
 | `src/components/ArtworkPreviewCard.vue`        | Artwork 圖片 RouterLink、VIEW／Focus 提示與比例卡片。 |
 | `src/components/ScrollHint.vue`                | 首頁橫向捲動提示。                                    |

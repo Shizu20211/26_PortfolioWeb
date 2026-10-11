@@ -8,10 +8,12 @@ export function useFrontendWorkTransition() {
 
   function createTransitionLayer(sourceElement) {
     if (!sourceElement) return null
+    removeTransitionLayer()
 
     const rect = sourceElement.getBoundingClientRect()
     const layer = document.createElement('div')
     const visual = sourceElement.cloneNode(true)
+    visual.style.opacity = '1'
 
     layer.className = 'frontend-work-transition-image'
     layer.setAttribute('aria-hidden', 'true')
@@ -31,13 +33,24 @@ export function useFrontendWorkTransition() {
   function fitTo(target, options = {}) {
     if (!transitionLayer || !target) return Promise.resolve()
 
-    return new Promise((resolve) => {
-      Flip.fit(transitionLayer, target, {
-        absolute: true,
-        duration: options.duration ?? 1,
-        ease: options.ease ?? 'power4.inOut',
-        onComplete: resolve,
-      })
+    const duration = options.duration ?? 1
+    if (duration <= 0) {
+      Flip.fit(transitionLayer, target, { absolute: true, duration: 0 })
+      return Promise.resolve()
+    }
+
+    return new Promise((resolve, reject) => {
+      try {
+        Flip.fit(transitionLayer, target, {
+          absolute: true,
+          duration,
+          ease: options.ease ?? 'power4.inOut',
+          onComplete: resolve,
+          onInterrupt: resolve,
+        })
+      } catch (error) {
+        reject(error)
+      }
     })
   }
 
@@ -48,9 +61,5 @@ export function useFrontendWorkTransition() {
     transitionLayer = null
   }
 
-  function getTransitionLayer() {
-    return transitionLayer
-  }
-
-  return { createTransitionLayer, fitTo, removeTransitionLayer, getTransitionLayer }
+  return { createTransitionLayer, fitTo, removeTransitionLayer }
 }

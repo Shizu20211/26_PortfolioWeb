@@ -40,6 +40,7 @@ export function useMagneticHover() {
       element.removeEventListener('pointermove', move)
       element.removeEventListener('pointerleave', reset)
       element.removeEventListener('blur', reset)
+      gsap.killTweensOf(element)
       gsap.set(element, { clearProps: 'x,y' })
     })
   }
@@ -58,6 +59,12 @@ export function useMagneticHover() {
           if (node instanceof Element) scan(node)
         })
       })
+      for (const [element, cleanup] of cleanups) {
+        if (!element.isConnected) {
+          cleanup()
+          cleanups.delete(element)
+        }
+      }
     })
     observer.observe(document.body, { childList: true, subtree: true })
   })

@@ -3,6 +3,7 @@ import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 import { useLanguage } from '@/composables/useLanguage'
 import { useFrontendWorkTransition } from '@/composables/useFrontendWorkTransition'
+import FrontendWorkGallery from '@/components/FrontendWorkGallery.vue'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const props = defineProps({
@@ -19,11 +20,13 @@ const imageTarget = ref(null)
 const content = ref(null)
 const closeButton = ref(null)
 const isTransitioning = ref(true)
-const { createTransitionLayer, fitTo, removeTransitionLayer, getTransitionLayer } =
-  useFrontendWorkTransition()
+const mediaReady = ref(false)
+let disposed = false
+const { createTransitionLayer, fitTo, removeTransitionLayer } = useFrontendWorkTransition()
 
 async function enterDetail() {
   await nextTick()
+  if (disposed) return
   document.body.classList.add('frontend-work-detail-open')
   gsap.set(content.value, { opacity: 0, y: 24 })
 
@@ -31,7 +34,13 @@ async function enterDetail() {
     createTransitionLayer(props.sourceElement)
     gsap.set(props.sourceElement, { opacity: 0 })
     await fitTo(imageTarget.value, { duration: 1.05 })
+    if (disposed) return
   }
+
+  mediaReady.value = true
+  await nextTick()
+  if (disposed) return
+  removeTransitionLayer()
 
   await gsap.to(content.value, {
     opacity: 1,
@@ -39,6 +48,7 @@ async function enterDetail() {
     duration: prefersReducedMotion.value ? 0 : 0.55,
     ease: 'power3.out',
   })
+  if (disposed) return
   isTransitioning.value = false
   closeButton.value?.focus()
 }
@@ -47,22 +57,29 @@ async function closeDetail() {
   if (isTransitioning.value) return
   isTransitioning.value = true
 
-  await gsap.to(content.value, {
-    opacity: 0,
-    y: 18,
-    duration: prefersReducedMotion.value ? 0 : 0.25,
-    ease: 'power2.in',
-  })
+  try {
+    await gsap.to(content.value, {
+      opacity: 0,
+      y: 18,
+      duration: prefersReducedMotion.value ? 0 : 0.25,
+      ease: 'power2.in',
+    })
 
-  const canReturn = props.sourceElement?.isConnected && getTransitionLayer()
-  if (!prefersReducedMotion.value && canReturn) {
-    await fitTo(props.sourceElement, { duration: 0.9 })
+    const canReturn = props.sourceElement?.isConnected
+    if (!prefersReducedMotion.value && canReturn) {
+      createTransitionLayer(props.sourceElement)
+      await fitTo(imageTarget.value, { duration: 0 })
+      mediaReady.value = false
+    }
+    if (!prefersReducedMotion.value && canReturn) {
+      await fitTo(props.sourceElement, { duration: 0.9 })
+    }
+  } finally {
+    if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
+    removeTransitionLayer()
+    document.body.classList.remove('frontend-work-detail-open')
+    emit('closed')
   }
-
-  if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
-  removeTransitionLayer()
-  document.body.classList.remove('frontend-work-detail-open')
-  emit('closed')
 }
 
 function handleKeydown(event) {
@@ -72,18 +89,27 @@ function handleKeydown(event) {
   }
   if (event.key !== 'Tab' || !overlay.value) return
 
-  const focusable = [...overlay.value.querySelectorAll('a[href], button:not(:disabled)')]
-  const first = focusable[0]
-  const last = focusable.at(-1)
-  if (!first || !last) return
-
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault()
-    last.focus()
-  } else if (!event.shiftKey && document.activeElement === last) {
-    event.preventDefault()
-    first.focus()
-  }
+  const focusable = [
+    ...overlay.value.querySelectorAll('a[href], button:not(:disabled), [tabindex="0"]'),
+  ].filter(
+    (element) =>
+      element.getClientRects().length && getComputedStyle(element).visibility !== 'hidden',
+  )
+  const priority = (element) =>
+    element === closeButton.value
+      ? 0
+      : element.classList.contains('frontend-work-detail__website')
+        ? 1
+        : element.classList.contains('frontend-work-detail__scroll')
+          ? 3
+          : 2
+  focusable.sort((a, b) => priority(a) - priority(b))
+  if (!focusable.length) return
+  const current = focusable.indexOf(document.activeElement)
+  const next =
+    current < 0 ? 0 : (current + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length
+  event.preventDefault()
+  focusable[next].focus()
 }
 
 onMounted(() => {
@@ -92,6 +118,8 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  disposed = true
+  gsap.killTweensOf(content.value)
   window.removeEventListener('keydown', handleKeydown)
   document.body.classList.remove('frontend-work-detail-open')
   if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
@@ -104,70 +132,81 @@ onBeforeUnmount(() => {
     <div
       ref="overlay"
       class="frontend-work-detail is-active"
+      :class="{ 'is-design-prototype': work.slug === 'marathon-redesign' }"
       role="dialog"
       aria-modal="true"
       :aria-labelledby="`frontend-work-detail-${work.slug}`"
     >
-      <section class="frontend-work-detail__media" aria-hidden="true">
-        <div ref="imageTarget" class="frontend-work-detail__image-target">
-          <img
-            v-if="work.media?.type === 'image'"
-            class="frontend-work-detail__target-visual"
-            :class="{ 'is-visible': prefersReducedMotion || !sourceElement }"
-            :src="work.media.src"
-            alt=""
-          />
-          <div
-            v-else
-            class="frontend-work-detail__target-visual frontend-work-detail__target-placeholder"
-            :class="{ 'is-visible': prefersReducedMotion || !sourceElement }"
-          >
-            {{ t('imageNeeded') }}
-          </div>
-        </div>
-      </section>
-      <section class="frontend-work-detail__content">
-        <div ref="content" class="frontend-work-detail__inner">
-          <span class="frontend-work-detail__number">{{ number }}</span>
-          <h2 :id="`frontend-work-detail-${work.slug}`" class="frontend-work-detail__title">
-            {{ pick(work.title) }}
-          </h2>
-          <p class="frontend-work-detail__category">{{ work.tags.join(' · ') }}</p>
-          <section class="frontend-work-detail__section">
-            <h3>{{ t('projectOverview') }}</h3>
-            <p class="frontend-work-detail__description">{{ pick(work.summary) }}</p>
-          </section>
-          <dl class="frontend-work-detail__meta">
-            <div>
-              <dt>{{ t('roleLabel') }}</dt>
-              <dd>{{ pick(work.role) }}</dd>
-            </div>
-            <div>
-              <dt>{{ t('toolsLabel') }}</dt>
-              <dd>{{ work.tools.join(' / ') }}</dd>
-            </div>
-            <div>
-              <dt>{{ t('statusLabel') }}</dt>
-              <dd>{{ t('comingSoon') }}</dd>
-            </div>
-          </dl>
-          <section class="frontend-work-detail__section">
-            <h3>{{ t('projectDetails') }}</h3>
-            <p class="frontend-work-detail__description">{{ t('projectDetailsPending') }}</p>
-          </section>
-        </div>
-      </section>
       <button
         ref="closeButton"
-        class="frontend-work-detail__close"
+        class="frontend-work-detail__close frontend-detail-link"
         type="button"
-        data-magnetic
         :aria-label="t('closeProject')"
         :disabled="isTransitioning"
         @click="closeDetail"
       >
-        {{ t('back') }}
+        <span class="frontend-detail-link__label">{{ t('back') }}</span>
       </button>
+      <section class="frontend-work-detail__media">
+        <div ref="imageTarget" class="frontend-work-detail__image-target">
+          <FrontendWorkGallery :work="work" :ready="mediaReady" />
+        </div>
+      </section>
+      <section class="frontend-work-detail__content">
+        <div ref="content" class="frontend-work-detail__inner">
+          <header class="frontend-work-detail__header">
+            <span class="frontend-work-detail__number">{{ number }}</span>
+            <div class="frontend-work-detail__title-row">
+              <h2 :id="`frontend-work-detail-${work.slug}`" class="frontend-work-detail__title">
+                {{ pick(work.title) }}
+              </h2>
+              <a
+                v-if="work.demoUrl"
+                class="frontend-work-detail__website frontend-detail-link"
+                :href="work.demoUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                :aria-label="`${t('viewWebsite')} · ${pick(work.title)} (${t('opensNewTab')})`"
+                ><span class="frontend-detail-link__label"
+                  >{{ t('viewWebsite') }} <span aria-hidden="true">↗</span></span
+                ></a
+              >
+            </div>
+            <p class="frontend-work-detail__category">{{ work.tags.map(pick).join(' · ') }}</p>
+          </header>
+          <div
+            class="frontend-work-detail__scroll"
+            data-vertical-scroll
+            tabindex="0"
+            role="region"
+            :aria-label="`${pick(work.title)} · ${t('projectDetails')}`"
+          >
+            <section class="frontend-work-detail__section">
+              <h3>{{ t('projectOverview') }}</h3>
+              <p class="frontend-work-detail__description">{{ pick(work.summary) }}</p>
+            </section>
+            <dl
+              v-if="work.tools?.length && !work.tools.some((tool) => tool.includes('待補'))"
+              class="frontend-work-detail__meta"
+            >
+              <div>
+                <dt>{{ t('toolsLabel') }}</dt>
+                <dd>{{ work.tools.join(' / ') }}</dd>
+              </div>
+            </dl>
+            <section v-if="work.details" class="frontend-work-detail__section">
+              <h3>{{ t('projectDetails') }}</h3>
+              <p class="frontend-work-detail__description">{{ pick(work.details) }}</p>
+            </section>
+            <p
+              v-if="work.imageNotice"
+              class="frontend-work-detail__description frontend-work-detail__notice"
+            >
+              {{ pick(work.imageNotice) }}
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   </Teleport>
 </template>
