@@ -6,7 +6,7 @@ import { useArtworkArchiveMotion } from '@/composables/useArtworkArchiveMotion'
 import { useLanguage } from '@/composables/useLanguage'
 const props = defineProps({ artworks: Array })
 const { t } = useLanguage()
-const { sectionRef, isSharedHeadingVisible } = useArtworkArchiveMotion()
+const { sectionRef, isSharedHeadingVisible, sharedHeadingTop } = useArtworkArchiveMotion()
 const overviewArtworks = computed(() =>
   props.artworks
     .filter((artwork) => artwork.published && artwork.showOnOverview)
@@ -36,13 +36,16 @@ const artworkRows = computed(() =>
         <p class="artworks-intro__description">{{ t('artworksNote') }}</p>
       </div>
     </header>
-    <div
-      class="artworks-shared-heading"
-      :class="{ 'is-visible': isSharedHeadingVisible }"
-      aria-hidden="true"
-    >
-      <p class="chapter-label">03 · {{ t('sections.artworks') }}</p>
-    </div>
+    <Teleport to="body">
+      <div
+        class="artworks-shared-heading"
+        :class="{ 'is-visible': isSharedHeadingVisible }"
+        :style="{ top: `${sharedHeadingTop}px` }"
+        aria-hidden="true"
+      >
+        <p class="chapter-label">03 · {{ t('sections.artworks') }}</p>
+      </div>
+    </Teleport>
     <div v-if="overviewArtworks.length" class="artworks-archive">
       <div
         v-for="(row, rowIndex) in artworkRows"

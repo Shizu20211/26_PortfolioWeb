@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import KaohsiungMapCaseStudy from '@/components/KaohsiungMapCaseStudy.vue'
 import { artworks } from '@/data/artworks'
 import { useArtworkTransition } from '@/composables/useArtworkTransition'
 import { useLanguage } from '@/composables/useLanguage'
@@ -9,11 +10,16 @@ const route = useRoute()
 const router = useRouter()
 const { pick, t } = useLanguage()
 const { enterDetail, getReturnState, cleanup } = useArtworkTransition()
+const caseStudy = ref(null)
 const heroTarget = ref(null)
 const heroImage = ref(null)
 const isReady = ref(false)
 const artwork = computed(() =>
-  artworks.find((item) => item.slug === route.params.slug && item.published),
+  artworks.find(
+    (item) =>
+      item.published &&
+      (item.slug === route.params.slug || item.legacySlugs?.includes(route.params.slug)),
+  ),
 )
 
 async function back() {
@@ -27,10 +33,12 @@ onMounted(async () => {
     return
   }
   await nextTick()
-  if (heroImage.value?.decode) {
-    await heroImage.value.decode().catch(() => {})
+  const image = caseStudy.value?.heroImage ?? heroImage.value
+  const target = caseStudy.value?.heroTarget ?? heroTarget.value
+  if (image?.decode) {
+    await image.decode().catch(() => {})
   }
-  await enterDetail(heroTarget.value, () => {
+  await enterDetail(target, () => {
     isReady.value = true
   })
 })
@@ -39,7 +47,13 @@ onBeforeUnmount(cleanup)
 </script>
 
 <template>
-  <main v-if="artwork" class="artwork-detail-view" :class="{ 'is-ready': isReady }">
+  <KaohsiungMapCaseStudy
+    v-if="artwork?.caseStudy === 'kaohsiung-map'"
+    ref="caseStudy"
+    :ready="isReady"
+    @back="back"
+  />
+  <main v-else-if="artwork" class="artwork-detail-view" :class="{ 'is-ready': isReady }">
     <button class="artwork-detail-view__back" type="button" data-magnetic @click="back">
       ← {{ t('backArtworks') }}
     </button>

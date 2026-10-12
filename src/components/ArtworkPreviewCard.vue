@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
       </span>
       <span class="artwork-card__focus-label">{{ t('viewArtwork') }} ↗</span>
       <span ref="cursor" class="artwork-view-cursor" :class="{ 'is-visible': cursorVisible }">
-        VIEW
+        {{ artwork.cursorLabel || 'VIEW' }}
       </span>
     </span>
     <span class="sr-only">{{ pick(artwork.title) }} · {{ artwork.type }}</span>

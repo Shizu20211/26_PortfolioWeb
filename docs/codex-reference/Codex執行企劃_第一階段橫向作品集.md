@@ -200,9 +200,9 @@ src/
   --color-muted: #68716f;
   --color-line: rgb(62 110 100 / 22%);
 
-  --color-home: #f8e9d7;
-  --color-featured: #edf2dc;
-  --color-projects: #e6efed;
+  --color-home: #f3e8d9;
+  --color-featured: #d8dec6;
+  --color-projects: #dce9e7;
   --color-artworks: #f7e2dc;
   --color-about: #fff7ea;
 

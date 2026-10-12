@@ -1,3 +1,4 @@
+import { kaohsiungMap } from '@/data/kaohsiungMap'
 import temporaryArtworkImage from '@/assets/images/intro/intro-flower-window-wide.png'
 
 const temporaryArtworkMedia = {
@@ -18,22 +19,6 @@ const temporaryArtworkMedia = {
 export const artworks = [
   {
     ...temporaryArtworkMedia,
-    key: 'vtuber',
-    slug: 'vtuber-backgrounds',
-    layout: 'wide',
-    published: true,
-    showOnOverview: true,
-    overviewOrder: 1,
-    title: { 'zh-Hant': 'VTuber 背景', en: 'VTuber Backgrounds', ja: 'VTuber 背景' },
-    type: 'Illustration',
-    contribution: {
-      'zh-Hant': '公開範圍與權利資訊待確認',
-      en: 'Public scope and usage rights awaiting confirmation',
-      ja: '公開範囲と使用権を確認中',
-    },
-  },
-  {
-    ...temporaryArtworkMedia,
     key: 'water',
     slug: 'water-park-illustration-map',
     layout: 'portrait',
@@ -52,12 +37,19 @@ export const artworks = [
     ...temporaryArtworkMedia,
     key: 'kaohsiung',
     slug: 'kaohsiung-stamp-map',
-    layout: 'square',
+    legacySlugs: ['vtuber-backgrounds'],
+    layout: 'wide',
     published: true,
     showOnOverview: true,
-    overviewOrder: 3,
-    title: { 'zh-Hant': '高雄地圖集章', en: 'Kaohsiung Stamp Map', ja: '高雄スタンプマップ' },
+    overviewOrder: 1,
+    title: kaohsiungMap.title,
     type: 'Graphic / Map',
+    cursorLabel: 'MAP',
+    cover: kaohsiungMap.cover,
+    alt: kaohsiungMap.title,
+    focalPosition: '50% 50%',
+    parallaxStrength: 0.35,
+    caseStudy: 'kaohsiung-map',
     contribution: null,
   },
   {
@@ -125,3 +117,15 @@ export const artworks = [
     contribution: null,
   },
 ]
+
+const cursorLabels = {
+  water: 'ART',
+  graphic: 'DESIGN',
+  maya: '3D',
+  dyeing: 'TEXTILE',
+  printmaking: 'PRINT',
+  metalwork: 'CRAFT',
+}
+for (const artwork of artworks) artwork.cursorLabel ??= cursorLabels[artwork.key] ?? 'VIEW'
+
+artworks.sort((a, b) => a.overviewOrder - b.overviewOrder)

@@ -40,7 +40,9 @@ export function useTrackMeasurements(sectionIds, trackRef) {
       })
 
     navigationStops.value = measurements.value.flatMap((section, sectionIndex) =>
-      (section.panelOffsets.length ? section.panelOffsets : [section.start]).map((offset) => ({
+      // The first panel belongs to the section entrance. Its padding must not
+      // shift wheel/keyboard entry away from the chapter navigation target.
+      [section.start, ...section.panelOffsets.slice(1)].map((offset) => ({
         sectionIndex,
         offset,
       })),

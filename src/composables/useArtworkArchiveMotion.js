@@ -6,6 +6,7 @@ const revealedArtworkKeys = new Set()
 export function useArtworkArchiveMotion() {
   const sectionRef = ref(null)
   const isSharedHeadingVisible = ref(false)
+  const sharedHeadingTop = ref(0)
   const { prefersReducedMotion } = useReducedMotion()
   let track
   let frame = 0
@@ -31,12 +32,23 @@ export function useArtworkArchiveMotion() {
     })
 
     const section = sectionRef.value
-    const intro = section?.querySelector('.artworks-intro')
-    if (section && intro) {
+    const introHeading = section?.querySelector('.artworks-intro .section-heading.compact')
+    const archive = section?.querySelector('.artworks-archive')
+    const isPortrait = matchMedia('(max-width: 760px) and (orientation: portrait)').matches
+    if (section && introHeading && archive && !isPortrait) {
       const sectionRect = section.getBoundingClientRect()
-      const introRect = intro.getBoundingClientRect()
+      const introHeadingRect = introHeading.getBoundingClientRect()
+      const archiveRect = archive.getBoundingClientRect()
+      const headerBottom =
+        document.querySelector('.site-header')?.getBoundingClientRect().bottom ?? 0
+      sharedHeadingTop.value = Math.max(headerBottom + 8, archiveRect.top - 28)
       isSharedHeadingVisible.value =
-        introRect.right < window.innerWidth * 0.36 && sectionRect.right > window.innerWidth * 0.18
+        sectionRect.left <= 0 &&
+        introHeadingRect.right <= 0 &&
+        archiveRect.right > 0 &&
+        sectionRect.right >= viewportWidth
+    } else {
+      isSharedHeadingVisible.value = false
     }
   }
 
@@ -113,5 +125,5 @@ export function useArtworkArchiveMotion() {
     if (layoutFrame) cancelAnimationFrame(layoutFrame)
   })
 
-  return { sectionRef, requestUpdate, isSharedHeadingVisible }
+  return { sectionRef, requestUpdate, isSharedHeadingVisible, sharedHeadingTop }
 }

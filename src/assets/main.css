@@ -791,8 +791,7 @@ h2 em {
   height: 100%;
 }
 .featured-shared-heading {
-  flex: 0 0 0;
-  width: 0;
+  width: max-content;
   height: max-content;
   opacity: 1;
   transition: opacity var(--duration-fast) var(--ease-standard);
@@ -2844,8 +2843,8 @@ body.artwork-transition-open {
 }
 
 .artworks-shared-heading {
-  position: sticky;
-  z-index: 4;
+  position: fixed;
+  z-index: 18;
   top: calc(4.25rem + 1vh);
   left: var(--page-pad);
   flex: 0 0 0;

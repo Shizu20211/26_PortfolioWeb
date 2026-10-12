@@ -58,8 +58,8 @@ export const messages = {
       artworks: '創作',
       about: '關於',
     },
-    headings: { featured: '專案製作', frontendWorks: '前端創作', artworks: '藝術與工藝' },
-    artworksNote: '說明內容待補充',
+    headings: { featured: '專案製作', frontendWorks: '前端創作', artworks: '創作與工藝' },
+    artworksNote: '以金工、版畫與繪畫為媒介，探索材料特性與造形表現的可能性。',
     featuredNote: '教育性質重構，從發現痛點、如何思考、最後執行改善。',
     featuredPanels: {
       visual: {
