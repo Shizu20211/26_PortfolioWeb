@@ -1,2 +1,5 @@
 # External reference material is preserved verbatim.
 docs/codex-reference/
+
+# Vendored Three.js Draco decoder files are kept byte-for-byte.
+public/draco/

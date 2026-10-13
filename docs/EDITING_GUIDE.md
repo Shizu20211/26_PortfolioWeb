@@ -180,6 +180,31 @@ npm run preview -- --host
 `focalPosition` 對應圖片的 `object-position`，可避免主體被裁切；
 `parallaxStrength` 建議使用 `0`～`1`，不適合視差的作品可設為 `0`。
 
+### 3D 創作測試與正式模型
+
+3D 詳細頁的作品資料位於 `src/data/threeDWorks.js`，互動 Viewer 位於
+`src/components/ThreeDModelViewer.vue`。測試版模型位於：
+
+```text
+src/assets/models/3d/little-house/flower_house.glb
+```
+
+目前 Viewer 使用 `GLTFLoader` 載入 `.glb`。GLB 可保留幾何、層級、動畫、標準 PBR
+材質及嵌入貼圖，但 Maya／Arnold
+程序材質與特殊 Shader 節點不會自動完整轉換。輸出前應先：
+
+1. 確認模型已建立 UV。
+2. 將程序材質烘焙為 Base Color、Normal、Roughness、Metallic、AO 與 Emissive 等貼圖。
+3. 在 Blender 或其他 glTF 輸出工具中改用 glTF 相容的 Principled BSDF／PBR 材質。
+4. 套用 Transform，確認比例、原點、法線與正面方向。
+5. 輸出單一 `.glb`，並在桌機與手機橫向測試材質、陰影與觸控。
+
+若匯出的模型仍保留遠離正式場景的建模素材，可在 `threeDWorks.js` 的作品資料中設定
+`displayBounds.min` 與 `displayBounds.max`。Viewer 會以模型座標排除範圍外的 Mesh，原始
+GLB 不會被改寫；正式定稿時仍建議回到 Maya／Blender 清理不需要的物件後重新輸出。
+
+三件作品只共用一個 WebGL Canvas；切換時更換模型，不同時建立三個 Renderer。
+
 ### 替換 Intro 圖片
 
 1. 將圖片放入 `src/assets/images/intro/`。

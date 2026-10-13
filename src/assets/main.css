@@ -54,7 +54,7 @@ body {
   display: flex;
   width: 100%;
   height: 100svh;
-  overflow-x: auto;
+  overflow: visible;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -2655,6 +2655,88 @@ body.artwork-transition-open {
   opacity: 0;
   transition: opacity 100ms var(--ease-standard);
 }
+.three-d-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+.three-d-gallery__arrow {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 50%;
+  background: rgb(39 50 68 / 30%);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+  backdrop-filter: blur(12px);
+}
+.three-d-gallery__arrow--previous {
+  left: 1rem;
+}
+.three-d-gallery__arrow--next {
+  right: 1rem;
+}
+.three-d-gallery__arrow:disabled {
+  opacity: 0.22;
+  cursor: default;
+}
+.three-d-gallery__index {
+  position: absolute;
+  z-index: 4;
+  right: 50%;
+  bottom: 2.25rem;
+  display: flex;
+  gap: 0.4rem;
+  max-width: calc(100% - 8rem);
+  margin: 0;
+  padding: 0.35rem;
+  overflow-x: auto;
+  list-style: none;
+  transform: translateX(50%);
+}
+.three-d-gallery__index button {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgb(52 67 91 / 20%);
+  border-radius: 100vh;
+  background: linear-gradient(-20deg, rgb(214 196 181 / 92%) 0%, rgb(240 226 193 / 94%) 100%);
+  box-shadow: 0 0.3rem 0.65rem rgb(18 30 48 / 18%);
+  color: #34435b;
+  font: inherit;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    box-shadow 240ms var(--ease-standard),
+    filter 240ms var(--ease-standard),
+    transform 240ms var(--ease-standard);
+  backdrop-filter: blur(10px);
+}
+.three-d-gallery__index button[aria-current='true'] {
+  font-weight: 600;
+  box-shadow:
+    0 0.35rem 0.85rem rgb(18 30 48 / 25%),
+    inset 0 0 0 1px rgb(52 67 91 / 28%);
+}
+.three-d-gallery__index button span {
+  margin-right: 0.35rem;
+  font-family: var(--font-label);
+}
+@media (hover: hover) and (pointer: fine) {
+  .three-d-gallery__index button:hover {
+    filter: saturate(1.08) brightness(1.03);
+    box-shadow: 0 0.45rem 1rem rgb(18 30 48 / 28%);
+    transform: translateY(-1px);
+  }
+}
 .artwork-detail-view.is-ready
   .artwork-detail-view__hero-target
   > :where(img, .artwork-detail-view__placeholder) {
@@ -2716,6 +2798,48 @@ body.artwork-transition-open {
   font-size: 0.72rem;
 }
 
+/* The 3D archive uses the viewport as one canvas instead of a split detail layout. */
+.artwork-detail-view--three-d {
+  position: relative;
+  display: block;
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+}
+.artwork-detail-view--three-d .artwork-detail-view__media {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+}
+.artwork-detail-view--three-d .artwork-detail-view__hero-target {
+  min-height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+.artwork-detail-view--three-d.is-ready .artwork-detail-view__hero-target:not(.has-image) {
+  background: transparent;
+}
+.artwork-detail-view--three-d .artwork-detail-view__content {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: var(--page-pad);
+  width: min(27rem, 31vw);
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: var(--radius-md);
+  background: rgb(239 220 213 / 68%);
+  box-shadow: 0 1.2rem 3rem rgb(42 39 37 / 9%);
+  transform: translateY(calc(-50% + 1rem));
+  backdrop-filter: blur(16px);
+}
+.artwork-detail-view--three-d.is-ready .artwork-detail-view__content {
+  transform: translateY(-50%);
+}
+.artwork-detail-view--three-d .artwork-detail-view__content h1 {
+  font-size: clamp(2.25rem, 4vw, 4.8rem);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .artwork-view-cursor {
     display: grid;
@@ -2755,6 +2879,16 @@ body.artwork-transition-open {
   }
   .artwork-detail-view__content {
     padding: 3.5rem 1.2rem 2.8rem;
+    overflow-y: auto;
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__media {
+    padding: 0;
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__content {
+    right: 1.2rem;
+    width: min(24rem, 34vw);
+    max-height: calc(100svh - 7rem);
+    padding: 1rem 1.2rem;
     overflow-y: auto;
   }
 }
@@ -2806,6 +2940,30 @@ body.artwork-transition-open {
   }
   .artwork-detail-view__content {
     padding: 2rem var(--page-pad) 5rem;
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__media {
+    padding: 0;
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__content {
+    top: auto;
+    right: var(--page-pad);
+    bottom: 4.5rem;
+    left: var(--page-pad);
+    width: auto;
+    max-height: 36svh;
+    padding: 1rem;
+    overflow-y: auto;
+    transform: translateY(1rem);
+  }
+  .artwork-detail-view--three-d.is-ready .artwork-detail-view__content {
+    transform: translateY(0);
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__content h1 {
+    margin-block: 0.25rem 0.65rem;
+    font-size: clamp(1.8rem, 9vw, 2.8rem);
+  }
+  .artwork-detail-view--three-d .artwork-detail-view__content dl {
+    margin-top: 0.75rem;
   }
 }
 

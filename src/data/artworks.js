@@ -1,5 +1,7 @@
 import { kaohsiungMap } from '@/data/kaohsiungMap'
+import { threeDWorks } from '@/data/threeDWorks'
 import temporaryArtworkImage from '@/assets/images/intro/intro-flower-window-wide.png'
+import boathouseCardImage from '@/assets/images/artworks/3d/boathouse-card.png'
 
 const temporaryArtworkMedia = {
   cover: {
@@ -66,31 +68,39 @@ export const artworks = [
   },
   {
     ...temporaryArtworkMedia,
-    key: 'maya',
-    slug: 'maya-3d',
-    layout: 'portrait',
-    published: true,
-    showOnOverview: true,
-    overviewOrder: 5,
-    title: { 'zh-Hant': 'Maya 3D', en: 'Maya 3D', ja: 'Maya 3D' },
-    type: '3D',
-    contribution: null,
-  },
-  {
-    ...temporaryArtworkMedia,
-    key: 'dyeing',
-    slug: 'botanical-traditional-dyeing',
+    key: 'three-d',
+    slug: '3d-creation',
+    legacySlugs: ['maya-3d', 'botanical-traditional-dyeing'],
     layout: 'wide',
     published: true,
     showOnOverview: true,
     overviewOrder: 6,
     title: {
-      'zh-Hant': '植物染與傳統染織',
-      en: 'Botanical & Traditional Dyeing',
-      ja: '植物染めと伝統染織',
+      'zh-Hant': '3D 創作',
+      en: '3D Creations',
+      ja: '3D制作',
     },
-    type: 'Textile Craft',
-    contribution: null,
+    type: '3D / Maya',
+    cursorLabel: '3D',
+    caseStudy: '3d-creation',
+    works: threeDWorks,
+    cover: {
+      src: boathouseCardImage,
+      width: 1024,
+      height: 768,
+    },
+    alt: {
+      'zh-Hant': '船屋咖啡 3D 場景',
+      en: 'Boathouse Café 3D scene',
+      ja: 'ボートハウス・カフェの3Dシーン',
+    },
+    focalPosition: '50% 50%',
+    parallaxStrength: 0.35,
+    contribution: {
+      'zh-Hant': '3D 建模、場景構成與網頁互動展示',
+      en: '3D modeling, scene composition, and interactive web presentation',
+      ja: '3Dモデリング、シーン構成、Webインタラクティブ表示',
+    },
   },
   {
     ...temporaryArtworkMedia,
@@ -121,8 +131,7 @@ export const artworks = [
 const cursorLabels = {
   water: 'ART',
   graphic: 'DESIGN',
-  maya: '3D',
-  dyeing: 'TEXTILE',
+  'three-d': '3D',
   printmaking: 'PRINT',
   metalwork: 'CRAFT',
 }
