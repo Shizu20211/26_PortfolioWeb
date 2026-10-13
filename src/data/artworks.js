@@ -39,7 +39,6 @@ export const artworks = [
     ...temporaryArtworkMedia,
     key: 'kaohsiung',
     slug: 'kaohsiung-stamp-map',
-    legacySlugs: ['vtuber-backgrounds'],
     layout: 'wide',
     published: true,
     showOnOverview: true,
@@ -53,6 +52,22 @@ export const artworks = [
     parallaxStrength: 0.35,
     caseStudy: 'kaohsiung-map',
     contribution: null,
+  },
+  {
+    ...temporaryArtworkMedia,
+    key: 'vtuber',
+    slug: 'vtuber-backgrounds',
+    layout: 'wide',
+    published: true,
+    showOnOverview: true,
+    overviewOrder: 3,
+    title: { 'zh-Hant': 'VTuber 背景', en: 'VTuber Backgrounds', ja: 'VTuber 背景' },
+    type: 'Illustration',
+    contribution: {
+      'zh-Hant': '公開範圍與權利資訊待確認',
+      en: 'Public scope and usage rights awaiting confirmation',
+      ja: '公開範囲と使用権を確認中',
+    },
   },
   {
     ...temporaryArtworkMedia,
@@ -70,7 +85,7 @@ export const artworks = [
     ...temporaryArtworkMedia,
     key: 'three-d',
     slug: '3d-creation',
-    legacySlugs: ['maya-3d', 'botanical-traditional-dyeing'],
+    legacySlugs: ['maya-3d'],
     layout: 'wide',
     published: true,
     showOnOverview: true,
@@ -104,6 +119,22 @@ export const artworks = [
   },
   {
     ...temporaryArtworkMedia,
+    key: 'dyeing',
+    slug: 'botanical-traditional-dyeing',
+    layout: 'wide',
+    published: true,
+    showOnOverview: true,
+    overviewOrder: 5,
+    title: {
+      'zh-Hant': '植物染與傳統染織',
+      en: 'Botanical & Traditional Dyeing',
+      ja: '植物染めと伝統染織',
+    },
+    type: 'Textile Craft',
+    contribution: null,
+  },
+  {
+    ...temporaryArtworkMedia,
     key: 'printmaking',
     slug: 'printmaking',
     layout: 'square',
@@ -129,8 +160,10 @@ export const artworks = [
 ]
 
 const cursorLabels = {
+  vtuber: 'ART',
   water: 'ART',
   graphic: 'DESIGN',
+  dyeing: 'TEXTILE',
   'three-d': '3D',
   printmaking: 'PRINT',
   metalwork: 'CRAFT',
