@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import KaohsiungMapCaseStudy from '@/components/KaohsiungMapCaseStudy.vue'
+import MetalworkGallery from '@/components/MetalworkGallery.vue'
 import ThreeDModelViewer from '@/components/ThreeDModelViewer.vue'
 import { artworks } from '@/data/artworks'
 import { useArtworkTransition } from '@/composables/useArtworkTransition'
@@ -14,6 +15,7 @@ const { enterDetail, getReturnState, cleanup } = useArtworkTransition()
 const caseStudy = ref(null)
 const heroTarget = ref(null)
 const heroImage = ref(null)
+const metalworkGallery = ref(null)
 const isReady = ref(false)
 const activeThreeDIndex = ref(0)
 const artwork = computed(() =>
@@ -42,7 +44,7 @@ onMounted(async () => {
     return
   }
   await nextTick()
-  const image = caseStudy.value?.heroImage ?? heroImage.value
+  const image = caseStudy.value?.heroImage ?? metalworkGallery.value?.heroImage ?? heroImage.value
   const target = caseStudy.value?.heroTarget ?? heroTarget.value
   if (image?.decode) {
     await image.decode().catch(() => {})
@@ -68,6 +70,7 @@ onBeforeUnmount(cleanup)
     :class="{
       'is-ready': isReady,
       'artwork-detail-view--three-d': artwork.caseStudy === '3d-creation',
+      'artwork-detail-view--metalwork': artwork.caseStudy === 'metalwork',
     }"
   >
     <button class="artwork-detail-view__back" type="button" data-magnetic @click="back">
@@ -75,7 +78,7 @@ onBeforeUnmount(cleanup)
     </button>
     <section
       class="artwork-detail-view__media"
-      :aria-hidden="artwork.caseStudy === '3d-creation' ? undefined : true"
+      :aria-hidden="['3d-creation', 'metalwork'].includes(artwork.caseStudy) ? undefined : true"
     >
       <div
         ref="heroTarget"
@@ -117,28 +120,51 @@ onBeforeUnmount(cleanup)
             </li>
           </ol>
         </div>
+        <MetalworkGallery
+          v-else-if="artwork.caseStudy === 'metalwork'"
+          ref="metalworkGallery"
+          :images="artwork.gallery"
+        />
         <img v-else-if="artwork.cover?.src" ref="heroImage" :src="artwork.cover.src" alt="" />
         <div v-else class="artwork-detail-view__placeholder">{{ t('imageNeeded') }}</div>
       </div>
     </section>
     <section class="artwork-detail-view__content">
-      <p class="chapter-label">{{ artwork.type }}</p>
+      <p class="chapter-label">{{ pick(artwork.type) }}</p>
       <h1>{{ pick(artwork.title) }}</h1>
-      <p>
-        {{ activeThreeDWork ? pick(activeThreeDWork.summary) : t('artworkDetailsPending') }}
-      </p>
-      <dl>
-        <div>
-          <dt>
-            {{
-              artwork.caseStudy === '3d-creation'
-                ? pick({ 'zh-Hant': '製作內容', en: 'Created', ja: '制作内容' })
-                : t('contribution')
-            }}
-          </dt>
-          <dd>{{ artwork.contribution ? pick(artwork.contribution) : t('comingSoon') }}</dd>
+      <template v-if="artwork.caseStudy === 'metalwork'">
+        <div class="artwork-detail-view__narrative">
+          <p class="artwork-detail-view__concept">{{ pick(artwork.concept) }}</p>
+          <p class="artwork-detail-view__process">{{ pick(artwork.process) }}</p>
         </div>
-      </dl>
+        <dl class="artwork-detail-view__metadata artwork-detail-view__metadata--metalwork">
+          <div>
+            <dt>{{ pick({ 'zh-Hant': '材料', en: 'Material', ja: '素材' }) }}</dt>
+            <dd>{{ pick(artwork.material) }}</dd>
+          </div>
+          <div>
+            <dt>{{ pick({ 'zh-Hant': '創作日期', en: 'Date', ja: '制作時期' }) }}</dt>
+            <dd>{{ pick(artwork.date) }}</dd>
+          </div>
+        </dl>
+      </template>
+      <template v-else>
+        <p>
+          {{ activeThreeDWork ? pick(activeThreeDWork.summary) : t('artworkDetailsPending') }}
+        </p>
+        <dl>
+          <div>
+            <dt>
+              {{
+                artwork.caseStudy === '3d-creation'
+                  ? pick({ 'zh-Hant': '製作內容', en: 'Created', ja: '制作内容' })
+                  : t('contribution')
+              }}
+            </dt>
+            <dd>{{ artwork.contribution ? pick(artwork.contribution) : t('comingSoon') }}</dd>
+          </div>
+        </dl>
+      </template>
     </section>
   </main>
 </template>

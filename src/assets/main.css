@@ -2840,6 +2840,149 @@ body.artwork-transition-open {
   font-size: clamp(2.25rem, 4vw, 4.8rem);
 }
 
+.artwork-detail-view--metalwork .artwork-detail-view__media {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+.artwork-detail-view--metalwork {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 18%, rgb(255 255 255 / 34%), transparent 32%),
+    var(--color-artworks);
+}
+.artwork-detail-view--metalwork::before {
+  position: absolute;
+  z-index: 0;
+  inset: -12%;
+  content: '';
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 47%, rgb(71 79 73 / 7%) 48% 51%, transparent 52%),
+    linear-gradient(0deg, transparent 47%, rgb(71 79 73 / 6%) 48% 51%, transparent 52%);
+  background-size: clamp(12rem, 22vw, 23rem) clamp(12rem, 22vw, 23rem);
+  filter: blur(8px);
+  opacity: 0.78;
+  transform: rotate(-7deg) scale(1.08);
+}
+.artwork-detail-view--metalwork::after {
+  position: absolute;
+  z-index: 0;
+  inset: -10%;
+  content: '';
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 15% 28% at 13% 18%, rgb(63 72 64 / 8%) 0 35%, transparent 58%),
+    radial-gradient(ellipse 12% 24% at 26% 8%, rgb(63 72 64 / 7%) 0 32%, transparent 58%),
+    radial-gradient(ellipse 14% 25% at 82% 78%, rgb(63 72 64 / 6%) 0 34%, transparent 60%),
+    radial-gradient(ellipse 11% 22% at 93% 65%, rgb(63 72 64 / 6%) 0 32%, transparent 58%);
+  filter: blur(16px);
+  opacity: 0.68;
+  transform: rotate(-12deg) scale(1.12);
+}
+.artwork-detail-view--metalwork .artwork-detail-view__hero-target {
+  width: min(100%, calc(100svh - clamp(8rem, 12vw, 13rem)));
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.artwork-detail-view--metalwork.is-ready .artwork-detail-view__hero-target:not(.has-image) {
+  background: transparent;
+}
+.metalwork-gallery,
+.metalwork-gallery__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.metalwork-gallery__stage {
+  overflow: hidden;
+  border-radius: 0;
+  background: rgb(238 233 225 / 42%);
+}
+.artwork-detail-view__hero-target .metalwork-gallery__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.metalwork-gallery__pagination {
+  position: absolute;
+  z-index: 4;
+  bottom: clamp(0.75rem, 2vw, 1.25rem);
+  left: 50%;
+  display: flex;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 100vh;
+  background: rgb(30 34 38 / 24%);
+  list-style: none;
+  transform: translateX(-50%);
+  backdrop-filter: blur(8px);
+}
+.metalwork-gallery__pagination button {
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.metalwork-gallery__pagination button span {
+  width: 0.42rem;
+  height: 0.42rem;
+  border: 1px solid rgb(255 255 255 / 78%);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    width 240ms var(--ease-standard),
+    background-color 240ms var(--ease-standard);
+}
+.metalwork-gallery__pagination button[aria-current='true'] span {
+  width: 0.95rem;
+  border-radius: 100vh;
+  background: rgb(255 255 255 / 92%);
+}
+.artwork-detail-view--metalwork .artwork-detail-view__content {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(5rem, 8vw, 8rem);
+  overflow-y: auto;
+}
+.artwork-detail-view--metalwork .artwork-detail-view__content h1 {
+  font-size: clamp(2.35rem, 4.5vw, 5.25rem);
+}
+.artwork-detail-view__narrative {
+  display: grid;
+  gap: 1.25rem;
+}
+.artwork-detail-view__narrative > p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.8;
+}
+.artwork-detail-view__process {
+  font-size: 0.9em;
+}
+.artwork-detail-view__metadata--metalwork {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .artwork-view-cursor {
     display: grid;
@@ -2891,6 +3034,9 @@ body.artwork-transition-open {
     padding: 1rem 1.2rem;
     overflow-y: auto;
   }
+  .artwork-detail-view--metalwork .artwork-detail-view__hero-target {
+    width: min(100%, calc(100svh - 6.3rem));
+  }
 }
 
 @media (max-width: 760px) and (orientation: portrait) {
@@ -2941,6 +3087,23 @@ body.artwork-transition-open {
   .artwork-detail-view__content {
     padding: 2rem var(--page-pad) 5rem;
   }
+  .artwork-detail-view--metalwork .artwork-detail-view__media {
+    padding: 5.5rem var(--page-pad) 1rem;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__hero-target {
+    width: 100%;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__content {
+    padding: 1.5rem var(--page-pad) 4rem;
+    overflow: visible;
+  }
+  .artwork-detail-view--metalwork::after {
+    opacity: 0.42;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__content h1 {
+    margin-block: 0.35rem 1rem;
+    font-size: clamp(2.1rem, 11vw, 3.5rem);
+  }
   .artwork-detail-view--three-d .artwork-detail-view__media {
     padding: 0;
   }
@@ -2977,6 +3140,9 @@ body.artwork-transition-open {
   }
   .artwork-view-cursor {
     display: none;
+  }
+  .metalwork-gallery__image {
+    transform: none !important;
   }
 }
 
