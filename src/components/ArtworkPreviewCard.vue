@@ -102,6 +102,6 @@ onBeforeUnmount(() => {
         {{ artwork.cursorLabel || 'VIEW' }}
       </span>
     </span>
-    <span class="sr-only">{{ pick(artwork.title) }} · {{ artwork.type }}</span>
+    <span class="sr-only">{{ pick(artwork.title) }} · {{ pick(artwork.type) }}</span>
   </RouterLink>
 </template>

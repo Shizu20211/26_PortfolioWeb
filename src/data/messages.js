@@ -42,7 +42,7 @@ export const messages = {
     viewWebsite: '前往網站',
     opensNewTab: '另開分頁',
     backProjects: '返回專案',
-    scrollExplore: '向下探索',
+    scrollExplore: '向下看更多',
     backToTop: '回到頁面頂端',
     beforeLabel: '調整前',
     afterLabel: '調整後',
@@ -59,7 +59,7 @@ export const messages = {
       about: '關於',
     },
     headings: { featured: '專案製作', frontendWorks: '前端創作', artworks: '創作與工藝' },
-    artworksNote: '以金工、版畫與繪畫為媒介，探索材料特性與造形表現的可能性。',
+    artworksNote: '以金工、漆藝、染織、插畫與數位創作為媒介，探索材料、造形與視覺敘事的可能性。',
     featuredNote: '教育性質重構，從發現痛點、如何思考、最後執行改善。',
     featuredPanels: {
       visual: {
@@ -150,7 +150,8 @@ export const messages = {
       frontendWorks: 'Front-end Works',
       artworks: 'Art & Material',
     },
-    artworksNote: 'Description to be added.',
+    artworksNote:
+      'Working across metalwork, lacquer art, textile craft, illustration, and digital creation, I explore the possibilities of material, form, and visual storytelling.',
     featuredNote:
       'An educational redesign completed during vocational training; not an official commission.',
     featuredPanels: {
@@ -238,9 +239,10 @@ export const messages = {
     headings: {
       featured: 'プロジェクト制作',
       frontendWorks: 'フロントエンド制作',
-      artworks: 'アートと素材',
+      artworks: 'アートと工芸',
     },
-    artworksNote: '説明内容は後日追加します。',
+    artworksNote:
+      '金工、漆芸、染織、イラストレーション、デジタル制作を通して、素材、造形、視覚的な物語表現の可能性を探っています。',
     featuredNote: '職業訓練で制作した教育目的のリデザインであり、公式の依頼案件ではありません。',
     featuredPanels: {
       visual: {

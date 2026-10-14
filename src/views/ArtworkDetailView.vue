@@ -2,7 +2,9 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import KaohsiungMapCaseStudy from '@/components/KaohsiungMapCaseStudy.vue'
+import LacquerwareCaseStudy from '@/components/LacquerwareCaseStudy.vue'
 import MetalworkGallery from '@/components/MetalworkGallery.vue'
+import SplitArtworkGalleryCaseStudy from '@/components/SplitArtworkGalleryCaseStudy.vue'
 import ThreeDModelViewer from '@/components/ThreeDModelViewer.vue'
 import { artworks } from '@/data/artworks'
 import { useArtworkTransition } from '@/composables/useArtworkTransition'
@@ -61,6 +63,20 @@ onBeforeUnmount(cleanup)
   <KaohsiungMapCaseStudy
     v-if="artwork?.caseStudy === 'kaohsiung-map'"
     ref="caseStudy"
+    :ready="isReady"
+    @back="back"
+  />
+  <LacquerwareCaseStudy
+    v-else-if="artwork?.caseStudy === 'lacquerware'"
+    ref="caseStudy"
+    :artwork="artwork"
+    :ready="isReady"
+    @back="back"
+  />
+  <SplitArtworkGalleryCaseStudy
+    v-else-if="['printmaking', 'botanical-dyeing'].includes(artwork?.caseStudy)"
+    ref="caseStudy"
+    :artwork="artwork"
     :ready="isReady"
     @back="back"
   />

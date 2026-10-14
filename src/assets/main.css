@@ -2693,12 +2693,12 @@ body.artwork-transition-open {
   position: absolute;
   z-index: 4;
   right: 50%;
-  bottom: 2.25rem;
+  bottom: 1.35rem;
   display: flex;
   gap: 0.4rem;
   max-width: calc(100% - 8rem);
   margin: 0;
-  padding: 0.35rem;
+  padding: 1rem 0.8rem 1.3rem;
   overflow-x: auto;
   list-style: none;
   transform: translateX(50%);
@@ -2983,6 +2983,586 @@ body.artwork-transition-open {
   gap: 1.25rem;
 }
 
+/* Shared split-screen canvas for printmaking and botanical-dyeing case studies. */
+.split-artwork-gallery {
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #181815;
+  color: #f2eee5;
+}
+.split-artwork-gallery__back {
+  position: fixed;
+  z-index: 30;
+  top: 1.5rem;
+  left: var(--page-pad);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.split-artwork-gallery__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(1.01);
+  transition:
+    opacity 640ms var(--ease-standard),
+    transform 760ms var(--ease-soft);
+}
+.split-artwork-gallery.is-ready .split-artwork-gallery__stage {
+  opacity: 1;
+  transform: scale(1);
+}
+.split-artwork-gallery.is-portrait .split-artwork-gallery__stage {
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+}
+.split-artwork-gallery.is-square .split-artwork-gallery__stage {
+  grid-template-columns: minmax(0, 52fr) minmax(0, 48fr);
+}
+.split-artwork-gallery__main {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #25241f;
+}
+.split-artwork-gallery__main::after {
+  position: absolute;
+  z-index: 1;
+  inset: 42% 0 0;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgb(8 8 7 / 84%));
+}
+.split-artwork-gallery__main-button {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  place-items: center;
+}
+.split-artwork-gallery__main-button img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  will-change: opacity, transform;
+}
+.split-artwork-gallery__selected-copy {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.5rem, 4vw, 4rem);
+  bottom: clamp(1.5rem, 5vh, 4rem);
+  left: clamp(1.5rem, 4vw, 4rem);
+  max-width: 44rem;
+  pointer-events: none;
+}
+.split-artwork-gallery__selected-copy > span,
+.split-artwork-gallery__meta {
+  font-family: var(--font-label);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+}
+.split-artwork-gallery__selected-copy h1 {
+  margin: 0.55rem 0 0.85rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+}
+.split-artwork-gallery__selected-copy p {
+  max-width: 42rem;
+  margin: 0;
+  color: rgb(242 238 229 / 78%);
+  line-height: 1.7;
+}
+.split-artwork-gallery__meta {
+  margin-bottom: 0.6rem !important;
+}
+.split-artwork-gallery__wall {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #080807;
+}
+.split-artwork-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  grid-auto-rows: minmax(9rem, 31vh);
+  gap: clamp(0.35rem, 0.7vw, 0.75rem);
+  width: 100%;
+  height: 100%;
+  padding: clamp(0.35rem, 0.7vw, 0.75rem);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.split-artwork-gallery__grid::-webkit-scrollbar {
+  display: none;
+}
+.split-artwork-gallery__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #171713;
+  cursor: pointer;
+}
+.split-artwork-gallery__tile.is-landscape {
+  grid-column: span 2;
+}
+.split-artwork-gallery__tile.is-portrait {
+  grid-row: span 2;
+}
+.split-artwork-gallery__tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.31) saturate(0.64);
+  transition:
+    filter 360ms var(--ease-standard),
+    transform 560ms var(--ease-soft);
+}
+.split-artwork-gallery__introduction {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: clamp(1.5rem, 4vw, 4rem);
+  left: clamp(1.5rem, 4vw, 4rem);
+  max-height: calc(100svh - 9rem);
+  padding: clamp(1.25rem, 2.4vw, 2.25rem);
+  overflow-y: auto;
+  background: linear-gradient(135deg, rgb(15 16 13 / 91%), rgb(15 16 13 / 70%));
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 28%);
+  transform: translateY(-50%);
+  backdrop-filter: blur(10px);
+}
+.split-artwork-gallery__introduction h1 {
+  margin: 0.5rem 0 1.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+.split-artwork-gallery__introduction div {
+  display: grid;
+  gap: 0.85rem;
+}
+.split-artwork-gallery__introduction div p {
+  margin: 0;
+  color: rgb(242 238 229 / 76%);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.split-artwork-gallery.is-botanical-dyeing {
+  background: #d8d0bd;
+  color: #f4eddf;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__main {
+  background: radial-gradient(circle at 22% 18%, rgb(227 174 105 / 16%), transparent 34%), #34392f;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__wall {
+  background: #20251f;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: #30372d;
+  isolation: isolate;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: clamp(0.75rem, 1vw, 1rem);
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__tile.is-artwork {
+  flex: 0 0 100%;
+  aspect-ratio: 3 / 2;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__tile.is-process {
+  flex: 0 0 calc(50% - clamp(0.375rem, 0.5vw, 0.5rem));
+  aspect-ratio: 2308 / 1498;
+}
+.split-artwork-gallery.is-botanical-dyeing.has-active-process
+  .split-artwork-gallery__tile.is-process:last-child {
+  flex-basis: 100%;
+  aspect-ratio: 2308 / 1498;
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__tile img {
+  position: absolute;
+  inset: 0;
+  filter: brightness(0.34) saturate(0.58) sepia(0.08);
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__introduction {
+  background: linear-gradient(135deg, rgb(37 43 35 / 94%), rgb(48 53 43 / 78%));
+  box-shadow: 0 1.5rem 5rem rgb(9 13 8 / 32%);
+}
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__selected-copy,
+.split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__back {
+  color: #f4eddf;
+}
+.split-gallery-copy-enter-active,
+.split-gallery-copy-leave-active {
+  transition:
+    opacity 320ms var(--ease-standard),
+    transform 420ms var(--ease-soft);
+}
+.split-gallery-copy-enter-from,
+.split-gallery-copy-leave-to {
+  opacity: 0;
+  transform: translateY(0.75rem);
+}
+.split-gallery-grid-move {
+  transition: transform 620ms var(--ease-soft);
+}
+.split-gallery-grid-enter-active,
+.split-gallery-grid-leave-active {
+  transition:
+    opacity 360ms var(--ease-standard),
+    transform 520ms var(--ease-soft);
+}
+.split-gallery-grid-enter-from,
+.split-gallery-grid-leave-to {
+  opacity: 0;
+  transform: scale(0.96);
+}
+body.artwork-lightbox-open {
+  overflow: hidden;
+}
+.artwork-gallery-lightbox {
+  position: fixed;
+  z-index: 400;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) 4rem;
+  align-items: center;
+  padding: 1.25rem;
+  background: rgb(23 25 27 / 96%);
+  color: #f3eee6;
+  touch-action: pan-y;
+}
+.artwork-gallery-lightbox__close {
+  position: absolute;
+  z-index: 2;
+  top: 1.25rem;
+  right: 1.25rem;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 38%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 8%);
+  color: inherit;
+  font: inherit;
+  font-size: 1.45rem;
+  cursor: pointer;
+  place-items: center;
+}
+.artwork-gallery-lightbox__arrow {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  place-items: center;
+}
+.artwork-gallery-lightbox__arrow--previous {
+  grid-column: 1;
+}
+.artwork-gallery-lightbox__arrow--next {
+  grid-column: 3;
+}
+.artwork-gallery-lightbox__figure {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 1rem;
+  width: 100%;
+  height: calc(100svh - 2.5rem);
+  margin: 0;
+  min-height: 0;
+}
+.artwork-gallery-lightbox__image {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  place-items: center;
+}
+.artwork-gallery-lightbox__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.artwork-gallery-lightbox__figure figcaption {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.2fr);
+  gap: 1.5rem;
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(255 255 255 / 24%);
+  font-size: 0.78rem;
+}
+.artwork-gallery-lightbox__figure figcaption div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
+  align-items: baseline;
+}
+.artwork-gallery-lightbox__figure figcaption strong {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+}
+.artwork-gallery-lightbox__figure figcaption span,
+.artwork-gallery-lightbox__figure figcaption p {
+  color: rgb(243 238 230 / 72%);
+}
+.artwork-gallery-lightbox__figure figcaption p {
+  margin: 0;
+  line-height: 1.6;
+}
+.artwork-gallery-lightbox-enter-active,
+.artwork-gallery-lightbox-leave-active {
+  transition: opacity 240ms var(--ease-standard);
+}
+.artwork-gallery-lightbox-enter-from,
+.artwork-gallery-lightbox-leave-to {
+  opacity: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .split-artwork-gallery__tile:hover img,
+  .split-artwork-gallery__tile:focus-visible img {
+    filter: brightness(0.72) saturate(0.9);
+    transform: scale(1.025);
+  }
+}
+
+.lacquer-story {
+  width: 100%;
+  height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #d8d0c4;
+  color: var(--color-ink);
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scrollbar-width: none;
+}
+.lacquer-story::-webkit-scrollbar {
+  display: none;
+}
+.lacquer-story__back {
+  position: fixed;
+  z-index: 20;
+  top: 1.5rem;
+  left: var(--page-pad);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.lacquer-story__sequence {
+  position: relative;
+  height: 360svh;
+}
+.lacquer-story__canvas {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.414fr);
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+.lacquer-story__lane {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.lacquer-story__lane--left {
+  background: #d8d0c4;
+}
+.lacquer-story__lane--right {
+  background: #f0e9df;
+}
+.lacquer-story__panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 8%, 0) scale(1.015);
+  transition:
+    opacity 620ms var(--ease-standard),
+    transform 760ms var(--ease-soft);
+  will-change: opacity, transform;
+}
+.lacquer-story__panel.is-visible {
+  z-index: 2;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.lacquer-story__media-frame {
+  display: grid;
+  place-items: center;
+  max-width: calc(100% - clamp(2.5rem, 5vw, 6rem));
+  max-height: calc(100svh - clamp(6.5rem, 10vh, 9rem));
+  overflow: hidden;
+}
+.lacquer-story__panel--square .lacquer-story__media-frame {
+  width: min(calc(100% - clamp(2.5rem, 5vw, 6rem)), calc(100svh - clamp(6.5rem, 10vh, 9rem)));
+  aspect-ratio: 1;
+}
+.lacquer-story__panel--wide .lacquer-story__media-frame {
+  width: min(88%, calc((100svh - clamp(6.5rem, 10vh, 9rem)) * 1.414));
+  aspect-ratio: 4093 / 2894;
+}
+.lacquer-story__media-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.lacquer-story__copy {
+  place-items: center start;
+  padding: clamp(5rem, 9vh, 8rem) clamp(2rem, 6vw, 7rem);
+  overflow-y: auto;
+}
+.lacquer-story__copy > div {
+  width: min(100%, 38rem);
+}
+.lacquer-story__heading h1 {
+  margin: 0.5rem 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.35rem, 4.5vw, 5.25rem);
+  line-height: 1.05;
+}
+.lacquer-story__date {
+  margin: 0 0 clamp(1.5rem, 4vh, 3rem);
+  color: var(--color-muted);
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+.lacquer-story__copy section + section {
+  margin-top: clamp(1.5rem, 4vh, 3rem);
+}
+.lacquer-story__copy h2,
+.lacquer-story__mobile-copy h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-weight: 500;
+}
+.lacquer-story__copy section p,
+.lacquer-story__mobile-copy p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.8;
+}
+.lacquer-story__steps {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.lacquer-story__steps span {
+  display: block;
+  height: 1px;
+  scroll-snap-align: start;
+}
+.lacquer-story__scroll-hint {
+  position: absolute;
+  z-index: 8;
+  bottom: clamp(0.85rem, 2vh, 1.5rem);
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #685f55;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  opacity: 1;
+  transform: translateX(-50%);
+  transition: opacity 280ms var(--ease-standard);
+}
+.lacquer-story__scroll-hint.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.lacquer-story__scroll-line {
+  width: 1px;
+  height: clamp(2.5rem, 7vh, 5rem);
+  background: linear-gradient(to bottom, transparent, currentColor);
+  animation: lacquer-scroll-line 2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+@keyframes lacquer-scroll-line {
+  0%,
+  100% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.lacquer-story__mobile-flow {
+  display: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .artwork-view-cursor {
     display: grid;
@@ -3035,7 +3615,103 @@ body.artwork-transition-open {
     overflow-y: auto;
   }
   .artwork-detail-view--metalwork .artwork-detail-view__hero-target {
-    width: min(100%, calc(100svh - 6.3rem));
+    width: min(100%, calc(100svh - 3.9rem));
+    max-width: calc(100svh - 3.9rem);
+    max-height: calc(100svh - 3.9rem);
+    align-self: center;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__media {
+    padding: 3rem 1rem 0.9rem;
+    overflow: hidden;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__content {
+    padding: 3rem 1.2rem 1rem;
+  }
+  .artwork-gallery-lightbox {
+    grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+    padding: 0.75rem;
+  }
+  .artwork-gallery-lightbox__figure {
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    height: calc(100svh - 1.5rem);
+  }
+  .artwork-gallery-lightbox__figure figcaption {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 0.75rem;
+    max-height: 4.75rem;
+    padding-top: 0.45rem;
+    overflow-y: auto;
+    background: #17191b;
+    font-size: 0.66rem;
+  }
+  .artwork-gallery-lightbox__figure figcaption strong {
+    font-size: 0.88rem;
+  }
+  .artwork-gallery-lightbox__close {
+    top: 0.65rem;
+    right: 0.65rem;
+  }
+  .artwork-gallery-lightbox__arrow {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+  .split-artwork-gallery__grid {
+    grid-auto-rows: minmax(7rem, 30vh);
+  }
+  .split-artwork-gallery__selected-copy {
+    right: 1.5rem;
+    bottom: 1.25rem;
+    left: 1.5rem;
+  }
+  .split-artwork-gallery__selected-copy h1 {
+    margin-block: 0.35rem 0.55rem;
+    font-size: clamp(1.85rem, 2.8vw, 3rem);
+  }
+  .split-artwork-gallery__selected-copy p {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+  .split-artwork-gallery__introduction {
+    right: 1rem;
+    left: 1rem;
+    max-height: calc(100svh - 4.5rem);
+    padding: 1.15rem;
+  }
+  .split-artwork-gallery__introduction h1 {
+    margin: 0.35rem 0 0.8rem;
+    font-size: clamp(1.7rem, 3.6vw, 2.65rem);
+  }
+  .split-artwork-gallery__introduction div {
+    gap: 0.48rem;
+  }
+  .split-artwork-gallery__introduction div p {
+    font-size: 0.68rem;
+    line-height: 1.5;
+  }
+  .lacquer-story__copy {
+    padding: 3.5rem clamp(1.5rem, 4vw, 3rem) 2rem;
+  }
+  .lacquer-story__heading h1 {
+    font-size: clamp(2.35rem, 4.5vw, 5.25rem);
+  }
+  .lacquer-story__date {
+    margin-bottom: 1.25rem;
+  }
+  .lacquer-story__copy section + section {
+    margin-top: 1rem;
+  }
+  .lacquer-story__canvas {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+  .lacquer-story__media-frame {
+    max-height: calc(100svh - 5.5rem);
+  }
+  .lacquer-story__panel--square .lacquer-story__media-frame {
+    width: min(calc(100% - 2.5rem), calc(100svh - 5.5rem));
+  }
+  .lacquer-story__panel--wide .lacquer-story__media-frame {
+    width: min(90%, calc((100svh - 5.5rem) * 1.414));
   }
 }
 
@@ -3102,7 +3778,7 @@ body.artwork-transition-open {
   }
   .artwork-detail-view--metalwork .artwork-detail-view__content h1 {
     margin-block: 0.35rem 1rem;
-    font-size: clamp(2.1rem, 11vw, 3.5rem);
+    font-size: clamp(1.85rem, 9vw, 3rem);
   }
   .artwork-detail-view--three-d .artwork-detail-view__media {
     padding: 0;
@@ -3128,6 +3804,150 @@ body.artwork-transition-open {
   .artwork-detail-view--three-d .artwork-detail-view__content dl {
     margin-top: 0.75rem;
   }
+  .split-artwork-gallery {
+    height: 100svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .split-artwork-gallery__stage,
+  .split-artwork-gallery.is-portrait .split-artwork-gallery__stage,
+  .split-artwork-gallery.is-square .split-artwork-gallery__stage {
+    display: block;
+    height: auto;
+  }
+  .split-artwork-gallery__main {
+    height: 62svh;
+  }
+  .split-artwork-gallery__selected-copy {
+    right: var(--page-pad);
+    bottom: 1.25rem;
+    left: var(--page-pad);
+  }
+  .split-artwork-gallery__selected-copy h1 {
+    font-size: clamp(2rem, 11vw, 3.6rem);
+  }
+  .split-artwork-gallery__selected-copy > p:last-child {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  .split-artwork-gallery__wall {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+  .split-artwork-gallery__grid {
+    order: 2;
+    display: flex;
+    gap: 0.5rem;
+    height: 34svh;
+    padding: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+  }
+  .split-artwork-gallery.is-botanical-dyeing .split-artwork-gallery__grid {
+    flex-wrap: nowrap;
+    align-content: normal;
+  }
+  .split-artwork-gallery__tile,
+  .split-artwork-gallery__tile.is-landscape,
+  .split-artwork-gallery__tile.is-portrait {
+    grid-column: auto;
+    grid-row: auto;
+    flex: 0 0 54vw;
+    height: 100%;
+    scroll-snap-align: center;
+  }
+  .split-artwork-gallery__tile.is-landscape {
+    flex-basis: 72vw;
+  }
+  .split-artwork-gallery.is-botanical-dyeing
+    .split-artwork-gallery__tile:is(.is-artwork, .is-process),
+  .split-artwork-gallery.is-botanical-dyeing.has-active-process
+    .split-artwork-gallery__tile.is-process:last-child {
+    flex: 0 0 72vw;
+    aspect-ratio: auto;
+  }
+  .split-artwork-gallery__tile.is-portrait {
+    flex-basis: 38vw;
+  }
+  .split-artwork-gallery__introduction {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    order: 1;
+    max-height: none;
+    padding: 2.5rem var(--page-pad);
+    overflow: visible;
+    background: #151512;
+    box-shadow: none;
+    transform: none;
+    backdrop-filter: none;
+  }
+  .split-artwork-gallery__introduction h1 {
+    font-size: clamp(2.1rem, 11vw, 3.5rem);
+  }
+  .split-artwork-gallery__introduction div p {
+    font-size: 1rem;
+  }
+  .artwork-gallery-lightbox {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    padding: 0.75rem;
+  }
+  .artwork-gallery-lightbox__close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  .artwork-gallery-lightbox__arrow {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+  .artwork-gallery-lightbox__figure {
+    height: calc(100svh - 1.5rem);
+    padding-top: 3.25rem;
+  }
+  .artwork-gallery-lightbox__figure figcaption {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    max-height: 28svh;
+    overflow-y: auto;
+  }
+  .lacquer-story {
+    scroll-snap-type: none;
+  }
+  .lacquer-story__sequence {
+    display: none;
+  }
+  .lacquer-story__scroll-hint {
+    display: none;
+  }
+  .lacquer-story__mobile-flow {
+    display: grid;
+    gap: 0;
+    padding-top: 4.75rem;
+    background: #e7ded2;
+  }
+  .lacquer-story__mobile-flow > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 88svh;
+    object-fit: contain;
+    background: #d8d0c4;
+  }
+  .lacquer-story__mobile-copy {
+    padding: clamp(2rem, 9vw, 4rem) var(--page-pad);
+    background: #f0e9df;
+  }
+  .lacquer-story__mobile-copy.lacquer-story__heading h1 {
+    margin: 0.35rem 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 11vw, 3.5rem);
+    line-height: 1.05;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3143,6 +3963,25 @@ body.artwork-transition-open {
   }
   .metalwork-gallery__image {
     transform: none !important;
+  }
+  .split-artwork-gallery__stage,
+  .split-artwork-gallery__tile img,
+  .split-gallery-copy-enter-active,
+  .split-gallery-copy-leave-active,
+  .split-gallery-grid-move,
+  .split-gallery-grid-enter-active,
+  .split-gallery-grid-leave-active,
+  .artwork-gallery-lightbox-enter-active,
+  .artwork-gallery-lightbox-leave-active {
+    transition: none;
+  }
+  .lacquer-story__panel {
+    transition: opacity 100ms linear;
+    transform: none;
+  }
+  .lacquer-story__scroll-line {
+    animation: none;
+    transform: scaleY(1);
   }
 }
 

@@ -42,3 +42,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Local high-resolution artwork sources; optimized web derivatives are committed.
+/src/assets/images/artworks/*/source/
