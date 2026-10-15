@@ -2181,13 +2181,9 @@ body.frontend-work-detail-open {
   .about-content {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
+    height: 100%;
     gap: 2rem;
-    padding-bottom: clamp(4.5rem, 16vh, 6.5rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
   }
   .about-intro h2 {
     margin-block: 0.5rem;
@@ -2199,6 +2195,18 @@ body.frontend-work-detail-open {
   }
   .about-meta {
     gap: 0.45rem;
+    max-height: 100%;
+    min-height: 0;
+    padding-bottom: clamp(4.5rem, 16vh, 6.5rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  .about-meta::-webkit-scrollbar {
+    display: none;
   }
   .about-meta section {
     padding-top: 0.35rem;
