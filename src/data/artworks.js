@@ -1,6 +1,17 @@
 import { kaohsiungMap } from '@/data/kaohsiungMap'
 import { threeDWorks } from '@/data/threeDWorks'
-import temporaryArtworkImage from '@/assets/images/intro/intro-flower-window-wide.png'
+import cafeBookBackground from '@/assets/images/artworks/cafe/bookBG.png'
+import cafeLogo from '@/assets/images/artworks/cafe/cafeLogo.webp'
+import cafeLogoBackground from '@/assets/images/artworks/cafe/cafeLogoBG.webp'
+import cafeContent from '@/assets/images/artworks/cafe/cafeContent.webp'
+import cafeOutward from '@/assets/images/artworks/cafe/outward.webp'
+import cafeColourOne from '@/assets/images/artworks/cafe/color1.webp'
+import cafeColourTwo from '@/assets/images/artworks/cafe/color2.webp'
+import cafeKohakucha from '@/assets/images/artworks/cafe/kohakucha.webp'
+import cafeLemonTart from '@/assets/images/artworks/cafe/lemontart.webp'
+import cafeMilleFeuille from '@/assets/images/artworks/cafe/mille-feuille.webp'
+import cafeMontBlanc from '@/assets/images/artworks/cafe/monburan.webp'
+import cafeContinuation from '@/assets/images/artworks/cafe/tsuzuki.webp'
 import boathouseCardImage from '@/assets/images/artworks/3d/boathouse-card.png'
 import metalworkClock01 from '@/assets/images/artworks/metalwork/clock01.png'
 import metalworkClock02 from '@/assets/images/artworks/metalwork/clock02.png'
@@ -41,37 +52,151 @@ import botanicalShinshi from '@/assets/images/artworks/Botanical-dye/jinnji.jpg'
 import botanicalShinshiThumb from '@/assets/images/artworks/Botanical-dye/thumb-jinnji.jpg'
 import botanicalGroundDyeing from '@/assets/images/artworks/Botanical-dye/jizome.jpg'
 import botanicalGroundDyeingThumb from '@/assets/images/artworks/Botanical-dye/thumb-jizome.jpg'
-
-const temporaryArtworkMedia = {
-  cover: {
-    src: temporaryArtworkImage,
-    width: 3100,
-    height: 2067,
-  },
-  alt: {
-    'zh-Hant': '花景窗台插畫，暫作作品預覽圖',
-    en: 'Floral window illustration used as a temporary artwork preview',
-    ja: '作品プレビューに暫定使用している花景色の窓辺イラスト',
-  },
-  focalPosition: '50% 48%',
-  parallaxStrength: 0.7,
-}
+import sceneWilderness from '@/assets/images/artworks/sceneGraph/wilderness1.jpg'
+import sceneSofaNight from '@/assets/images/artworks/sceneGraph/sofanight.jpg'
+import sceneView from '@/assets/images/artworks/sceneGraph/view.jpg'
+import sceneSeaSky from '@/assets/images/artworks/sceneGraph/seasky.jpg'
+import sceneWitch from '@/assets/images/artworks/sceneGraph/witch.jpg'
 
 export const artworks = [
   {
-    ...temporaryArtworkMedia,
-    key: 'water',
-    slug: 'water-park-illustration-map',
-    layout: 'portrait',
+    key: 'cafe',
+    slug: 'snooze-cafe',
+    layout: 'wide',
     published: true,
     showOnOverview: true,
     overviewOrder: 2,
     title: {
-      'zh-Hant': '自來水插畫與地圖',
-      en: 'Water Park Illustration & Map',
-      ja: '水道園区のイラストと地図',
+      'zh-Hant': '短睡珈琲',
+      en: 'Snooze café',
+      ja: '短眠珈琲',
     },
-    type: 'Illustration / Map',
+    type: {
+      'zh-Hant': '版畫・書籍設計',
+      en: 'Printmaking / Book Design',
+      ja: '版画・ブックデザイン',
+    },
+    cursorLabel: 'BOOK',
+    caseStudy: 'snooze-cafe',
+    cover: {
+      src: cafeLogoBackground,
+      width: 2390,
+      height: 1161,
+    },
+    coverLogo: {
+      src: cafeLogo,
+      width: 1418,
+      height: 808,
+    },
+    bookBackground: {
+      src: cafeBookBackground,
+      width: 4295,
+      height: 2863,
+    },
+    coverArtwork: {
+      src: cafeContinuation,
+      width: 922,
+      height: 1256,
+    },
+    alt: {
+      'zh-Hant': '《短睡珈琲》手工書的標誌與版畫封面',
+      en: 'Logo and print cover of the handmade book Snooze Café',
+      ja: '手製本「短眠珈琲」のロゴと版画表紙',
+    },
+    focalPosition: '50% 50%',
+    parallaxStrength: 0.35,
+    introduction: {
+      world: {
+        'zh-Hant':
+          '《短睡珈琲》是間位於夢與現實交界的虛構咖啡店。以幻想的食材，光、風、露水、雲、月與星屑，製作成補充能量的甜點。',
+        en: 'Snooze café is an imaginary café poised between dream and reality. Rather than ordinary ingredients, its dishes reinterpret light, wind, dew, clouds, the moon and stardust as things that may be tasted.',
+        ja: '「短眠珈琲」は、夢と現実の境界に位置する架空の喫茶店である。料理を単なる食品としてではなく、光、風、露、雲、月、星屑といった非物質的な要素から生まれるものとして捉え直した。',
+      },
+      design: {
+        'zh-Hant':
+          '從版畫印刷、手工製本，到虛構菜單與文字造形，本作透過一連串製作探索「作為故事的表現」。版畫的反覆、紙張觸感與裝訂結構彼此交疊，讓閱讀本身成為進入作品世界的體驗。',
+        en: 'From printmaking and hand binding to an imagined menu and custom lettering, the work explores expression as storytelling. Repeated impressions, the touch of paper and the structure of binding turn reading itself into an entry point to its world.',
+        ja: '版画による印刷から手製本、架空のメニューと文字造形まで、一連の制作を通して「物語としての表現」を探った。版画の反復性、紙の手触り、綴じの構造が重なり、読む行為そのものが作品世界へ入る体験となる。',
+      },
+    },
+    introImage: {
+      src: cafeOutward,
+      width: 3184,
+      height: 2119,
+    },
+    contentDesign: {
+      src: cafeContent,
+      width: 1365,
+      height: 579,
+    },
+    menuSpreads: [
+      {
+        id: 'kohakucha',
+        src: cafeKohakucha,
+        width: 4440,
+        height: 2228,
+        title: { 'zh-Hant': '松木琥珀紅茶', en: 'Pine Amber Tea', ja: '松木琥珀紅茶' },
+      },
+      {
+        id: 'lemon-tart',
+        src: cafeLemonTart,
+        width: 5117,
+        height: 2563,
+        title: { 'zh-Hant': '積雲檸檬塔', en: 'Cumulus Lemon Tart', ja: '積雲レモンタルト' },
+      },
+      {
+        id: 'mille-feuille',
+        src: cafeMilleFeuille,
+        width: 4411,
+        height: 2233,
+        title: {
+          'zh-Hant': '草莓抹茶千層酥',
+          en: 'Strawberry Matcha Mille-feuille',
+          ja: '苺抹茶ミルフィーユ',
+        },
+      },
+      {
+        id: 'mont-blanc',
+        src: cafeMontBlanc,
+        width: 4507,
+        height: 2249,
+        title: { 'zh-Hant': '滿月蒙布朗', en: 'Full Moon Mont Blanc', ja: '満月モンブラン' },
+      },
+    ],
+    process: {
+      images: [
+        { src: cafeColourOne, width: 650, height: 704 },
+        { src: cafeColourTwo, width: 650, height: 703 },
+      ],
+      copy: {
+        'zh-Hant':
+          '作品採用木版多色套印，每一頁由五至六個色層逐次疊加。色彩在反覆印製之間產生細微偏移，也讓現實與幻想交界的風景逐漸成形。',
+        en: 'Each woodblock print is built from five or six successive colour impressions. Subtle shifts emerge through repetition, gradually bringing landscapes between reality and imagination into view.',
+        ja: '木版画の重ね刷りを用い、各頁に五、六色を順に重ねた。反復する印刷の中に生じるわずかな揺らぎによって、現実と幻想のあわいにある情景を立ち上げている。',
+      },
+    },
+    continuation: {
+      image: {
+        src: cafeContinuation,
+        width: 922,
+        height: 1256,
+      },
+      title: { 'zh-Hant': '續・短睡珈琲', en: 'Snooze café, Continued', ja: '続・短眠珈琲' },
+      workTitle: { 'zh-Hant': '待宵', en: 'Evening Wait', ja: '待宵' },
+      technique: {
+        'zh-Hant': '銅版畫（蝕刻）',
+        en: 'Copperplate etching',
+        ja: '銅版画（エッチング）',
+      },
+      size: '14.8 × 21 cm',
+      year: '2024',
+      copy: {
+        'zh-Hant':
+          '延續《短睡珈琲》的世界觀，從新的視角描繪寧靜街道的時間，以及介於沉睡與清醒之間的感受。畫面融入鐵窗花紋樣，使城市記憶與隔窗凝望的視線彼此交疊。',
+        en: 'Continuing the world of Snooze café from a new perspective, this print traces quiet urban time and the sensation between sleep and waking. Iron-window patterns layer memories of the city with the act of looking through a window.',
+        ja: '「短眠珈琲」の世界観を受け継ぎ、新たな視点から展開した版画作品である。静かな街の時間と、眠りと覚醒のあわいに潜む情景を描いた。鉄窓花の文様を取り入れ、街の記憶と窓越しのまなざしを重ねている。',
+      },
+    },
     contribution: null,
   },
   {
@@ -92,20 +217,96 @@ export const artworks = [
     contribution: null,
   },
   {
-    ...temporaryArtworkMedia,
     key: 'vtuber',
-    slug: 'vtuber-backgrounds',
+    slug: 'scene-illustration',
+    legacySlugs: ['vtuber-backgrounds'],
     layout: 'wide',
     published: true,
     showOnOverview: true,
     overviewOrder: 5,
-    title: { 'zh-Hant': 'VTuber 背景', en: 'VTuber Backgrounds', ja: 'VTuber 背景' },
-    type: 'Illustration',
-    contribution: {
-      'zh-Hant': '公開範圍與權利資訊待確認',
-      en: 'Public scope and usage rights awaiting confirmation',
-      ja: '公開範囲と使用権を確認中',
+    title: { 'zh-Hant': '場景繪圖', en: 'Environment Illustration', ja: '背景・情景イラスト' },
+    type: {
+      'zh-Hant': '插畫・場景設計',
+      en: 'Illustration / Environment Design',
+      ja: 'イラスト・背景美術',
     },
+    cursorLabel: 'SCENE',
+    caseStudy: 'scene-illustration',
+    cover: { src: sceneWilderness, width: 2560, height: 1440 },
+    alt: {
+      'zh-Hant': '流星劃過夜空的場景繪圖',
+      en: 'Environment illustration of a shooting star crossing the night sky',
+      ja: '夜空を横切る流れ星を描いた背景イラスト',
+    },
+    focalPosition: '50% 50%',
+    parallaxStrength: 0.35,
+    gallery: [
+      {
+        id: 'wilderness',
+        src: sceneWilderness,
+        width: 2560,
+        height: 1440,
+        title: {
+          'zh-Hant': '許願的流星',
+          en: 'Wish Upon a Shooting Star',
+          ja: '願いをかける流れ星',
+        },
+        caption: {
+          'zh-Hant': 'VTuber 轉場場景委託',
+          en: 'Commissioned VTuber transition scene',
+          ja: 'VTuber配信用トランジション背景の依頼制作',
+        },
+      },
+      {
+        id: 'sofa-night',
+        src: sceneSofaNight,
+        width: 2560,
+        height: 1440,
+        title: { 'zh-Hant': '裝飾的星辰', en: 'Adorned with Stars', ja: '星々の装い' },
+        caption: {
+          'zh-Hant': 'VTuber 轉場場景委託',
+          en: 'Commissioned VTuber transition scene',
+          ja: 'VTuber配信用トランジション背景の依頼制作',
+        },
+      },
+      {
+        id: 'window-view',
+        src: sceneView,
+        width: 1803,
+        height: 2560,
+        title: { 'zh-Hant': '寂夜', en: 'Silent Night', ja: '静寂の夜' },
+        caption: {
+          'zh-Hant': '背景繪圖',
+          en: 'Environment illustration',
+          ja: '背景イラスト',
+        },
+      },
+      {
+        id: 'rain-shower-market',
+        src: sceneSeaSky,
+        width: 2560,
+        height: 1280,
+        title: { 'zh-Hant': '陣雨市集', en: 'Shower Market', ja: '通り雨の市場' },
+        caption: {
+          'zh-Hant': '繪本跨頁場景',
+          en: 'Picture-book double-page illustration',
+          ja: '絵本の見開き背景',
+        },
+      },
+      {
+        id: 'apprentice-witch',
+        src: sceneWitch,
+        width: 2560,
+        height: 1803,
+        title: { 'zh-Hant': '見習魔女', en: 'Apprentice Witch', ja: '見習い魔女' },
+        caption: {
+          'zh-Hant': '原創背景繪圖',
+          en: 'Original environment illustration',
+          ja: 'オリジナル背景イラスト',
+        },
+      },
+    ],
+    contribution: null,
   },
   {
     key: 'printmaking',
@@ -773,7 +974,7 @@ export const artworks = [
 
 const cursorLabels = {
   vtuber: 'ART',
-  water: 'ART',
+  cafe: 'BOOK',
   printmaking: 'PRINT',
   dyeing: 'TEXTILE',
   'three-d': '3D',

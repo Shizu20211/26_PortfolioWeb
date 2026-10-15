@@ -75,10 +75,10 @@ export const messages = {
         image: '互動製作畫面待補',
       },
     },
-    aboutTitle: '理性開發與感性工藝的交界',
+    aboutTitle: '穿梭在數字與畫面間',
     aboutBody: [
-      '我是一位不斷跨界與探索的創作者。掌握前端程式與動態視覺的精準邏輯；同時凝練金工、版畫與傳統染織的手感溫度。',
-      '面對陌生的領域與繁雜的工序，我始終保持勇於嘗試的好奇心與不輕易放棄的韌性——無論是經由百般揉捻與媒染才綻放的布帛，還是經歷反覆除錯才平穩運行的程式碼。我喜歡將鐵窗花與花磚等在地記憶，重新再製喚起現在人的共同回憶，在理性開發與感性工藝的交界處，構築獨特而堅定的人生敘事。',
+      '我是一位不斷跨界與探索的創作者。掌握前端程式與動態視覺的精準邏輯；同時也具備金工、版畫與傳統染織的手感溫度。',
+      '面對陌生的領域與繁雜的工序，我始終保持勇於嘗試的好奇心與不輕易放棄的韌性——無論是經由百般揉捻與媒染才綻放的布帛，還是經歷反覆除錯才平穩運行的程式碼。我喜歡將深埋在大家心裡的那片柔軟印象，重新再製喚起現在人的共同回憶，在理性開發與感性工藝的交界處，構築獨特又令人懷念的敘事。',
     ],
   },
   en: {
@@ -170,10 +170,10 @@ export const messages = {
         image: 'Interaction implementation image to be added',
       },
     },
-    aboutTitle: 'Where rational development meets tactile craft',
+    aboutTitle: 'Moving Between Code and Image',
     aboutBody: [
-      'I am a creator who continually explores across disciplines. I work with the precise logic of front-end code and motion, while cultivating the tactile warmth of metalwork, printmaking, and traditional dyeing.',
-      'When facing unfamiliar fields and complex processes, I stay curious enough to experiment and resilient enough to continue—from cloth brought to life through repeated kneading and mordant dyeing, to code made steady through iterative debugging. I reinterpret local memories such as decorative iron window grilles and patterned tiles, connecting shared memories with the present and building a distinctive, grounded narrative where rational development meets sensitive craft.',
+      'I am a creator who continually crosses boundaries and explores new ground. I work with the precise logic of front-end development and motion design, while also embracing the tactile warmth of metalwork, printmaking, and traditional dyeing.',
+      'When facing unfamiliar fields and complex processes, I remain curious enough to experiment and resilient enough to keep going—whether coaxing colour from cloth through repeated kneading and mordant dyeing, or refining code through rounds of debugging until it runs smoothly. I enjoy reshaping the tender impressions buried deep within us, awakening shared memories in the present, and building distinctive yet nostalgic narratives where rational development meets sensitive craft.',
     ],
   },
   ja: {
@@ -259,10 +259,10 @@ export const messages = {
         image: 'インタラクション制作画面を追加予定',
       },
     },
-    aboutTitle: '論理的な開発と感性豊かな工芸のあいだ',
+    aboutTitle: 'コードとイメージのあいだで',
     aboutBody: [
-      '私は分野を越え、探求を続けるクリエイターです。フロントエンドとモーション表現の緻密な論理を身につける一方、金工、版画、伝統染織が持つ手仕事の温もりを磨いてきました。',
-      '未知の分野や複雑な工程に向き合うときも、挑戦する好奇心と諦めない粘り強さを大切にしています。幾度もの揉み込みと媒染を経て色づく布も、デバッグを重ねて安定するコードも同じです。鉄窓花や花磚といった土地の記憶を現代に編み直し、論理的な開発と感性的な工芸が交わる場所で、独自の揺るぎない物語を築いていきます。',
+      '私は、分野を越えながら探求を続けるクリエイターです。フロントエンド開発とモーション表現の緻密な論理を身につける一方で、金工、版画、伝統染織が持つ手仕事の温もりも大切にしています。',
+      '未知の分野や複雑な工程に向き合うときも、まず試してみる好奇心と、簡単には諦めない粘り強さを持ち続けています。幾度もの揉み込みと媒染を経てようやく色づく布も、デバッグを重ねて安定して動き出すコードも同じです。人々の心の奥に眠る柔らかな印象をあらためて形にし、今を生きる私たちの共通の記憶として呼び覚ますこと。論理的な開発と感性的な工芸が交わる場所で、独自でありながらどこか懐かしい物語を築いていきたいと考えています。',
     ],
   },
 }

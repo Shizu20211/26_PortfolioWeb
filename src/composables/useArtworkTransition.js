@@ -1,10 +1,9 @@
-import { nextTick, readonly, shallowRef } from 'vue'
+import { nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 
 gsap.registerPlugin(Flip)
 
-const selectedArtwork = shallowRef(null)
 let transitionLayer
 let sourceElement
 let sourceRoute
@@ -52,7 +51,6 @@ export function useArtworkTransition() {
   async function openArtwork({ artwork, source, router, track }) {
     if (transitioning) return
     transitioning = true
-    selectedArtwork.value = artwork
     sourceRoute = router.currentRoute.value.fullPath
     returnScrollLeft = track?.scrollLeft ?? 0
     shouldRestore = true
@@ -74,23 +72,28 @@ export function useArtworkTransition() {
     }
   }
 
-  async function enterDetail(target, onArrive) {
+  async function enterDetail(target, onArrive, contentReady = Promise.resolve()) {
     await nextTick()
     if (!transitionLayer || !target) {
+      await contentReady.catch?.(() => {})
       onArrive?.()
       transitioning = false
       document.body.classList.remove('artwork-transition-open')
       return
     }
 
-    await new Promise((resolve) => {
-      Flip.fit(transitionLayer, target, {
-        absolute: true,
-        duration: 0.72,
-        ease: 'power4.inOut',
-        onComplete: resolve,
-      })
-    })
+    await Promise.all([
+      contentReady.catch?.(() => {}),
+      new Promise((resolve) => {
+        Flip.fit(transitionLayer, target, {
+          absolute: true,
+          duration: 0.72,
+          ease: 'power4.inOut',
+          force3D: true,
+          onComplete: resolve,
+        })
+      }),
+    ])
     onArrive?.()
     await nextTick()
     await gsap.to(transitionLayer, {
@@ -112,7 +115,6 @@ export function useArtworkTransition() {
   }
 
   return {
-    selectedArtwork: readonly(selectedArtwork),
     openArtwork,
     enterDetail,
     getReturnState,

@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import KaohsiungMapCaseStudy from '@/components/KaohsiungMapCaseStudy.vue'
 import LacquerwareCaseStudy from '@/components/LacquerwareCaseStudy.vue'
 import MetalworkGallery from '@/components/MetalworkGallery.vue'
+import SceneIllustrationGallery from '@/components/SceneIllustrationGallery.vue'
+import SnoozeCafeCaseStudy from '@/components/SnoozeCafeCaseStudy.vue'
 import SplitArtworkGalleryCaseStudy from '@/components/SplitArtworkGalleryCaseStudy.vue'
 import ThreeDModelViewer from '@/components/ThreeDModelViewer.vue'
 import { artworks } from '@/data/artworks'
@@ -48,12 +50,14 @@ onMounted(async () => {
   await nextTick()
   const image = caseStudy.value?.heroImage ?? metalworkGallery.value?.heroImage ?? heroImage.value
   const target = caseStudy.value?.heroTarget ?? heroTarget.value
-  if (image?.decode) {
-    await image.decode().catch(() => {})
-  }
-  await enterDetail(target, () => {
-    isReady.value = true
-  })
+  const imageReady = image?.decode ? image.decode().catch(() => {}) : Promise.resolve()
+  await enterDetail(
+    target,
+    () => {
+      isReady.value = true
+    },
+    imageReady,
+  )
 })
 
 onBeforeUnmount(cleanup)
@@ -66,6 +70,13 @@ onBeforeUnmount(cleanup)
     :ready="isReady"
     @back="back"
   />
+  <SnoozeCafeCaseStudy
+    v-else-if="artwork?.caseStudy === 'snooze-cafe'"
+    ref="caseStudy"
+    :artwork="artwork"
+    :ready="isReady"
+    @back="back"
+  />
   <LacquerwareCaseStudy
     v-else-if="artwork?.caseStudy === 'lacquerware'"
     ref="caseStudy"
@@ -75,6 +86,13 @@ onBeforeUnmount(cleanup)
   />
   <SplitArtworkGalleryCaseStudy
     v-else-if="['printmaking', 'botanical-dyeing'].includes(artwork?.caseStudy)"
+    ref="caseStudy"
+    :artwork="artwork"
+    :ready="isReady"
+    @back="back"
+  />
+  <SceneIllustrationGallery
+    v-else-if="artwork?.caseStudy === 'scene-illustration'"
     ref="caseStudy"
     :artwork="artwork"
     :ready="isReady"

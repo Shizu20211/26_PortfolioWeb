@@ -246,6 +246,7 @@ h2 em {
     display: none;
   }
 }
+
 @media (max-width: 760px) and (orientation: portrait) {
   body {
     overflow: auto;
@@ -1011,12 +1012,6 @@ h2 em {
   display: block;
   padding-right: 0;
   padding-left: 0;
-}
-.artworks-section {
-  display: grid;
-  grid-template-columns: minmax(15rem, 0.36fr) minmax(40rem, 1.64fr);
-  align-items: center;
-  gap: 3vw;
 }
 .frontend-work-gallery {
   position: relative;
@@ -2365,6 +2360,20 @@ body.frontend-work-detail-open {
     line-height: 1.05;
   }
 }
+
+/* Keep the About heading on one line and scale it before allowing overflow. */
+.about-intro #about-title {
+  max-width: none;
+  font-size: clamp(1.9rem, 4vw, 5rem);
+  white-space: nowrap;
+}
+html:lang(en) .about-intro #about-title {
+  font-size: clamp(1.05rem, 3vw, 3.8rem);
+}
+html:lang(ja) .about-intro #about-title {
+  font-size: clamp(1.25rem, 3.35vw, 4.2rem);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .portfolio-app,
   .hero-layer,
@@ -2378,6 +2387,14 @@ body.frontend-work-detail-open {
   }
   [data-magnetic] {
     transform: none !important;
+  }
+  .scene-gallery__background,
+  .scene-gallery__stage,
+  .scene-gallery__preview {
+    transition: none;
+  }
+  .scene-gallery__motion-permission {
+    display: none;
   }
   .frontend-work-flex-gallery__gate-line {
     animation: none;
@@ -2599,13 +2616,18 @@ body.frontend-work-detail-open {
   z-index: 200;
   overflow: hidden;
   border-radius: var(--radius-md);
+  backface-visibility: hidden;
+  contain: layout paint;
   pointer-events: none;
-  will-change: transform, width, height;
+  transform: translateZ(0);
+  will-change: transform;
 }
 .artwork-transition-image img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  backface-visibility: hidden;
 }
 body.artwork-transition-open {
   overflow: hidden;
@@ -2981,6 +3003,341 @@ body.artwork-transition-open {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
+}
+
+/* Immersive environment-illustration carousel. */
+.scene-gallery {
+  --scene-bg-x: 0px;
+  --scene-bg-y: 0px;
+  --scene-stage-x: 0px;
+  --scene-stage-y: 0px;
+  --scene-rotate-x: 0deg;
+  --scene-rotate-y: 0deg;
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #171a1d;
+  color: #f4f0e8;
+  perspective: 75rem;
+  place-items: center;
+}
+.scene-gallery::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(5 7 9 / 45%), transparent 35%, transparent 70%, rgb(5 7 9 / 28%)),
+    linear-gradient(0deg, rgb(5 7 9 / 64%), transparent 52%);
+}
+.scene-gallery__background {
+  position: absolute;
+  z-index: 0;
+  inset: -2rem;
+  background-position: center;
+  background-size: cover;
+  filter: blur(1rem) brightness(0.35) saturate(0.72);
+  transform: translate3d(var(--scene-bg-x), var(--scene-bg-y), 0) scale(1.1);
+  transition: transform 180ms ease-out;
+  will-change: transform;
+}
+.scene-gallery__back {
+  position: fixed;
+  z-index: 8;
+  top: 1.5rem;
+  left: var(--page-pad);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.scene-gallery__motion-permission {
+  position: fixed;
+  z-index: 8;
+  top: 1.2rem;
+  right: 1.2rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgb(255 255 255 / 34%);
+  border-radius: 100vh;
+  background: rgb(8 10 12 / 28%);
+  color: inherit;
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+.scene-gallery__stage {
+  position: relative;
+  z-index: 2;
+  width: min(70vw, calc(68svh * var(--scene-ratio)), 86rem);
+  aspect-ratio: var(--scene-ratio);
+  opacity: 0;
+  box-shadow: 0 2rem 7rem rgb(0 0 0 / 48%);
+  transform: translateZ(-4rem) scale(0.98);
+  transition:
+    opacity 640ms var(--ease-standard),
+    transform 880ms var(--ease-soft),
+    width 720ms var(--ease-soft),
+    aspect-ratio 720ms var(--ease-soft);
+}
+.scene-gallery.is-portrait .scene-gallery__stage {
+  width: min(42vw, calc(74svh * var(--scene-ratio)));
+}
+.scene-gallery.is-ultrawide .scene-gallery__stage {
+  width: min(78vw, calc(60svh * var(--scene-ratio)), 96rem);
+}
+.scene-gallery.is-ready .scene-gallery__stage {
+  opacity: 1;
+  transform: translate3d(var(--scene-stage-x), var(--scene-stage-y), 0)
+    rotateX(var(--scene-rotate-x)) rotateY(var(--scene-rotate-y)) scale(1);
+  transition:
+    opacity 640ms var(--ease-standard),
+    transform 160ms ease-out,
+    width 720ms var(--ease-soft),
+    aspect-ratio 720ms var(--ease-soft);
+  will-change: transform;
+}
+.scene-gallery__preview {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  display: grid;
+  width: min(25vw, calc(46svh * var(--preview-ratio)));
+  max-width: 32rem;
+  aspect-ratio: var(--preview-ratio);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(8 10 12 / 78%);
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 42%);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 640ms var(--ease-standard) 180ms,
+    filter 360ms var(--ease-standard),
+    transform 760ms var(--ease-soft);
+  place-items: center;
+  transform-style: preserve-3d;
+}
+.scene-gallery.is-ready .scene-gallery__preview {
+  opacity: 0.48;
+}
+.scene-gallery__preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.scene-gallery__preview--previous {
+  left: -4vw;
+  transform: translate3d(-14%, -50%, -10rem) rotateY(16deg) scale(0.86);
+  transform-origin: right center;
+}
+.scene-gallery__preview--next {
+  right: -4vw;
+  transform: translate3d(14%, -50%, -10rem) rotateY(-16deg) scale(0.86);
+  transform-origin: left center;
+}
+@media (hover: hover) and (pointer: fine) {
+  .scene-gallery__preview:hover {
+    z-index: 3;
+    filter: brightness(1.12);
+    opacity: 0.72;
+  }
+  .scene-gallery__preview--previous:hover {
+    transform: translate3d(-8%, -50%, -7rem) rotateY(11deg) scale(0.9);
+  }
+  .scene-gallery__preview--next:hover {
+    transform: translate3d(8%, -50%, -7rem) rotateY(-11deg) scale(0.9);
+  }
+}
+.scene-gallery__image-button {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: rgb(9 11 13 / 72%);
+  cursor: zoom-in;
+  place-items: center;
+}
+.scene-gallery__image-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.scene-gallery__copy {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.25rem, 3vw, 3rem);
+  bottom: clamp(1.25rem, 3vw, 3rem);
+  left: clamp(1.25rem, 3vw, 3rem);
+  width: min(32rem, calc(100% - 2.5rem));
+  pointer-events: none;
+  text-shadow: 0 0.12rem 1rem rgb(0 0 0 / 70%);
+}
+.scene-gallery__copy::before {
+  position: absolute;
+  z-index: -1;
+  inset: -2.5rem -5rem -3rem;
+  content: '';
+  background: radial-gradient(ellipse at 35% 60%, rgb(4 6 8 / 72%), transparent 68%);
+}
+.scene-gallery__copy > span,
+.scene-gallery__copy .chapter-label {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+.scene-gallery__copy .chapter-label {
+  margin: 0.65rem 0 0.35rem;
+  color: rgb(244 240 232 / 68%);
+}
+.scene-gallery__copy h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 4.6vw, 6.25rem);
+  font-weight: 400;
+  line-height: 1;
+}
+.scene-gallery__copy > p:last-child {
+  margin: 0.8rem 0 0;
+  color: rgb(244 240 232 / 78%);
+  font-size: 0.88rem;
+}
+.scene-gallery__arrow,
+.scene-gallery-lightbox__arrow,
+.scene-gallery-lightbox__close {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 34%);
+  border-radius: 50%;
+  background: rgb(8 10 12 / 20%);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  place-items: center;
+  backdrop-filter: blur(12px);
+}
+.scene-gallery__arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  width: 3rem;
+  height: 3rem;
+  transform: translateY(-50%);
+}
+.scene-gallery__arrow--previous {
+  left: clamp(1rem, 3vw, 3rem);
+}
+.scene-gallery__arrow--next {
+  right: clamp(1rem, 3vw, 3rem);
+}
+.scene-gallery__dots {
+  position: absolute;
+  z-index: 5;
+  bottom: 1.5rem;
+  display: flex;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.scene-gallery__dots button {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 240ms var(--ease-standard),
+    transform 240ms var(--ease-soft);
+}
+.scene-gallery__dots button[aria-current='true'] {
+  background: #f4f0e8;
+  transform: scale(1.4);
+}
+.scene-background-enter-active,
+.scene-background-leave-active {
+  transition: opacity 700ms var(--ease-standard);
+}
+.scene-background-enter-from,
+.scene-background-leave-to {
+  opacity: 0;
+}
+.scene-background-leave-active {
+  position: absolute;
+}
+.scene-slide-enter-active,
+.scene-slide-leave-active,
+.scene-copy-enter-active,
+.scene-copy-leave-active {
+  transition:
+    opacity 420ms var(--ease-standard),
+    transform 620ms var(--ease-soft);
+}
+.scene-slide-enter-from {
+  opacity: 0;
+  transform: translateX(3rem) scale(1.025);
+}
+.scene-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-3rem) scale(0.985);
+}
+.scene-gallery.is-backward .scene-slide-enter-from {
+  transform: translateX(-3rem) scale(1.025);
+}
+.scene-gallery.is-backward .scene-slide-leave-to {
+  transform: translateX(3rem) scale(0.985);
+}
+.scene-copy-enter-from,
+.scene-copy-leave-to {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+.scene-gallery-lightbox {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) 4rem;
+  align-items: center;
+  padding: 1.25rem;
+  background: rgb(8 10 12 / 96%);
+  color: #f4f0e8;
+}
+.scene-gallery-lightbox > img {
+  grid-column: 2;
+  width: 100%;
+  height: calc(100svh - 2.5rem);
+  object-fit: contain;
+}
+.scene-gallery-lightbox__close {
+  position: absolute;
+  z-index: 2;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 1.45rem;
+}
+.scene-gallery-lightbox__arrow--previous {
+  grid-column: 1;
+}
+.scene-gallery-lightbox__arrow--next {
+  grid-column: 3;
 }
 
 /* Shared split-screen canvas for printmaking and botanical-dyeing case studies. */
@@ -3627,6 +3984,42 @@ body.artwork-lightbox-open {
   .artwork-detail-view--metalwork .artwork-detail-view__content {
     padding: 3rem 1.2rem 1rem;
   }
+  .scene-gallery__stage {
+    width: min(76vw, calc((100svh - 5.5rem) * var(--scene-ratio)), 68rem);
+  }
+  .scene-gallery.is-portrait .scene-gallery__stage {
+    width: min(38vw, calc((100svh - 4.5rem) * var(--scene-ratio)));
+  }
+  .scene-gallery.is-ultrawide .scene-gallery__stage {
+    width: min(80vw, calc((100svh - 6rem) * var(--scene-ratio)));
+  }
+  .scene-gallery__preview {
+    display: none;
+  }
+  .scene-gallery__copy {
+    bottom: 1rem;
+  }
+  .scene-gallery__copy h1 {
+    font-size: clamp(1.9rem, 5vw, 3.5rem);
+  }
+  .scene-gallery__copy > p:last-child {
+    margin-top: 0.45rem;
+    font-size: 0.72rem;
+  }
+  .scene-gallery__dots {
+    bottom: 0.65rem;
+  }
+  .scene-gallery-lightbox {
+    grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+    padding: 0.75rem;
+  }
+  .scene-gallery-lightbox > img {
+    height: calc(100svh - 1.5rem);
+  }
+  .scene-gallery-lightbox__close {
+    top: 0.65rem;
+    right: 0.65rem;
+  }
   .artwork-gallery-lightbox {
     grid-template-columns: 3rem minmax(0, 1fr) 3rem;
     padding: 0.75rem;
@@ -3775,6 +4168,51 @@ body.artwork-lightbox-open {
   }
   .artwork-detail-view--metalwork::after {
     opacity: 0.42;
+  }
+  .scene-gallery__stage {
+    width: calc(100vw - 2rem);
+    max-height: 66svh;
+  }
+  .scene-gallery.is-portrait .scene-gallery__stage {
+    width: min(calc(100vw - 4rem), calc(66svh * var(--scene-ratio)));
+  }
+  .scene-gallery.is-ultrawide .scene-gallery__stage {
+    width: calc(100vw - 2rem);
+  }
+  .scene-gallery__preview {
+    display: none;
+  }
+  .scene-gallery__copy {
+    right: 1.15rem;
+    bottom: 1.25rem;
+    left: 1.15rem;
+    width: calc(100% - 2.3rem);
+  }
+  .scene-gallery__copy h1 {
+    font-size: clamp(2.2rem, 12vw, 4.25rem);
+  }
+  .scene-gallery__arrow {
+    top: auto;
+    bottom: 1.15rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    transform: none;
+  }
+  .scene-gallery__arrow--previous {
+    left: 1rem;
+  }
+  .scene-gallery__arrow--next {
+    right: 1rem;
+  }
+  .scene-gallery__dots {
+    bottom: 1.85rem;
+  }
+  .scene-gallery-lightbox {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    padding: 0.75rem;
+  }
+  .scene-gallery-lightbox > img {
+    height: calc(100svh - 1.5rem);
   }
   .artwork-detail-view--metalwork .artwork-detail-view__content h1 {
     margin-block: 0.35rem 1rem;
@@ -4245,5 +4683,44 @@ body.artwork-lightbox-open {
   .frontend-work-flex-gallery__reveal span,
   .frontend-work-flex-gallery__link {
     color: var(--color-paper);
+  }
+}
+
+/*
+ * Final touch-device override for the metalwork detail page.
+ * The page owns vertical scrolling so its heading, narrative and metadata
+ * cannot be trapped inside the right column on mobile landscape browsers.
+ */
+@media (pointer: coarse) {
+  .artwork-detail-view--metalwork {
+    height: 100svh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__content {
+    justify-content: flex-start;
+    overflow: visible;
+  }
+  .metalwork-gallery__pagination button {
+    touch-action: manipulation;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  .artwork-detail-view--metalwork {
+    align-items: start;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__media {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    align-self: start;
+  }
+  .artwork-detail-view--metalwork .artwork-detail-view__content {
+    min-height: 100svh;
   }
 }
