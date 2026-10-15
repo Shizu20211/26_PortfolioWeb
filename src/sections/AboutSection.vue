@@ -59,7 +59,10 @@ const contacts = computed(() =>
               <span>{{
                 typeof contact.label === 'string' ? contact.label : pick(contact.label)
               }}</span>
-              <small v-if="!contact.href">{{ t('contactPending') }}</small>
+              <small v-if="contact.detail">{{
+                typeof contact.detail === 'string' ? contact.detail : pick(contact.detail)
+              }}</small>
+              <small v-else-if="!contact.href">{{ t('contactPending') }}</small>
             </component>
           </div>
         </section>

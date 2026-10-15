@@ -739,13 +739,15 @@ h2 em {
   --section-decoration-cloud-right: -4rem;
 }
 .section-decorations--featured {
-  --section-decoration-flower-left: 1.25rem;
+  --section-decoration-flower-bottom: 62%;
+  --section-decoration-flower-left: 30%;
   --section-decoration-flower-rotation: -9deg;
 }
 .section-decorations--frontend-works {
   --section-decoration-cloud-top: 9%;
   --section-decoration-cloud-right: -5rem;
-  --section-decoration-flower-left: 2%;
+  --section-decoration-flower-left: 22%;
+  --section-decoration-flower-bottom: 60%;
   --section-decoration-flower-rotation: 8deg;
 }
 .section-decorations--artworks {
@@ -757,7 +759,8 @@ h2 em {
 .section-decorations--about {
   --section-decoration-cloud-top: 40%;
   --section-decoration-cloud-right: -4rem;
-  --section-decoration-flower-left: 87%;
+  --section-decoration-flower-bottom: 46%;
+  --section-decoration-flower-left: 49%;
   --section-decoration-flower-rotation: 10deg;
 }
 @keyframes cloud-float {
@@ -1540,13 +1543,54 @@ body.frontend-work-detail-open {
 .portfolio-footer p {
   margin: 0;
 }
-.portfolio-footer button {
-  padding: 0.35rem 0;
+.portfolio-footer__home {
+  --footer-home-offset-y: clamp(-4rem, -6vh, -2rem);
+
+  position: relative;
+  width: clamp(5.5rem, 8vw, 8rem);
+  aspect-ratio: 1;
+  padding: 0;
   border: 0;
-  border-bottom: 1px solid currentColor;
   background: transparent;
+  color: inherit;
   cursor: pointer;
-  letter-spacing: 0.08em;
+  transform: translateY(var(--footer-home-offset-y)) scale(0.75);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.portfolio-footer__home:hover,
+.portfolio-footer__home:focus-visible {
+  transform: translateY(var(--footer-home-offset-y)) scale(1);
+}
+.portfolio-footer__home-motion {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  object-fit: contain;
+  pointer-events: none;
+}
+.portfolio-footer__home-label {
+  position: absolute;
+  inset: -13%;
+  width: 126%;
+  height: 126%;
+  overflow: visible;
+  color: var(--color-ink-teal);
+  fill: currentColor;
+  pointer-events: none;
+}
+.portfolio-footer__home-label path {
+  fill: none;
+}
+.portfolio-footer__home-label text {
+  font-family: var(--font-label);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.portfolio-footer__home:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 0.3rem;
 }
 [data-magnetic] {
   will-change: transform;
