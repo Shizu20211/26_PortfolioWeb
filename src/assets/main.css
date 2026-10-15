@@ -2182,8 +2182,12 @@ body.frontend-work-detail-open {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
     gap: 2rem;
-    overflow: hidden;
-    overscroll-behavior-y: auto;
+    padding-bottom: clamp(4.5rem, 16vh, 6.5rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
   }
   .about-intro h2 {
     margin-block: 0.5rem;
@@ -2211,7 +2215,15 @@ body.frontend-work-detail-open {
     height: 2.4rem;
   }
   .portfolio-footer {
+    min-height: 1rem;
     margin-top: 0;
+  }
+  .portfolio-footer__home {
+    --footer-home-offset-y: 0rem;
+
+    position: absolute;
+    right: 1.2rem;
+    bottom: 3rem;
   }
   .section-navigation a {
     gap: 0.35rem;
