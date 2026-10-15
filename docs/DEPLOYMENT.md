@@ -10,7 +10,7 @@ After the first successful GitHub Pages deployment:
 
 1. Verify the site locally with `npm run build`.
 2. Commit the intended source files and assets.
-3. Push the `air` branch to `origin`.
+3. Merge the approved work into `main` and push `main` to `origin`.
 4. GitHub Actions builds the site and publishes the `dist` artifact.
 5. Check the `Deploy portfolio to GitHub Pages` workflow in the repository's Actions tab.
 
@@ -21,6 +21,8 @@ Open the repository on GitHub, then go to `Settings → Pages → Build and depl
 ## Manual deployment
 
 The same workflow can be started from `Actions → Deploy portfolio to GitHub Pages → Run workflow`.
+
+Only pushes to `main` trigger an automatic production deployment. Feature branches such as `air` can be used for development and review without replacing the public site.
 
 ## Local mobile testing
 
