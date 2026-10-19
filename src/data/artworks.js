@@ -136,6 +136,15 @@ export const artworks = [
         width: 4440,
         height: 2228,
         title: { 'zh-Hant': '松木琥珀紅茶', en: 'Pine Amber Tea', ja: '松木琥珀紅茶' },
+        translationSide: 'left',
+        translation: {
+          description: {
+            'zh-Hant':
+              '以松脂發酵，再用松木柴火焙煎而成的琥珀紅茶。品嚐濃郁甜點時，它是最合拍的搭檔；若再添一朵本店的雲朵奶蓋，也會是一場輕盈而奇妙的體驗。',
+            en: 'Amber tea fermented with pine resin and roasted over fragrant pinewood. It is the perfect companion for rich, dreamy sweets. Add one of our cloud-foam toppings, and your cup may feel light enough to float away.',
+          },
+          price: { 'zh-Hant': '一滴松樹的樹汁', en: 'One drop of pine sap' },
+        },
       },
       {
         id: 'lemon-tart',
@@ -143,6 +152,15 @@ export const artworks = [
         width: 5117,
         height: 2563,
         title: { 'zh-Hant': '積雲檸檬塔', en: 'Cumulus Lemon Tart', ja: '積雲レモンタルト' },
+        translationSide: 'right',
+        translation: {
+          description: {
+            'zh-Hant':
+              '將盛夏採收的金黃檸檬，配上以雲朵打發的青色奶油。清亮的酸甜與輕柔的雲絮，恰好撫平酷暑的炎熱。',
+            en: 'Golden lemons gathered at midsummer are tucked beneath pale blue cream, whipped from the softest clouds. Bright, tart, and feather-light, each bite cools the fiercest summer afternoon.',
+          },
+          price: { 'zh-Hant': '一縷林間吹來的涼風', en: 'A ribbon of cool woodland breeze' },
+        },
       },
       {
         id: 'mille-feuille',
@@ -154,6 +172,15 @@ export const artworks = [
           en: 'Strawberry Matcha Mille-feuille',
           ja: '苺抹茶ミルフィーユ',
         },
+        translationSide: 'right',
+        translation: {
+          description: {
+            'zh-Hant':
+              '抹茶季限定。春日的醇厚若竹抹茶，在層層酥脆清香之間遇見酸甜草莓，交織成一段彷彿只會發生在童話裡的相遇。',
+            en: 'A matcha-season special. Deep spring-green matcha meets bright, jewel-like strawberries between a hundred crisp and fragrant layers—a delicious little encounter that could only happen in a fairy tale.',
+          },
+          price: { 'zh-Hant': '泡在春露裡的一壺茶', en: 'A pot of tea steeped in spring dew' },
+        },
       },
       {
         id: 'mont-blanc',
@@ -161,6 +188,18 @@ export const artworks = [
         width: 4507,
         height: 2249,
         title: { 'zh-Hant': '滿月蒙布朗', en: 'Full Moon Mont Blanc', ja: '満月モンブラン' },
+        translationSide: 'right',
+        translation: {
+          description: {
+            'zh-Hant':
+              '秋日收穫的栗子，經每月滿月的光輕輕曬製，再拌入與松鼠先生交換來的杏仁。蛋糕裡藏著月夜的寧靜與森林的清幽，最適合獨自度過的夜晚。',
+            en: 'Autumn chestnuts are ripened beneath each month’s full moon, then folded together with almonds traded from Mr Squirrel. Quiet as moonlight and gentle as the forest at night, this cake is made for evenings spent in your own good company.',
+          },
+          price: {
+            'zh-Hant': '一片穿過樹梢的月光',
+            en: 'One shard of moonlight through the treetops',
+          },
+        },
       },
     ],
     process: {

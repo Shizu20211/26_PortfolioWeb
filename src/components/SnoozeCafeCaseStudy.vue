@@ -4,7 +4,7 @@ import { useLanguage } from '@/composables/useLanguage'
 
 const props = defineProps({ artwork: { type: Object, required: true }, ready: Boolean })
 const emit = defineEmits(['back'])
-const { pick } = useLanguage()
+const { language, pick } = useLanguage()
 
 const heroTarget = ref(null)
 const heroImage = ref(null)
@@ -14,8 +14,11 @@ const mobileIndex = ref(0)
 const direction = ref('next')
 const isTurning = ref(false)
 const isPortraitMobile = ref(false)
+const openTranslation = ref(null)
+const burstingTranslation = ref(null)
 let pointerStartX = 0
 let turnTimer = 0
+let burstTimer = 0
 let portraitQuery
 
 const pages = computed(() => [
@@ -48,6 +51,7 @@ function openBook() {
 
 function turnPage(offset) {
   if (isTurning.value) return
+  openTranslation.value = null
   const currentIndex = isPortraitMobile.value ? mobileIndex.value : activeIndex.value
   const total = isPortraitMobile.value ? mobilePages.value.length : pages.value.length
   const nextIndex = currentIndex + offset
@@ -69,6 +73,18 @@ function turnPage(offset) {
       activeIndex.value = nextIndex
     }
     isTurning.value = false
+  }, 760)
+}
+
+function toggleTranslation(pageId) {
+  const willOpen = openTranslation.value !== pageId
+  openTranslation.value = willOpen ? pageId : null
+  if (!willOpen) return
+
+  burstingTranslation.value = pageId
+  window.clearTimeout(burstTimer)
+  burstTimer = window.setTimeout(() => {
+    burstingTranslation.value = null
   }, 760)
 }
 
@@ -117,6 +133,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydown)
   portraitQuery?.removeEventListener('change', updatePortraitMode)
   window.clearTimeout(turnTimer)
+  window.clearTimeout(burstTimer)
 })
 
 defineExpose({ heroTarget, heroImage })
@@ -229,6 +246,47 @@ defineExpose({ heroTarget, heroImage })
                 :height="activePage.height"
                 decoding="async"
               />
+              <div
+                v-if="language !== 'ja'"
+                class="cafe-book__translation"
+                :class="`is-${activePage.translationSide}`"
+              >
+                <button
+                  class="cafe-book__translation-trigger"
+                  :class="{
+                    'is-open': openTranslation === activePage.id,
+                    'is-bursting': burstingTranslation === activePage.id,
+                  }"
+                  type="button"
+                  :aria-expanded="openTranslation === activePage.id"
+                  :aria-controls="`cafe-translation-${activePage.id}`"
+                  :aria-label="
+                    pick({
+                      'zh-Hant': `閱讀${pick(activePage.title)}說明`,
+                      en: `Read about ${pick(activePage.title)}`,
+                    })
+                  "
+                  @click.stop="toggleTranslation(activePage.id)"
+                >
+                  <span aria-hidden="true">{{ openTranslation === activePage.id ? '✕' : '' }}</span>
+                </button>
+
+                <Transition name="cafe-translation-card">
+                  <aside
+                    v-if="openTranslation === activePage.id"
+                    :id="`cafe-translation-${activePage.id}`"
+                    class="cafe-book__translation-card"
+                    @click.stop
+                  >
+                    <h2>{{ pick(activePage.title) }}</h2>
+                    <p>{{ pick(activePage.translation.description) }}</p>
+                    <p class="cafe-book__translation-price">
+                      <span>{{ pick({ 'zh-Hant': '價格', en: 'Price' }) }}</span>
+                      {{ pick(activePage.translation.price) }}
+                    </p>
+                  </aside>
+                </Transition>
+              </div>
             </div>
           </template>
 
@@ -589,6 +647,236 @@ defineExpose({ heroTarget, heroImage })
 .cafe-book__full-spread.is-lemon-tart img {
   transform: translateX(-1.35%) scale(1.045);
 }
+.cafe-book__translation {
+  position: absolute;
+  z-index: 7;
+  top: 11%;
+  width: 42%;
+  pointer-events: none;
+}
+.cafe-book__translation.is-left {
+  left: 4%;
+}
+.cafe-book__translation.is-right {
+  right: 4%;
+}
+.cafe-book__translation-trigger {
+  position: absolute;
+  z-index: 9;
+  top: clamp(0.5rem, 0.8vw, 0.8rem);
+  left: clamp(0.5rem, 0.8vw, 0.8rem);
+  display: grid;
+  width: clamp(1.5rem, 2vw, 2rem);
+  aspect-ratio: 1;
+  padding: 0;
+  isolation: isolate;
+  border: 1px solid rgba(23, 69, 106, 0.144);
+  border-radius: 50%;
+  background: rgba(245, 238, 224, 0.288);
+  color: var(--cafe-ink);
+  cursor: pointer;
+  overflow: visible;
+  pointer-events: auto;
+  animation: cafe-translation-wave 3.6s linear infinite;
+  place-items: center;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+.cafe-book__translation-trigger span {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-label);
+  font-size: clamp(0.62rem, 0.8vw, 0.78rem);
+  letter-spacing: 0.04em;
+}
+.cafe-book__translation-trigger::before,
+.cafe-book__translation-trigger::after {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  display: none;
+  width: 5rem;
+  height: 3.5rem;
+  content: '';
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.cafe-book__translation-trigger::before {
+  top: -2.85rem;
+  background-image:
+    radial-gradient(circle, var(--cafe-accent) 18%, transparent 20%),
+    radial-gradient(circle, var(--cafe-ink) 18%, transparent 20%),
+    radial-gradient(circle, var(--cafe-accent) 16%, transparent 18%),
+    radial-gradient(circle, var(--cafe-ink) 18%, transparent 20%),
+    radial-gradient(circle, var(--cafe-accent) 15%, transparent 17%);
+  background-size:
+    12% 12%,
+    16% 16%,
+    10% 10%,
+    14% 14%,
+    12% 12%;
+}
+.cafe-book__translation-trigger::after {
+  bottom: -2.85rem;
+  background-image:
+    radial-gradient(circle, var(--cafe-ink) 18%, transparent 20%),
+    radial-gradient(circle, var(--cafe-accent) 16%, transparent 18%),
+    radial-gradient(circle, var(--cafe-ink) 18%, transparent 20%),
+    radial-gradient(circle, var(--cafe-accent) 15%, transparent 17%);
+  background-size:
+    14% 14%,
+    11% 11%,
+    16% 16%,
+    12% 12%;
+}
+.cafe-book__translation-trigger:is(:hover, :focus-visible),
+.cafe-book__translation-trigger.is-open {
+  background: rgb(23 69 106 / 88%);
+  color: #f5ecdd;
+  transform: scale(1.08);
+}
+.cafe-book__translation-trigger.is-open {
+  animation: none;
+  transform: none;
+}
+.cafe-book__translation-trigger.is-bursting::before {
+  display: block;
+  animation: cafe-bubbles-top 760ms ease-out forwards;
+}
+.cafe-book__translation-trigger.is-bursting::after {
+  display: block;
+  animation: cafe-bubbles-bottom 760ms ease-out forwards;
+}
+.cafe-book__translation-card {
+  width: 100%;
+  max-height: min(45vh, 19rem);
+  margin-top: 0;
+  padding: clamp(3.25rem, 5vw, 3.75rem) clamp(0.8rem, 1.8vw, 1.45rem) clamp(0.8rem, 1.8vw, 1.45rem);
+  overflow-y: auto;
+  border: 1px solid rgb(23 69 106 / 20%);
+  border-radius: 0.25rem;
+  background: rgba(247, 240, 226, 0.109);
+  box-shadow: 0 0.8rem 2.2rem rgb(43 31 22 / 22%);
+  color: var(--cafe-ink);
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+.cafe-book__translation-card h2 {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.88rem, 1.45vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+.cafe-book__translation-card p {
+  margin: 0;
+  font-size: clamp(0.62rem, 0.82vw, 0.82rem);
+  line-height: 1.75;
+}
+.cafe-book__translation-price {
+  margin-top: 0.7rem !important;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgb(23 69 106 / 18%);
+}
+.cafe-book__translation-price span {
+  margin-right: 0.55em;
+  font-family: var(--font-label);
+  font-size: 0.82em;
+  letter-spacing: 0.08em;
+}
+.cafe-translation-card-enter-active,
+.cafe-translation-card-leave-active {
+  transition:
+    opacity 260ms ease,
+    transform 360ms var(--ease-soft);
+  transform-origin: top left;
+}
+.cafe-translation-card-enter-from,
+.cafe-translation-card-leave-to {
+  opacity: 0;
+  transform: translateY(-0.5rem) scale(0.96);
+}
+@keyframes cafe-translation-wave {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgb(23 69 106 / 32%),
+      0 0 0 0 rgb(216 101 37 / 22%);
+  }
+  40% {
+    box-shadow:
+      0 0 0 0.9rem rgb(23 69 106 / 0%),
+      0 0 0 0 rgb(216 101 37 / 20%);
+  }
+  80% {
+    box-shadow:
+      0 0 0 0.9rem rgb(23 69 106 / 0%),
+      0 0 0 0.55rem rgb(216 101 37 / 0%);
+  }
+}
+@keyframes cafe-bubbles-top {
+  0% {
+    background-position:
+      8% 90%,
+      28% 90%,
+      50% 90%,
+      72% 90%,
+      92% 90%;
+  }
+  55% {
+    background-position:
+      2% 45%,
+      24% 5%,
+      50% 35%,
+      76% 0%,
+      98% 48%;
+  }
+  100% {
+    background-position:
+      0 25%,
+      22% -15%,
+      50% 15%,
+      78% -20%,
+      100% 28%;
+    background-size:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+}
+@keyframes cafe-bubbles-bottom {
+  0% {
+    background-position:
+      12% 0,
+      38% 0,
+      66% 0,
+      90% 0;
+  }
+  55% {
+    background-position:
+      2% 70%,
+      34% 100%,
+      70% 72%,
+      100% 95%;
+  }
+  100% {
+    background-position:
+      0 90%,
+      32% 120%,
+      72% 92%,
+      102% 115%;
+    background-size:
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+}
 .cafe-book__leaf--intro-copy {
   gap: clamp(0.45rem, 1vw, 0.9rem);
   padding-block: clamp(1.2rem, 3vw, 3rem);
@@ -789,6 +1077,10 @@ defineExpose({ heroTarget, heroImage })
     left: auto;
     transform: none;
   }
+  .cafe-book__translation-card {
+    max-height: 60dvh;
+    padding-top: 2.75rem;
+  }
 }
 
 @media (max-width: 760px) and (orientation: portrait) {
@@ -843,6 +1135,19 @@ defineExpose({ heroTarget, heroImage })
   }
   .cafe-book__full-spread img {
     object-fit: contain;
+  }
+  .cafe-book__translation {
+    top: max(4.5rem, 11%);
+    width: min(76%, 20rem);
+  }
+  .cafe-book__translation.is-left {
+    left: 5%;
+  }
+  .cafe-book__translation.is-right {
+    right: 5%;
+  }
+  .cafe-book__translation-card {
+    max-height: 48dvh;
   }
   .cafe-book__gutter {
     display: none;
@@ -920,6 +1225,11 @@ defineExpose({ heroTarget, heroImage })
   .cafe-book__page-content.is-flipping-next,
   .cafe-book__page-content.is-flipping-previous {
     animation-duration: 1ms;
+  }
+  .cafe-book__translation-trigger,
+  .cafe-book__translation-trigger.is-bursting::before,
+  .cafe-book__translation-trigger.is-bursting::after {
+    animation: none;
   }
 }
 </style>
