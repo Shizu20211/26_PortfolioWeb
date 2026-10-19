@@ -1,4 +1,4 @@
-# CHING-YUNG HUANG — 日常微光
+#  — 日常
 
 以 Vue 3 與 Vite 製作的三語個人作品集，結合橫向章節導覽、案例研究、藝術作品 Gallery、3D 模型與工藝作品展示。視覺方向以 Digital Editorial 為基調，保留紙張、手繪與展覽式閱讀感。
 
