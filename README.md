@@ -1,4 +1,4 @@
-#  — 日常
+# — 日常
 
 以 Vue 3 與 Vite 製作的三語個人作品集，結合橫向章節導覽、案例研究、藝術作品 Gallery、3D 模型與工藝作品展示。視覺方向以 Digital Editorial 為基調，保留紙張、手繪與展覽式閱讀感。
 
@@ -107,7 +107,7 @@ http://192.168.x.x:5173/
 - `ThreeDModelViewer.vue`：GLB／Draco 3D 模型。
 - `KaohsiungMapCaseStudy.vue`：高雄印章地圖案例。
 
-新增或修改內容前，請先閱讀 [作品集修改指南](docs/EDITING_GUIDE.md)。
+新增或修改內容前，請先閱讀 [文件導覽](docs/README.md) 與 [作品集修改指南](docs/EDITING_GUIDE.md)。
 
 ## 素材與公開檔案
 

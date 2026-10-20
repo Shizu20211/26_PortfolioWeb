@@ -34,7 +34,7 @@
 ### 影片與載入
 
 - 所有案例影片皆使用 MP4 Base Media 容器與 H.264 / `avc1` 視訊資訊。
-- 影片未偵測到音訊軌，元件亦固定使用 `muted` 與 `playsinline`。
+- Review 當時的影片未偵測到音訊軌；後續替換的 `navigation-redesign.mp4` 含 AAC 音軌，但元件固定使用 `muted` 與 `playsinline`，不會播放聲音。
 - 八支影片均已轉為 Fast Start 結構，`moov` 索引位於 `mdat` 影片資料前，以改善手機與串流環境的開始播放時間。
 - 影片使用 IntersectionObserver 延遲建立，進入可視範圍後才播放。
 - 使用 `autoplay muted playsinline`，離開可視範圍後暫停，播放完留白 3 秒再重播。
@@ -86,3 +86,5 @@
 ## 完成紀錄
 
 Phase 11 「臺北自來水園區網站重構案例頁」已完成。後續若更換影片、圖片、外部網址或三語文案，應重新執行本文件的媒體、Responsive、語言與 Production Build 檢查。
+
+2026-10-19 已替換並重新建置 `navigation-redesign.mp4`；影片縮短且壓縮至部署限制內，Production Build 通過。此更新不改變 Phase 11 的完成結論。

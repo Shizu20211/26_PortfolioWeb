@@ -1,8 +1,8 @@
 # Phase Final：Release Cleanup & Deployment
 
-狀態：**待所有內容階段完成並驗收後執行**
+狀態：**進行中**
 
-本階段是正式公開前的最後一道發布程序。目前僅建立執行計畫，不移除、隱藏或改寫任何開發文件。
+本階段是正式公開前的最後一道發布程序。內容階段與部署基礎已完成，目前集中處理公開安全、素材授權、效能與跨裝置總驗收。
 
 ## 階段目標
 
@@ -14,10 +14,10 @@
 
 ## 執行前提
 
-- [ ] Phase 10 手機版精簡自介已完成。
-- [ ] Frontend Works 的正式圖片、Role、Tools、狀態與連結已補齊。
-- [ ] Artworks 的正式圖片、文案與詳細頁資料已補齊。
-- [ ] About 的 Email、GitHub、Instagram 與履歷連結已確認。
+- [x] Phase 10 原方案已由手機橫向右側資料區捲動取代。
+- [x] Frontend Works 的正式圖片、Role、Tools、狀態與連結已補齊。
+- [x] Artworks 的正式圖片、文案與詳細頁資料已補齊。
+- [x] About 的 Email、GitHub、Instagram 與履歷連結已確認。
 - [ ] 所有中／英／日文案已完成最終校對。
 - [ ] 桌機、手機橫向與主要瀏覽器已完成實機驗收。
 - [ ] 使用者已明確確認可以進入公開版本清理。
@@ -65,14 +65,13 @@ public/
 以下資料先封存，再依公開需求從 `main` 移除：
 
 ```text
-docs/PHASE*_PLAN.md
-docs/PHASE*_REVIEW.md
-docs/PHASE*_TODO.md
-docs/PHASE0_BASELINE.md
-docs/codex-reference/
+docs/PHASE_HISTORY.md
+docs/PHASE11_REVIEW.md
+docs/PHASE12_REVIEW.md
+docs/PHASE13_REVIEW.md
 ```
 
-- `docs/EDITING_GUIDE.md` 依最終用途決定保留、精簡或移至封存 Branch。
+- 保留 `docs/README.md`、`docs/PHASE_STATUS.md`、`docs/EDITING_GUIDE.md` 與 `docs/DEPLOYMENT.md` 作為現行文件。
 - 刪除過時路徑、失效指令、重複說明與已完成 Placeholder 記錄。
 - 不以一般刪除處理含敏感或無權公開的歷史內容；該情況必須另外執行歷史清理。
 
