@@ -1466,7 +1466,7 @@ body.frontend-work-detail-open {
 .about-intro > p:not(.chapter-label) {
   max-width: 44rem;
   color: var(--color-muted);
-  font-size: clamp(0.75rem, 0.9vw, 0.95rem);
+  font-size: clamp(0.75rem, 1vw, 1.95rem);
   line-height: 1.9;
 }
 .about-meta {
@@ -1474,20 +1474,20 @@ body.frontend-work-detail-open {
   gap: 1.2rem;
 }
 .about-meta section {
-  padding-top: 0.8rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--color-line);
 }
 .about-meta h3 {
   margin: 0 0 0.6rem;
   font-family: var(--font-label);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .about-meta p,
 .about-meta li {
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   line-height: 1.6;
 }
 .about-meta ul {
@@ -1507,7 +1507,7 @@ body.frontend-work-detail-open {
   padding: 0.65rem;
   border: 1px dashed var(--color-line);
   border-radius: 0.75rem;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
 }
 .contact-icon {
   display: grid;
