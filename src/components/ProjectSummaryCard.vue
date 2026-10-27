@@ -40,7 +40,7 @@ const { pick, t } = useLanguage()
           </dd>
         </div>
       </dl>
-      <RouterLink :to="`/projects/${project.slug}`"
+      <RouterLink class="project-card__link" :to="`/projects/${project.slug}`"
         >{{ t('viewProject') }} <span>↗</span></RouterLink
       >
     </div>

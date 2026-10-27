@@ -118,6 +118,16 @@ function turnFromPage(event) {
 }
 
 function onKeydown(event) {
+  if (event.key === 'Escape' && openTranslation.value) {
+    openTranslation.value = null
+    return
+  }
+  if (event.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+    activeIndex.value = 0
+    mobileIndex.value = 0
+    return
+  }
   if (!isOpen.value && ['Enter', ' '].includes(event.key)) openBook()
   if (isOpen.value && event.key === 'ArrowLeft') turnPage(-1)
   if (isOpen.value && event.key === 'ArrowRight') turnPage(1)

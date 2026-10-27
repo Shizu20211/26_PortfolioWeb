@@ -1,11 +1,14 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { useLanguage } from '@/composables/useLanguage'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const props = defineProps({ artwork: { type: Object, required: true }, ready: Boolean })
 const emit = defineEmits(['back'])
+const route = useRoute()
+const router = useRouter()
 const { pick } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
 const heroTarget = ref(null)
@@ -56,24 +59,55 @@ async function selectImage(index) {
   )
 }
 
-function openLightbox(event) {
-  triggerElement = event?.currentTarget ?? document.activeElement
+function openLightboxVisual() {
+  if (isLightboxOpen.value) return
   isLightboxOpen.value = true
   document.body.classList.add('artwork-lightbox-open')
   document.querySelector('#app')?.setAttribute('inert', '')
   nextTick(() => lightboxClose.value?.focus())
 }
 
-function closeLightbox() {
+function closeLightboxVisual(restoreFocus = true) {
+  if (!isLightboxOpen.value) return
   isLightboxOpen.value = false
   document.body.classList.remove('artwork-lightbox-open')
   document.querySelector('#app')?.removeAttribute('inert')
-  nextTick(() => triggerElement?.focus?.())
+  if (restoreFocus) nextTick(() => triggerElement?.focus?.())
+}
+
+async function openLightbox(event) {
+  triggerElement = event?.currentTarget ?? document.activeElement
+  await router.push({
+    query: { ...route.query, artworkImage: activeImage.value.id },
+  })
+}
+
+function hasArtworkHistoryEntry() {
+  const previousUrl = window.history.state?.back
+  if (!previousUrl) return false
+  return new URL(previousUrl, window.location.href).pathname.endsWith(route.path)
+}
+
+async function closeLightbox() {
+  if (!route.query.artworkImage) {
+    closeLightboxVisual()
+    return
+  }
+  if (hasArtworkHistoryEntry()) {
+    router.back()
+    return
+  }
+  const query = { ...route.query }
+  delete query.artworkImage
+  await router.replace({ query })
 }
 
 function showImage(offset) {
   if (!gallery.value.length) return
   activeIndex.value = (activeIndex.value + offset + gallery.value.length) % gallery.value.length
+  if (isLightboxOpen.value) {
+    router.replace({ query: { ...route.query, artworkImage: activeImage.value.id } })
+  }
 }
 
 function onKeydown(event) {
@@ -105,11 +139,24 @@ function onPointerUp(event) {
   if (Math.abs(distance) >= 48) showImage(distance > 0 ? -1 : 1)
 }
 
+watch(
+  () => route.query.artworkImage,
+  (imageId) => {
+    const imageIndex = gallery.value.findIndex((image) => image.id === imageId)
+    if (imageIndex >= 0) {
+      activeIndex.value = imageIndex
+      openLightboxVisual()
+    } else {
+      closeLightboxVisual()
+    }
+  },
+  { immediate: true },
+)
+
 onMounted(() => window.addEventListener('keydown', onKeydown))
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydown)
-  document.body.classList.remove('artwork-lightbox-open')
-  document.querySelector('#app')?.removeAttribute('inert')
+  closeLightboxVisual(false)
   gsap.killTweensOf(heroImage.value)
 })
 

@@ -185,7 +185,19 @@ onBeforeUnmount(() => {
       </div>
     </template>
     <template v-else-if="images.length">
-      <div class="frontend-detail-gallery__slides">
+      <component
+        :is="work.demoUrl ? 'a' : 'div'"
+        class="frontend-detail-gallery__slides"
+        :class="{ 'is-linked': work.demoUrl }"
+        :href="work.demoUrl || undefined"
+        :target="work.demoUrl ? '_blank' : undefined"
+        :rel="work.demoUrl ? 'noopener noreferrer' : undefined"
+        :aria-label="
+          work.demoUrl
+            ? `${t('viewWebsite')} · ${pick(work.title)} (${t('opensNewTab')})`
+            : undefined
+        "
+      >
         <img
           v-for="(image, i) in images"
           :key="image.src"
@@ -202,7 +214,7 @@ onBeforeUnmount(() => {
         <span v-if="failed[images[index]?.src]" class="frontend-detail-gallery__error">{{
           t('mediaLoadError')
         }}</span>
-      </div>
+      </component>
     </template>
     <div v-else class="frontend-work-detail__target-placeholder is-visible">
       {{ t('imageNeeded') }}

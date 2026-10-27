@@ -14,9 +14,12 @@ export function useActiveSection(sectionIds, trackRef, measurements, getSectionI
     const id = sectionIds[index]
     if (!id) return
 
-    const nextUrl = index === 0 ? location.pathname : `#${id}`
-    if (`${location.pathname}${location.hash}` !== nextUrl) {
-      history.replaceState(null, '', nextUrl)
+    const nextUrl =
+      index === 0
+        ? `${location.pathname}${location.search}`
+        : `${location.pathname}${location.search}#${id}`
+    if (`${location.pathname}${location.search}${location.hash}` !== nextUrl) {
+      history.replaceState(history.state, '', nextUrl)
     }
   }
 

@@ -1,5 +1,6 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import FrontendWorkDetailOverlay from '@/components/FrontendWorkDetailOverlay.vue'
 import ResponsivePortfolioImage from '@/components/ResponsivePortfolioImage.vue'
@@ -12,6 +13,8 @@ const props = defineProps({
 
 const { pick, t } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
+const route = useRoute()
+const router = useRouter()
 const activeWork = ref(null)
 const workList = ref(null)
 const galleryTrack = ref(null)
@@ -21,6 +24,7 @@ const selectedWork = ref(null)
 const selectedSource = ref(null)
 const selectedNumber = ref('')
 const selectedTrigger = ref(null)
+const detailOverlay = ref(null)
 
 const activeMedia = computed(() => activeWork.value?.media)
 
@@ -70,12 +74,17 @@ function movePreview(event) {
   positionPreview(event.clientX, event.clientY)
 }
 
-function openWork(work, index, sourceElement, triggerElement) {
-  if (selectedWork.value) return
+function setSelectedWork(work, index, sourceElement = null, triggerElement = null) {
   selectedWork.value = work
   selectedNumber.value = String(index + 1).padStart(2, '0')
-  selectedSource.value = sourceElement ?? null
-  selectedTrigger.value = triggerElement ?? null
+  selectedSource.value = sourceElement
+  selectedTrigger.value = triggerElement
+}
+
+async function openWork(work, index, sourceElement, triggerElement) {
+  if (selectedWork.value) return
+  setSelectedWork(work, index, sourceElement, triggerElement)
+  await router.push({ query: { ...route.query, frontendWork: work.slug } })
 }
 
 function openDesktopWork(work, index, triggerElement) {
@@ -100,6 +109,48 @@ function finishClosingWork() {
   selectedTrigger.value = null
   requestAnimationFrame(() => trigger?.focus())
 }
+
+function hasFrontendWorksHistoryEntry() {
+  const previousUrl = window.history.state?.back
+  if (!previousUrl) return false
+  return new URL(previousUrl, window.location.href).pathname === window.location.pathname
+}
+
+async function requestCloseWork() {
+  if (!route.query.frontendWork) {
+    detailOverlay.value?.closeDetail()
+    return
+  }
+  if (hasFrontendWorksHistoryEntry()) {
+    router.back()
+    return
+  }
+  const query = { ...route.query }
+  delete query.frontendWork
+  await router.replace({ query })
+}
+
+watch(
+  () => route.query.frontendWork,
+  async (slug) => {
+    if (slug) {
+      if (selectedWork.value?.slug === slug) return
+      const index = props.frontendWorks.findIndex((work) => work.slug === slug)
+      if (index < 0) {
+        const query = { ...route.query }
+        delete query.frontendWork
+        await router.replace({ query })
+        return
+      }
+      setSelectedWork(props.frontendWorks[index], index)
+      return
+    }
+    if (!selectedWork.value) return
+    await nextTick()
+    detailOverlay.value?.closeDetail()
+  },
+  { immediate: true },
+)
 
 function handleGalleryTouchStart(event) {
   touchStartX = event.touches[0]?.clientX ?? 0
@@ -334,9 +385,11 @@ onBeforeUnmount(() => {
 
     <FrontendWorkDetailOverlay
       v-if="selectedWork"
+      ref="detailOverlay"
       :work="selectedWork"
       :number="selectedNumber"
       :source-element="selectedSource"
+      @request-close="requestCloseWork"
       @closed="finishClosingWork"
     />
   </div>

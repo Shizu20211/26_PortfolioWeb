@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import KaohsiungMapCaseStudy from '@/components/KaohsiungMapCaseStudy.vue'
 import LacquerwareCaseStudy from '@/components/LacquerwareCaseStudy.vue'
@@ -31,6 +31,7 @@ const artwork = computed(() =>
 )
 const threeDWorks = computed(() => artwork.value?.works ?? [])
 const activeThreeDWork = computed(() => threeDWorks.value[activeThreeDIndex.value] ?? null)
+let initializationId = 0
 
 function selectThreeDWork(index) {
   if (index < 0 || index >= threeDWorks.value.length) return
@@ -39,15 +40,35 @@ function selectThreeDWork(index) {
 
 async function back() {
   const { route: returnRoute } = getReturnState()
-  await router.push(returnRoute || '/#artworks')
-}
-
-onMounted(async () => {
-  if (!artwork.value) {
-    router.replace('/artworks')
+  if (returnRoute) {
+    router.back()
     return
   }
+  await router.replace('/#artworks')
+}
+
+async function initializeDetail(resetTransition = false) {
+  const currentInitialization = ++initializationId
+  if (resetTransition) cleanup()
+  isReady.value = false
+  activeThreeDIndex.value = 0
+
+  if (!artwork.value) {
+    await router.replace('/artworks')
+    return
+  }
+
+  if (route.params.slug !== artwork.value.slug) {
+    await router.replace({
+      name: 'artwork-detail',
+      params: { slug: artwork.value.slug },
+      query: route.query,
+    })
+    return
+  }
+
   await nextTick()
+  if (currentInitialization !== initializationId) return
   const image = caseStudy.value?.heroImage ?? metalworkGallery.value?.heroImage ?? heroImage.value
   const target = caseStudy.value?.heroTarget ?? heroTarget.value
   const imageReady = image?.decode ? image.decode().catch(() => {}) : Promise.resolve()
@@ -58,9 +79,23 @@ onMounted(async () => {
     },
     imageReady,
   )
+}
+
+watch(
+  () => route.params.slug,
+  (slug, previousSlug) => {
+    if (previousSlug !== undefined && slug !== previousSlug) initializeDetail(true)
+  },
+)
+
+onMounted(() => {
+  initializeDetail(false)
 })
 
-onBeforeUnmount(cleanup)
+onBeforeUnmount(() => {
+  initializationId += 1
+  cleanup()
+})
 </script>
 
 <template>

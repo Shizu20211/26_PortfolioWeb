@@ -1,10 +1,13 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useLanguage } from '@/composables/useLanguage'
 import { useReducedMotion } from '@/composables/useReducedMotion'
 
 const props = defineProps({ artwork: { type: Object, required: true }, ready: Boolean })
 const emit = defineEmits(['back'])
+const route = useRoute()
+const router = useRouter()
 const { pick } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
 const sceneRoot = ref(null)
@@ -98,6 +101,9 @@ function showImage(offset) {
   if (!gallery.value.length) return
   direction.value = offset < 0 ? 'backward' : 'forward'
   activeIndex.value = (activeIndex.value + offset + gallery.value.length) % gallery.value.length
+  if (isLightboxOpen.value) {
+    router.replace({ query: { ...route.query, artworkImage: activeImage.value.id } })
+  }
 }
 
 function selectImage(index) {
@@ -106,19 +112,47 @@ function selectImage(index) {
   activeIndex.value = index
 }
 
-function openLightbox(event) {
-  lightboxTrigger = event?.currentTarget ?? document.activeElement
+function openLightboxVisual() {
+  if (isLightboxOpen.value) return
   isLightboxOpen.value = true
   document.body.classList.add('artwork-lightbox-open')
   document.querySelector('#app')?.setAttribute('inert', '')
   nextTick(() => closeButton.value?.focus())
 }
 
-function closeLightbox() {
+function closeLightboxVisual(restoreFocus = true) {
+  if (!isLightboxOpen.value) return
   isLightboxOpen.value = false
   document.body.classList.remove('artwork-lightbox-open')
   document.querySelector('#app')?.removeAttribute('inert')
-  nextTick(() => lightboxTrigger?.focus?.())
+  if (restoreFocus) nextTick(() => lightboxTrigger?.focus?.())
+}
+
+async function openLightbox(event) {
+  lightboxTrigger = event?.currentTarget ?? document.activeElement
+  await router.push({
+    query: { ...route.query, artworkImage: activeImage.value.id },
+  })
+}
+
+function hasArtworkHistoryEntry() {
+  const previousUrl = window.history.state?.back
+  if (!previousUrl) return false
+  return new URL(previousUrl, window.location.href).pathname.endsWith(route.path)
+}
+
+async function closeLightbox() {
+  if (!route.query.artworkImage) {
+    closeLightboxVisual()
+    return
+  }
+  if (hasArtworkHistoryEntry()) {
+    router.back()
+    return
+  }
+  const query = { ...route.query }
+  delete query.artworkImage
+  await router.replace({ query })
 }
 
 function onPointerDown(event) {
@@ -151,6 +185,20 @@ function onKeydown(event) {
   }
 }
 
+watch(
+  () => route.query.artworkImage,
+  (imageId) => {
+    const imageIndex = gallery.value.findIndex((image) => image.id === imageId)
+    if (imageIndex >= 0) {
+      activeIndex.value = imageIndex
+      openLightboxVisual()
+    } else {
+      closeLightboxVisual()
+    }
+  },
+  { immediate: true },
+)
+
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
   if (prefersReducedMotion.value || !window.matchMedia('(pointer: coarse)').matches) return
@@ -163,8 +211,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydown)
   if (orientationListening) window.removeEventListener('deviceorientation', onDeviceOrientation)
   window.cancelAnimationFrame(spatialFrame)
-  document.body.classList.remove('artwork-lightbox-open')
-  document.querySelector('#app')?.removeAttribute('inert')
+  closeLightboxVisual(false)
 })
 
 defineExpose({ heroTarget, heroImage })

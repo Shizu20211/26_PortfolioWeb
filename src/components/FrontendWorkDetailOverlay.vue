@@ -11,7 +11,7 @@ const props = defineProps({
   number: { type: String, required: true },
   sourceElement: { type: Object, default: null },
 })
-const emit = defineEmits(['closed'])
+const emit = defineEmits(['closed', 'request-close'])
 
 const { pick, t } = useLanguage()
 const { prefersReducedMotion } = useReducedMotion()
@@ -22,6 +22,7 @@ const closeButton = ref(null)
 const isTransitioning = ref(true)
 const mediaReady = ref(false)
 let disposed = false
+let closePending = false
 const { createTransitionLayer, fitTo, removeTransitionLayer } = useFrontendWorkTransition()
 
 async function enterDetail() {
@@ -50,11 +51,19 @@ async function enterDetail() {
   })
   if (disposed) return
   isTransitioning.value = false
+  if (closePending) {
+    closePending = false
+    closeDetail()
+    return
+  }
   closeButton.value?.focus()
 }
 
 async function closeDetail() {
-  if (isTransitioning.value) return
+  if (isTransitioning.value) {
+    closePending = true
+    return
+  }
   isTransitioning.value = true
 
   try {
@@ -84,7 +93,7 @@ async function closeDetail() {
 
 function handleKeydown(event) {
   if (event.key === 'Escape') {
-    closeDetail()
+    emit('request-close')
     return
   }
   if (event.key !== 'Tab' || !overlay.value) return
@@ -125,6 +134,8 @@ onBeforeUnmount(() => {
   if (props.sourceElement?.isConnected) gsap.set(props.sourceElement, { opacity: 1 })
   removeTransitionLayer()
 })
+
+defineExpose({ closeDetail })
 </script>
 
 <template>
@@ -143,7 +154,7 @@ onBeforeUnmount(() => {
         type="button"
         :aria-label="t('closeProject')"
         :disabled="isTransitioning"
-        @click="closeDetail"
+        @click="emit('request-close')"
       >
         <span class="frontend-detail-link__label">{{ t('back') }}</span>
       </button>

@@ -1011,6 +1011,17 @@ h2 em {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+.project-card--featured .project-card__link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+  cursor: pointer;
+}
+.project-card--featured:has(.project-card__link:focus-visible) {
+  outline: 2px solid var(--color-ink-teal);
+  outline-offset: 0.25rem;
+}
 .frontend-works-section {
   display: block;
   padding-right: 0;
@@ -4586,8 +4597,40 @@ body.artwork-lightbox-open {
 }
 .frontend-detail-gallery__slides {
   position: relative;
+  display: block;
   min-height: 0;
   margin: 0;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+}
+.frontend-detail-gallery__slides.is-linked {
+  cursor: pointer;
+}
+.frontend-detail-gallery__slides.is-linked::after {
+  position: absolute;
+  z-index: 2;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 50%;
+  background: rgb(24 35 49 / 42%);
+  color: white;
+  content: '↗';
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  opacity: 0.72;
+  transition:
+    opacity 240ms var(--ease-standard),
+    transform 240ms var(--ease-standard);
+}
+.frontend-detail-gallery__slides.is-linked:focus-visible {
+  outline: 2px solid var(--color-ink-teal);
+  outline-offset: -0.3rem;
 }
 .frontend-detail-gallery__slides img {
   position: absolute;
@@ -4596,10 +4639,21 @@ body.artwork-lightbox-open {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 400ms var(--ease-standard);
+  transition:
+    opacity 400ms var(--ease-standard),
+    transform 360ms var(--ease-standard);
 }
 .frontend-detail-gallery__slides img.is-current {
   opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .frontend-detail-gallery__slides.is-linked:hover img.is-current {
+    transform: scale(1.015);
+  }
+  .frontend-detail-gallery__slides.is-linked:hover::after {
+    opacity: 1;
+    transform: translate(0.08rem, -0.08rem);
+  }
 }
 .frontend-detail-gallery__long {
   position: relative;
